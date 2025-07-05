@@ -1,0 +1,60 @@
+# VectorMerge Configuration Example
+# This is a sample configuration file demonstrating all available options
+
+# Model configurations
+model_1:
+  name: "bert-base-uncased"
+  batch_size: 32
+  max_seq_length: 512
+  device: "auto"  # "auto", "cpu", "cuda"
+  cache_dir: "~/.vectormerge/models"
+  
+model_2:
+  name: "roberta-base"
+  batch_size: 32
+  max_seq_length: 512
+  device: "auto"
+  cache_dir: "~/.vectormerge/models"
+
+# Dataset configuration
+dataset:
+  name: "scifact"
+  split: "test"
+  download: true
+  cache_dir: "~/.vectormerge/datasets"
+
+# Vector space mapping configuration
+mapping:
+  method: "procrustes"  # "procrustes", "nonlinear", "ours"
+  num_clusters: 50
+  cluster_method: "kmeans"  # "kmeans", "hierarchical", "ours"
+  reference_creation_method: "ours"  # "ours", "random"
+  d0_ratio: 0.33
+  split_strategy: "closest_to_p"
+  auto_dim_cluster: false
+  tau_1: 0.8
+  tau_2: 0.1
+  approximate: false
+  max_iter: 100
+  tolerance: 1e-6
+
+# Evaluation configuration
+evaluation:
+  k_list: [10, 100, 1000]
+  metrics: ["recall", "ndcg", "map", "extended_recall"]
+  cal_self_metric: true
+  cal_extended_recall: true
+  cal_rank_recall: true
+  save_results: true
+  results_dir: "~/.vectormerge/results"
+
+# Logging configuration
+logging:
+  level: "INFO"
+  log_to_file: false
+  use_wandb: false
+  wandb_project: "vectormerge-experiments"
+  
+# Global settings
+seed: 42
+cache_dir: "~/.vectormerge/cache" 
