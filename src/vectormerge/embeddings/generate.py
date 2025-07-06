@@ -7,16 +7,15 @@ import tqdm
 import argparse
 from pathlib import Path
 from dataclasses import dataclass
-from beir.datasets.data_loader import GenericDataLoader
-from beir import util as beir_util
-from beir.retrieval import models
-from beir import LoggingHandler
 import numpy as np
 import shutil
 
 from .embedding_generator import get_embedding_generator
+from ..dataset import load_dataset, Dataset
 
 # Configure logging
+from beir import LoggingHandler
+
 logging.basicConfig(
     format='%(asctime)s - %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S',
@@ -96,64 +95,7 @@ class FastTextTrainer:
         np.save(embeddings_path, np.array(embeddings))
         logger.info(f"Embeddings saved to {embeddings_path}")
 
-class DatasetLoader:
-    """Handles dataset loading and preprocessing"""
-    
-    SUPPORTED_DATASETS = {
-        "scifact": "train",
-        "nfcorpus": "test",
-        "cqadupstack": "test",
-        "arguana": "test",
-        "scidocs": "test",
-        "fiqa": "test",
-        "signal1m": "test",
-        "fever": "test"
-    }
-
-    def __init__(self, dataset_path: str):
-        self.dataset_path = Path(dataset_path)
-
-    def load_dataset(self, dataset_name: str, split: str = "test") -> Tuple[Dict, Dict, Dict]:
-        """
-        Load and prepare a dataset for training
-        
-        Args:
-            dataset_name: Name of the dataset to load
-            split: Split of the dataset to load
-            
-        Returns:
-            Tuple containing corpus, queries, and qrels
-            
-        Raises:
-            ValueError: If dataset is not supported
-        """
-        if dataset_name not in self.SUPPORTED_DATASETS:
-            raise ValueError(f"Dataset {dataset_name} is not supported. "
-                           f"Supported datasets: {list(self.SUPPORTED_DATASETS.keys())}")
-
-        config = DatasetConfig(
-            name=dataset_name,
-            path=str(self.dataset_path),
-            split=split
-        )
-        
-        logger.info(f"Loading dataset: {dataset_name} from {config.path}")
-        
-        data_path = self._prepare_dataset_path(config)
-        data_loader = GenericDataLoader(data_folder=data_path)
-        return data_loader.load(split=config.split)
-
-    def _prepare_dataset_path(self, config: DatasetConfig) -> str:
-        """Prepare the dataset path and handle special cases"""
-        out_dir = self.dataset_path
-        if not out_dir.exists():
-            raise ValueError(f"Dataset directory {out_dir} does not exist.")
-            
-        data_path = beir_util.download_and_unzip(config.url, str(out_dir))
-        
-        if config.name == "cqadupstack":
-            return os.path.join(data_path, "english")
-        return data_path
+# DatasetLoader class removed - now using unified dataset.py loader
 
 def clean_corpus(corpus: Dict[str, Dict[str, str]]) -> str:
     """
@@ -238,8 +180,8 @@ def generate_embeddings(model_name: str, dataset_name: str, dataset_path: str, c
         logger.info(f"Embeddings already exist at {final_path}. Use --force to regenerate.")
         return
     
-    # Initialize dataset loader
-    dataset_loader = DatasetLoader(dataset_path)
+    # Load dataset using unified loader
+    dataset = load_dataset(dataset_name, split="test", data_path=dataset_path)
     
     # Get embedding generator with force parameter
     embedding_generator = get_embedding_generator(
@@ -252,15 +194,10 @@ def generate_embeddings(model_name: str, dataset_name: str, dataset_path: str, c
     
     # Process dataset
     logger.info(f"Processing dataset: {dataset_name} for {type_} embeddings")
-        
-    corpus, queries, qrels = dataset_loader.load_dataset(dataset_name, split="test")
     
     if type_ == "corpus":
-        # Prepare text list for corpus
-        text_list = []
-        for doc_id, doc in tqdm.tqdm(corpus.items(), desc="Preparing corpus texts"):
-            text = f"{doc.get('title', '')} {doc.get('text', '')}"
-            text_list.append(text)
+        # Get corpus texts using dataset method
+        text_list = dataset.get_corpus_texts(include_title=True)
         
         # Generate embeddings in cache directory
         cache_key = f"corpus_embeddings_{model_name}_{dataset_name}.npy"
@@ -271,10 +208,8 @@ def generate_embeddings(model_name: str, dataset_name: str, dataset_path: str, c
         logger.info(f"Successfully generated corpus embeddings for {dataset_name}")
     
     elif type_ == "query":
-        # Prepare text list for queries
-        text_list = []
-        for query_id, query in tqdm.tqdm(queries.items(), desc="Preparing query texts"):
-            text_list.append(query)
+        # Get query texts using dataset method
+        text_list = dataset.get_query_texts()
         
         # Generate embeddings in cache directory
         cache_key = f"query_embeddings_{model_name}_{dataset_name}.npy"

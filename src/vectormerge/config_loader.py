@@ -28,7 +28,7 @@ class VectorMergeConfig:
     
     # Algorithm settings
     default_mapping_method: str = "procrustes"
-    default_reference_strategy: str = "ours"
+    default_reference_strategy: str = "la2m"
     default_num_clusters: int = 50
     default_d0_ratio: float = 0.33
     

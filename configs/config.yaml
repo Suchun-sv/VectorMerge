@@ -4,36 +4,21 @@
 # ==================== Paths ====================
 data_path: "./data/raw/beir/"
 embedding_path: "./data/processed/embeddings/"
-reference_path: "./output/references/"
-mapping_path: "./output/mappings/"
+reference_path: "./data/processed/references/"
+mapping_model_path: "./output/mapping_models/"
+mapping_embedding_path: "./output/mapping_embeddings/"
 
-# ==================== Model Settings ====================
-model_1: "bert-base-uncased"
-model_2: "roberta-base"
-dataset: "scifact"
-
-# ==================== CLI Default Settings ====================
-default_model: "mistral"
-default_dataset: "scifact"
-default_type: "all"
-default_batch_size: 32
-default_device: "auto"
-
-# ==================== Algorithm Settings ====================
-default_mapping_method: "procrustes"  # "procrustes", "nonlinear", "ours"
-default_reference_strategy: "ours"    # "ours", "random", "hierarchical_kmeans", "fps"
-default_num_clusters: 50
-default_d0_ratio: 0.33
-
-# ==================== Evaluation Settings ====================
-default_k_list: [10, 100, 1000]
-default_metrics: ["recall", "ndcg", "map"]
-
-
-# ==================== Advanced Settings ====================
-verbose: false
-use_cache: true
-force_download: false
+# ==================== Mapper Configuration ====================
+mapper:
+  num_clusters: 50
+  num_epochs: 100
+  learning_rate: 0.001
+  batch_size: 32
+  hidden_dim: 512
+  loss_type: "mse"
+  device: "auto"
+  force: false
+  save_transformed: true
 
 # ==================== Embedding Models Configuration ====================
 embedding_models:
