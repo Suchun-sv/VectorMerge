@@ -33,7 +33,7 @@ class LA2MSplit(BaseSplit):
         self.dataset_obj = dataset_obj
         self.dataset_index = dataset_index
         self.remove_dup_answer = remove_dup_answer
-        self.reference_key = Path(f"la2m_split_{dataset_name}_{reference_ratio:4f}_remove_dup_answer_{remove_dup_answer}_select_top_1_{select_top_1}")
+        self.reference_key = Path(f"la2m_split_{dataset_name}_{reference_ratio:.2f}_remove_dup_answer_{remove_dup_answer}_select_top_1_{select_top_1}")
         logger.info(f"LA2MSplit initialized with reference key: {self.reference_key}")
 
     def _split(self, internal_index: Optional[np.ndarray] = None, answer_index: Optional[np.ndarray] = None, reference_ratio: Optional[float] = None, save: bool = True) -> tuple[np.ndarray, np.ndarray, np.ndarray]:

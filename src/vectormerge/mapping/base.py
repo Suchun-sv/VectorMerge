@@ -79,6 +79,10 @@ class MappingConfig:
         """Convert to dictionary."""
         return {k: v for k, v in self.__dict__.items()}
     
+    def to_string(self) -> str:
+        """Convert to string."""
+        return str(self.__dict__)
+    
     @classmethod
     def from_dict(cls, config_dict: Dict[str, Any]) -> 'MappingConfig':
         """Create from dictionary."""
@@ -107,6 +111,10 @@ class MappingStrategy(ABC):
         if self.config.device == "auto":
             return torch.device("cuda" if torch.cuda.is_available() else "cpu")
         return torch.device(self.config.device)
+    
+    def __repr__(self) -> str:
+        """Return a string representation of the mapping strategy."""
+        return f"{self.__class__.__name__} is_fitted={self.is_fitted}"
     
     @abstractmethod
     def fit(self, source_embeddings: np.ndarray, target_embeddings: np.ndarray,

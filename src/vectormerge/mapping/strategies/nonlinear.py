@@ -37,9 +37,9 @@ class NonLinearMappingModel(nn.Module):
             dropout_rate: Dropout rate for regularization
         """
         super(NonLinearMappingModel, self).__init__()
-        self.input_dim = input_dim
-        self.hidden_dims = hidden_dims
-        self.output_dim = output_dim
+        self.input_dim: int = input_dim
+        self.hidden_dims: List[int] = hidden_dims
+        self.output_dim: int = output_dim
         
         # Build layers dynamically
         layers = []
@@ -407,39 +407,45 @@ class NonLinearMappingStrategy(MappingStrategy):
         
         logger.info(f"Saved non-linear mapping model to {save_path}")
     
-    # @classmethod
-    # def load(cls, path) -> 'NonLinearMappingStrategy':
-    #     """Load a fitted non-linear mapping model."""
-    #     instance = super().load(path)
+    @classmethod
+    def load(cls, path) -> 'NonLinearMappingStrategy':
+        """Load a fitted non-linear mapping model."""
+        instance = NonLinearMappingStrategy(MappingConfig())
+        load_path = Path(path)
         
-    #     load_path = Path(path)
+        # Load model architecture info
+        import json
+        with open(load_path / "model_architecture.json", "r") as f:
+            model_info = json.load(f)
         
-    #     # Load model architecture info
-    #     import json
-    #     with open(load_path / "model_architecture.json", "r") as f:
-    #         model_info = json.load(f)
+        # Update instance attributes
+        instance.hidden_dims = model_info['hidden_dims']
+        instance.dropout_rate = model_info['dropout_rate']
         
-    #     # Update instance attributes
-    #     instance.hidden_dims = model_info['hidden_dims']
-    #     instance.dropout_rate = model_info['dropout_rate']
+        # Create model
+        instance._create_model(model_info['input_dim'], model_info['output_dim'])
         
-    #     # Create model
-    #     instance._create_model(model_info['input_dim'], model_info['output_dim'])
-        
-    #     # Load model checkpoint
-    #     if instance.model is not None:
-    #         checkpoint = torch.load(load_path / "model_checkpoint.pth", 
-    #                                map_location=instance.device)
+        # Load model checkpoint
+        if instance.model is not None:
+            checkpoint = torch.load(load_path / "model_checkpoint.pth", 
+                                   map_location=instance.device, weights_only=True)
             
-    #         instance.model.load_state_dict(checkpoint['model_state_dict'])
+            instance.model.load_state_dict(checkpoint['model_state_dict'])
             
-    #         if instance.optimizer and checkpoint['optimizer_state_dict']:
-    #             instance.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+            if instance.optimizer and checkpoint['optimizer_state_dict']:
+                instance.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
             
-    #         if instance.scheduler and checkpoint['scheduler_state_dict']:
-    #             instance.scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
+            if instance.scheduler and checkpoint['scheduler_state_dict']:
+                instance.scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
             
-    #         instance.model.eval()
+            instance.model.eval()
         
-    #     logger.info(f"Loaded non-linear mapping model from {load_path}")
-    #     return instance 
+        logger.info(f"Loaded non-linear mapping model from {load_path}")
+        instance.is_fitted = True
+        return instance 
+
+    @classmethod
+    def check_fit(cls, path) -> bool:
+        """Check if the model is fitted."""
+        load_path = Path(path)
+        return load_path.exists() and (load_path / "model_architecture.json").exists() and (load_path / "model_checkpoint.pth").exists()

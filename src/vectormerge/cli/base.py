@@ -251,15 +251,18 @@ def _common_mapping_workflow(
     d0_index = reference_data['d0_index']  # Reference indices
     
     # Create and fit mapper
-    mapper = VectorSpaceMapper(strategy=strategy, config=strategy_config)
+    mapper = VectorSpaceMapper(strategy=strategy, 
+                             config=strategy_config, 
+                             dataset_name=dataset,
+                             source_model=source_model,
+                             target_model=target_model,
+                             reference_key=reference_key,
+                             mapping_param_path=mapping_param_path, 
+                             mapping_embedding_path=mapping_embedding_path, 
+                             save_param=save_param,
+                             save_embedding=save_embedding,
+                             force=force)
     
     # Transform embeddings
     mapper.fit(source_embeddings, target_embeddings, d0_index)
     transformed_embeddings = mapper.transform(source_embeddings)
-
-    if save_param:
-        mapper.save(mapping_param_path)
-
-    if save_embedding:
-        logger.info(f"Saving transformed embeddings to {mapping_embedding_path}")
-        np.save(mapping_embedding_path, transformed_embeddings)

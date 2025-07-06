@@ -7,6 +7,8 @@ interface for all embedding mapping strategies in VectorMerge.
 
 import numpy as np
 from typing import Union, Dict, Any, Optional, List
+import hashlib
+import shutil
 from pathlib import Path
 import time
 from loguru import logger
@@ -18,6 +20,11 @@ from .strategies import (
     LA2MStrategy
 )
 
+
+def config_hash_path(dataset_name, source_model, target_model, strategy, config, reference_key):
+    hash_target_str = config.to_string() + reference_key
+    config_hash = hashlib.md5(hash_target_str.encode()).hexdigest()
+    return f"{strategy}_{dataset_name}_{source_model}_{target_model}_{config_hash}"
 
 class VectorSpaceMapper:
     """
@@ -34,12 +41,18 @@ class VectorSpaceMapper:
         "la2m": LA2MStrategy,
     }
     
-    def __init__(self, strategy: str = "procrustes", config: Optional[MappingConfig] = None):
+    def __init__(self, strategy, config: MappingConfig, dataset_name: str, source_model: str, target_model: str, reference_key: str, mapping_param_path: Union[str, Path], mapping_embedding_path: Union[str, Path], force: bool = False, save_param: bool = False, save_embedding: bool = False):
         """Initialize the VectorSpaceMapper.
         
         Args:
             strategy: Name of the mapping strategy to use
             config: Configuration object (if None, uses default config)
+            dataset_name: Name of the dataset
+            source_model: Name of the source model
+            target_model: Name of the target model
+            mapping_param_path: Path to save mapping parameters
+            mapping_embedding_path: Path to save mapping embeddings
+            force: Force overwrite existing mappings
         """
         if strategy not in self.AVAILABLE_STRATEGIES:
             raise ValueError(f"Unknown strategy '{strategy}'. Available strategies: "
@@ -47,6 +60,19 @@ class VectorSpaceMapper:
         
         self.strategy_name = strategy
         self.config = config if config is not None else MappingConfig()
+        self.force = force
+        self.dataset_name = dataset_name
+        self.source_model = source_model
+        self.target_model = target_model
+        self.save_param = save_param
+        self.save_embedding = save_embedding
+
+        self.hash_path = config_hash_path(dataset_name, source_model, target_model, strategy, config, reference_key)
+        
+        # Setup paths with strategy and config hash
+        self.mapping_param_path, self.mapping_embedding_path = self._setup_paths(
+            mapping_param_path, mapping_embedding_path, strategy, self.config, force,
+        )
         
         # Initialize the mapping strategy
         strategy_class = self.AVAILABLE_STRATEGIES[strategy]
@@ -57,6 +83,36 @@ class VectorSpaceMapper:
         self.is_fitted = False
         
         logger.info(f"VectorSpaceMapper initialized with strategy: {strategy}")
+        logger.info(f"Parameter path: {self.mapping_param_path}")
+        logger.info(f"Embedding path: {self.mapping_embedding_path}")
+    
+    def _setup_paths(self, mapping_param_path: Union[str, Path], mapping_embedding_path: Union[str, Path], 
+                     strategy: str, config: MappingConfig, force: bool) -> tuple[Path, Path]:
+        """Setup and create mapping paths with strategy and config hash.
+        
+        Args:
+            mapping_param_path: Base parameter path
+            mapping_embedding_path: Base embedding path
+            strategy: Mapping strategy name
+            config: Configuration object
+            force: Whether to force overwrite existing directories
+            
+        Returns:
+            Tuple of (final_param_path, final_embedding_path)
+        """
+        # Expand paths with strategy name
+        param_path = Path(mapping_param_path)
+        embedding_path = Path(mapping_embedding_path)
+        
+        # Create base strategy directories
+        param_path.mkdir(parents=True, exist_ok=True)
+        embedding_path.mkdir(parents=True, exist_ok=True)
+        
+        # Add config hash for unique configurations
+        final_param_path = param_path / self.hash_path
+        final_embedding_path = embedding_path / self.hash_path
+        
+        return final_param_path, final_embedding_path
     
     def fit(self, source_embeddings: np.ndarray, target_embeddings: np.ndarray,
             reference_indices: np.ndarray, **kwargs) -> 'VectorSpaceMapper':
@@ -72,13 +128,25 @@ class VectorSpaceMapper:
             Self for method chaining
         """
         logger.info(f"Fitting {self.strategy_name} mapping strategy...")
+
         
         # Validate inputs
         self._validate_inputs(source_embeddings, target_embeddings, reference_indices)
         
         # Record training start time
         start_time = time.time()
-        
+
+        if not self.force:
+            if self.mapping_param_path.exists() and self.mapping_strategy.check_fit(self.mapping_param_path):
+                logger.info(f"Loading existing mapping parameters from {self.mapping_param_path}")
+                try:
+                    self.mapping_strategy = self.mapping_strategy.load(self.mapping_param_path)
+                    self.is_fitted = True
+                    logger.info(f"Loaded existing mapping parameters from {self.mapping_param_path}")
+                    return self
+                except Exception as e:
+                    logger.info(f"Fitting {self.strategy_name} mapping strategy from scratch...")
+
         # Fit the mapping strategy
         self.mapping_strategy.fit(
             source_embeddings, target_embeddings, reference_indices, **kwargs
@@ -98,7 +166,8 @@ class VectorSpaceMapper:
             'strategy_metadata': self.mapping_strategy.metadata.copy()
         }
         
-        self.is_fitted = True
+        if self.save_param:
+            self.mapping_strategy.save(self.mapping_param_path)
         
         logger.info(f"Mapping strategy fitted successfully in {training_time:.2f} seconds")
         return self
@@ -113,8 +182,13 @@ class VectorSpaceMapper:
         Returns:
             Transformed embeddings (N x D2)
         """
-        if not self.is_fitted:
+        if not self.mapping_strategy.is_fitted:
             raise ValueError("Mapper must be fitted before transformation")
+        
+        if not self.force:
+            if self.check_embedding_on_disk():
+                logger.info(f"Loading existing mapping embeddings from {self.mapping_embedding_path}")
+                return self.load_embedding_from_disk()
         
         logger.info(f"Transforming {len(embeddings)} embeddings...")
         
@@ -123,6 +197,9 @@ class VectorSpaceMapper:
         transform_time = time.time() - start_time
         
         logger.info(f"Transformation completed in {transform_time:.2f} seconds")
+
+        if self.save_embedding:
+            self.save_embedding_to_disk(transformed)
         
         return transformed
     
@@ -149,6 +226,33 @@ class VectorSpaceMapper:
             embeddings_to_transform = source_embeddings
         
         return self.transform(embeddings_to_transform, **kwargs)
+    
+    def save_embedding_to_disk(self, embeddings: np.ndarray) -> None:
+        """Save the transformed embeddings to disk."""
+        mapping_embedding_path = self.mapping_embedding_path
+        if not str(mapping_embedding_path).endswith(".npy"):
+            mapping_embedding_path = mapping_embedding_path.with_suffix(".npy")
+        
+        logger.info(f"Saving transformed embeddings to {mapping_embedding_path}")
+        np.save(mapping_embedding_path, embeddings)
+    
+    def load_embedding_from_disk(self) -> np.ndarray:
+        """Load the transformed embeddings from disk."""
+        mapping_embedding_path = self.mapping_embedding_path
+        if not str(mapping_embedding_path).endswith(".npy"):
+            mapping_embedding_path = mapping_embedding_path.with_suffix(".npy")
+        
+        logger.info(f"Loading transformed embeddings from {mapping_embedding_path}")
+        return np.load(mapping_embedding_path)
+    
+    def check_embedding_on_disk(self) -> bool:
+        """Check if the transformed embeddings exist."""
+        mapping_embedding_path = self.mapping_embedding_path
+        if not str(mapping_embedding_path).endswith(".npy"):
+            mapping_embedding_path = mapping_embedding_path.with_suffix(".npy")
+        
+        return mapping_embedding_path.exists()
+        
     
     def get_mapping_result(self, transformed_embeddings: np.ndarray) -> MappingResult:
         """Create a MappingResult object with metadata.
@@ -238,7 +342,7 @@ class VectorSpaceMapper:
         
         return metrics
     
-    def save(self, path: Union[str, Path]) -> None:
+    def save(self, path: Union[str, Path, None] = None) -> None:
         """Save the fitted mapper to disk.
         
         Args:
@@ -246,33 +350,44 @@ class VectorSpaceMapper:
         """
         if not self.is_fitted:
             raise ValueError("Cannot save unfitted mapper")
+
+        if path is None:
+            path = self.mapping_param_path
         
-        save_path = Path(path)
-        save_path.mkdir(parents=True, exist_ok=True)
+        if path is None:
+            raise ValueError("Path is required")
+
+        if isinstance(path, str):
+            path = Path(path)
         
-        # Save the mapping strategy
-        self.mapping_strategy.save(save_path / "strategy")
+        if self.force:
+            if path.exists():
+                shutil.rmtree(path)
+        path.mkdir(parents=True, exist_ok=True)
         
         # Save mapper metadata
         mapper_info = {
-            'strategy_name': self.strategy_name,
             'config': self.config.to_dict(),
             'training_history': self.training_history,
-            'is_fitted': self.is_fitted
         }
         
         import json
-        with open(save_path / "mapper_info.json", "w") as f:
+        with open(path / "mapper_info.json", "w") as f:
             json.dump(mapper_info, f, indent=2)
         
-        logger.info(f"Saved VectorSpaceMapper to {save_path}")
+        self.mapping_strategy.save(path)
+        
+        logger.info(f"Saved VectorSpaceMapper to {path}")
     
     @classmethod
-    def load(cls, path: Union[str, Path]) -> 'VectorSpaceMapper':
+    def load(cls, path: Union[str, Path], mapping_param_path: Union[str, Path] = "./output/mapping_models/", 
+             mapping_embedding_path: Union[str, Path] = "./output/mapping_embeddings/") -> 'VectorSpaceMapper':
         """Load a fitted mapper from disk.
         
         Args:
             path: Path to load the mapper from
+            mapping_param_path: Path for mapping parameters (for future use)
+            mapping_embedding_path: Path for mapping embeddings (for future use)
             
         Returns:
             Loaded VectorSpaceMapper instance
@@ -286,7 +401,12 @@ class VectorSpaceMapper:
         
         # Create mapper instance
         config = MappingConfig.from_dict(mapper_info['config'])
-        mapper = cls(strategy=mapper_info['strategy_name'], config=config)
+        mapper = cls(
+            strategy=mapper_info['strategy_name'], 
+            config=config,
+            mapping_param_path=mapping_param_path,
+            mapping_embedding_path=mapping_embedding_path
+        )
         
         # Load the mapping strategy
         strategy_class = cls.AVAILABLE_STRATEGIES[mapper_info['strategy_name']]
