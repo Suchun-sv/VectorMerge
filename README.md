@@ -17,6 +17,17 @@ the reference will output to the reference_path,
 ## vectormerge map-embedding
 vectormerge map-embedding -m1 [model_name] -m2 [model_name] --m1--m2 [replace default m1 and m2] -d [dataset_name] --load-reference-path [reference_path] --mapping-method [mapping_method] --mapping-config [mapping_config] --output-path [output_path]
 
+-mapping-method [mapping_method]
+-m1 [model_name]
+-m2 [model_name]
+--m1-m2 [replace default m1 and m2]
+-d [dataset_name]
+--reference-key [reference_key]
+--load-reference-path [reference_path]
+--mapping-config [mapping_config]
+--output-path [output_path]
+--force [force retrain, default is use existing mapping]
+
 
 # Evaluate
 ## vectormerge evaluate

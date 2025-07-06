@@ -24,6 +24,9 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+QUERY_KEY_TEMPLATE = "query_embeddings_{model_name}_{dataset_name}.npy"
+CORPUS_KEY_TEMPLATE = "corpus_embeddings_{model_name}_{dataset_name}.npy"
+
 @dataclass
 class DatasetConfig:
     """Configuration for dataset loading and processing"""
@@ -145,6 +148,19 @@ def parse_args():
     
     return parser.parse_args()
 
+def get_embedding(model_name: str, dataset_name: str, embedding_path: str, type_: str = "corpus"):
+    """
+    Simple function to get embeddings from a model and dataset.
+    """
+    if type_ == "corpus":
+        cache_key = CORPUS_KEY_TEMPLATE.format(dataset_name=dataset_name, model_name=model_name)
+    elif type_ == "query":
+        cache_key = QUERY_KEY_TEMPLATE.format(dataset_name=dataset_name, model_name=model_name)
+    else:
+        raise ValueError(f"Invalid type: {type_}. Must be 'corpus' or 'query'.")
+    
+    return np.load(embedding_path / Path(cache_key))
+
 
 def generate_embeddings(model_name: str, dataset_name: str, dataset_path: str, cache_dir: str, model_settings: Dict, type_: str = "corpus", force: bool = False, embedding_path: Optional[str] = None):
     """
@@ -200,7 +216,7 @@ def generate_embeddings(model_name: str, dataset_name: str, dataset_path: str, c
         text_list = dataset.get_corpus_texts(include_title=True)
         
         # Generate embeddings in cache directory
-        cache_key = f"corpus_embeddings_{model_name}_{dataset_name}.npy"
+        cache_key = CORPUS_KEY_TEMPLATE.format(dataset_name=dataset_name, model_name=model_name)
         
         embedding_generator.generate_embeddings(text_list, 
                                                 cache_key=cache_key)
@@ -212,7 +228,7 @@ def generate_embeddings(model_name: str, dataset_name: str, dataset_path: str, c
         text_list = dataset.get_query_texts()
         
         # Generate embeddings in cache directory
-        cache_key = f"query_embeddings_{model_name}_{dataset_name}.npy"
+        cache_key = QUERY_KEY_TEMPLATE.format(dataset_name=dataset_name, model_name=model_name)
         
         embedding_generator.generate_embeddings(text_list, 
                                                 cache_key=cache_key,

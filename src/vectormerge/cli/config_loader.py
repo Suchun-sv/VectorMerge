@@ -18,8 +18,10 @@ class VectorMergeConfig:
     # Path settings
     data_path: str = "./data/raw/beir/"
     embedding_path: str = "./data/processed/embeddings/"
-    reference_path: str = "./output/references/"
-    mapping_path: str = "./output/mappings/"
+    reference_path: str = "./data/processed/references/"
+    mapping_path: str = "./data/processed/mappings/"
+    mapping_param_path: str = "./output/mapping_models/"
+    mapping_embedding_path: str = "./output/mapping_embeddings/"
     
     # Model settings
     model_1: str = "bert-base-uncased"
@@ -57,62 +59,46 @@ class ConfigLoader:
     
     def __init__(self):
         self.config = VectorMergeConfig()
+        self._cached_configs = {}
         self._load_configs()
     
     def _load_configs(self):
         """Load configurations in order of precedence."""
-        # 1. Load built-in defaults (already in VectorMergeConfig)
+        # Load all config sources
+        configs = {
+            'package': self._load_package_config(),
+            'global': self._load_global_config(), 
+            'project': self._load_project_config()
+        }
         
-        # 2. Load from package config
-        package_config = self._load_package_config()
-        if package_config:
-            self._merge_config(package_config)
-        
-        # 3. Load from global config
-        global_config = self._load_global_config()
-        if global_config:
-            self._merge_config(global_config)
-        
-        # 4. Load from project config
-        project_config = self._load_project_config()
-        if project_config:
-            self._merge_config(project_config)
+        # Merge in order of precedence (package -> global -> project)
+        for config_type, config_data in configs.items():
+            if config_data:
+                self._cached_configs[config_type] = config_data
+                self._merge_config(config_data)
     
-    def _load_package_config(self) -> Optional[Dict[str, Any]]:
-        """Load config from package's configs/config.yaml."""
+    def _load_config_file(self, config_path: Path) -> Optional[Dict[str, Any]]:
+        """Generic config file loader."""
         try:
-            # Get the package directory
-            package_dir = Path(__file__).parent.parent.parent
-            config_path = package_dir / "configs" / "config.yaml"
-            
             if config_path.exists():
                 with open(config_path, 'r', encoding='utf-8') as f:
                     return yaml.safe_load(f)
         except Exception as e:
-            print(f"Warning: Could not load package config: {e}")
+            print(f"Warning: Could not load config from {config_path}: {e}")
         return None
+    
+    def _load_package_config(self) -> Optional[Dict[str, Any]]:
+        """Load config from package's configs/config.yaml."""
+        package_dir = Path(__file__).parent.parent.parent
+        return self._load_config_file(package_dir / "configs" / "config.yaml")
     
     def _load_global_config(self) -> Optional[Dict[str, Any]]:
         """Load config from ~/.vectormerge/config.yaml."""
-        try:
-            global_config_path = Path.home() / ".vectormerge" / "config.yaml"
-            if global_config_path.exists():
-                with open(global_config_path, 'r', encoding='utf-8') as f:
-                    return yaml.safe_load(f)
-        except Exception as e:
-            print(f"Warning: Could not load global config: {e}")
-        return None
+        return self._load_config_file(Path.home() / ".vectormerge" / "config.yaml")
     
     def _load_project_config(self) -> Optional[Dict[str, Any]]:
         """Load config from ./.vectormerge/config.yaml."""
-        try:
-            project_config_path = Path.cwd() / ".vectormerge" / "config.yaml"
-            if project_config_path.exists():
-                with open(project_config_path, 'r', encoding='utf-8') as f:
-                    return yaml.safe_load(f)
-        except Exception as e:
-            print(f"Warning: Could not load project config: {e}")
-        return None
+        return self._load_config_file(Path.cwd() / ".vectormerge" / "config.yaml")
     
     def _merge_config(self, config_dict: Dict[str, Any]):
         """Merge configuration dictionary into current config."""
@@ -120,7 +106,6 @@ class ConfigLoader:
             if hasattr(self.config, key):
                 setattr(self.config, key, value)
             elif key == 'embedding_models' and hasattr(self.config, 'embedding_models'):
-                # Special handling for embedding_models
                 self.config.embedding_models.update(value)
     
     def get_model_settings(self, model_name: str) -> Dict[str, Any]:
@@ -132,19 +117,85 @@ class ConfigLoader:
         return getattr(self.config, key, fallback)
     
     def get_cli_defaults(self) -> Dict[str, Any]:
-        """Get CLI command defaults."""
-        return {
-            'model': self.config.default_model,
-            'dataset': self.config.default_dataset,
-            'type': self.config.default_type,
-            'batch_size': self.config.default_batch_size,
-            'device': self.config.default_device,
-            'data_path': self.config.data_path,
-            'embedding_path': self.config.embedding_path,
-            'verbose': self.config.verbose,
-            'use_cache': self.config.use_cache,
-            'force_download': self.config.force_download,
+        """Get CLI command defaults dynamically."""
+        # Define mapping from config attributes to CLI defaults
+        cli_mapping = {
+            'model': 'default_model',
+            'dataset': 'default_dataset', 
+            'type': 'default_type',
+            'batch_size': 'default_batch_size',
+            'device': 'default_device',
+            'data_path': 'data_path',
+            'embedding_path': 'embedding_path',
+            'reference_path': 'reference_path',
+            'mapping_path': 'mapping_path',
+            'mapping_param_path': 'mapping_param_path',
+            'mapping_embedding_path': 'mapping_embedding_path',
+            'verbose': 'verbose',
+            'use_cache': 'use_cache',
+            'force_download': 'force_download'
         }
+        
+        return {
+            cli_key: getattr(self.config, config_attr, None)
+            for cli_key, config_attr in cli_mapping.items()
+        }
+    
+    def get_mapper_defaults(self, mapper_type: str) -> Dict[str, Any]:
+        """Get mapper-specific defaults from config."""
+        # Default configurations for each mapper type
+        default_configs = {
+            'nonlinear': {
+                'hidden_size': 512,
+                'num_layers': 3,
+                'learning_rate': 0.001,
+                'batch_size': 32,
+                'epochs': 100,
+                'dropout': 0.1,
+                'loss_function': 'mse',
+                'save_param': True,
+                'save_embedding': True
+            },
+            'procrustes': {
+                'use_gpu': False,
+                'approximate': False,
+                'save_transformed': True,
+                'save_param': True,
+                'save_embedding': True
+            },
+            'la2m': {
+                'num_clusters': 50,
+                'clustering_method': 'kmeans',
+                'local_strategy': 'procrustes',
+                'min_cluster_size': 10,
+                'save_transformed': True,
+                'save_param': True,
+                'save_embedding': True
+            }
+        }
+        
+        # Get base defaults
+        result = default_configs.get(mapper_type, {}).copy()
+        
+        # Override with config file values if available
+        project_config = self._cached_configs.get('project', {})
+        mapper_config = project_config.get('mapper', {})
+        mapper_defaults = mapper_config.get(mapper_type, {})
+        
+        # Key mapping from config to CLI parameters
+        key_mapping = {
+            'hidden_dim': 'hidden_size',
+            'num_epochs': 'epochs', 
+            'loss_type': 'loss_function',
+            'cluster_method': 'clustering_method'
+        }
+        
+        # Apply config overrides
+        for config_key, config_value in mapper_defaults.items():
+            cli_key = key_mapping.get(config_key, config_key)
+            result[cli_key] = config_value
+        
+        return result
 
 
 # Global config loader instance

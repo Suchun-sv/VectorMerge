@@ -18,6 +18,7 @@ from .utils import (
     select_dataset_interactively, validate_model_and_dataset,
     display_error_and_exit, display_success
 )
+from ..reference import RandomSplit, LA2MSplit
 
 # Initialize reference command group
 reference_app = typer.Typer(help="Create and manage reference datasets")
@@ -25,7 +26,7 @@ reference_app = typer.Typer(help="Create and manage reference datasets")
 
 @reference_app.command("create", help="Create reference dataset splits")
 def create_reference(
-    dataset: Optional[str] = typer.Option(None, "--dataset", "-d", help="Dataset name"),
+    dataset: str = typer.Option(None, "--dataset", "-d", help="Dataset name"),
     data_path: Path = typer.Option(cli_defaults['data_path'], "--data-path", help="Path to raw data directory"),
     reference_path: Path = typer.Option(cli_defaults['reference_path'], "--reference-path", help="Path to save reference files"),
     strategy: str = typer.Option("random", "--strategy", help="Split strategy (random, la2m)"),
@@ -107,27 +108,51 @@ def create_reference(
             
             # Create reference split based on strategy
             if strategy == "random":
-                from ..reference.base_split import create_random_split
-                result = create_random_split(
-                    dataset_obj,
+                from ..reference import RandomSplit
+                splitter = RandomSplit(
+                    dataset_name=dataset,
+                    internal_index=dataset_obj.get_internal_index(),
                     reference_ratio=reference_ratio,
-                    output_path=reference_file,
-                    verbose=verbose
+                    reference_path=str(reference_path)
                 )
+                d0_index, d1_index, d2_index = splitter.split()
             
             elif strategy == "la2m":
-                from ..reference.la2m_split import create_la2m_split
-                result = create_la2m_split(
-                    dataset_obj,
+                from ..reference import LA2MSplit
+                splitter = LA2MSplit.from_qrels(
+                    dataset_name=dataset,
+                    dataset_index=dataset_obj.get_dataset_index(),
+                    internal_index=dataset_obj.get_internal_index(),
+                    dataset_obj=dataset_obj,
+                    qrels=dataset_obj.qrels,
                     reference_ratio=reference_ratio,
-                    remove_duplicates=remove_duplicates,
-                    select_top_1=select_top_1,
-                    output_path=reference_file,
-                    verbose=verbose
+                    reference_path=str(reference_path),
+                    remove_dup_answer=remove_duplicates,
+                    select_top_1=select_top_1
                 )
+                d0_index, d1_index, d2_index = splitter.split()
             
             else:
                 display_error_and_exit(f"Unknown strategy: {strategy}")
+            
+            # Create result dictionary
+            result = {
+                'd0_size': len(d0_index),
+                'd1_size': len(d1_index),
+                'd2_size': len(d2_index),
+                'dataset_obj': dataset_obj,
+                'd0_indices': d0_index.tolist(),
+                'd1_indices': d1_index.tolist(),
+                'd2_indices': d2_index.tolist(),
+            }
+            
+            # Add strategy-specific constraints info
+            if strategy == "la2m":
+                result['la2m_constraints'] = {
+                    'answers_excluded_from_d0': True,
+                    'answers_evenly_distributed': True,
+                    'duplicate_answers': 'removed' if remove_duplicates else 'kept'
+                }
             
             progress.update(task, description="Reference split created!")
             
@@ -177,6 +202,10 @@ def _show_reference_results(dataset: str, strategy: str, reference_file: Path, r
     
     console.print(results_table)
     
+    # Show top 10 samples from each split
+    if 'dataset_obj' in result:
+        _show_top10_samples(result['dataset_obj'], result)
+    
     # Show strategy-specific info
     if strategy == "la2m" and 'la2m_constraints' in result:
         la2m_info = result['la2m_constraints']
@@ -210,6 +239,66 @@ def _show_reference_results(dataset: str, strategy: str, reference_file: Path, r
     )
     
     console.print(panel)
+
+
+def _show_top10_samples(dataset_obj, result: dict) -> None:
+    """Show top 10 samples from each split."""
+    
+    # Load the split indices
+    d0_indices = result.get('d0_indices', [])
+    d1_indices = result.get('d1_indices', [])
+    d2_indices = result.get('d2_indices', [])
+    
+    def _create_sample_table(title: str, indices: list, color: str, max_samples: int = 10) -> None:
+        """Create a sample table for a split."""
+        if not indices:
+            return
+            
+        # Get sample indices (first 10 or less)
+        sample_indices = indices[:max_samples]
+        
+        # Create table
+        table = Table(title=f"{title} - Top {len(sample_indices)} Samples", 
+                     title_style=f"bold {color}", 
+                     show_header=True, 
+                     header_style="bold white")
+        table.add_column("Index", style="dim", width=8)
+        table.add_column("Internal ID", style="magenta", width=12)
+        table.add_column("Doc ID", style="cyan", width=12)
+        table.add_column("Title", style="green", width=30)
+        table.add_column("Content Preview", style="white", width=50)
+        
+        for i, idx in enumerate(sample_indices):
+            # Get document ID (convert from internal index if needed)
+            if isinstance(idx, int):
+                internal_idx = idx
+                doc_id = dataset_obj.internal_index_to_original_id(idx)
+            else:
+                internal_idx = "N/A"
+                doc_id = str(idx)
+            
+            # Get document content
+            doc = dataset_obj.corpus.get(doc_id, {})
+            title = doc.get('title', 'No title')[:28] + '...' if len(doc.get('title', '')) > 28 else doc.get('title', 'No title')
+            content = doc.get('text', 'No content')[:47] + '...' if len(doc.get('text', '')) > 47 else doc.get('text', 'No content')
+            
+            table.add_row(
+                str(i + 1),
+                str(internal_idx),
+                doc_id[:10] + '...' if len(doc_id) > 10 else doc_id,
+                title,
+                content
+            )
+        
+        console.print(table)
+        console.print()  # Add spacing
+    
+    # Show samples for each split
+    rprint(f"\n[bold blue]📋 Sample Documents from Each Split[/bold blue]")
+    
+    _create_sample_table("🎯 D0 (Reference Set)", d0_indices, "blue")
+    _create_sample_table("🧪 D1 (Test Set 1)", d1_indices, "green") 
+    _create_sample_table("🧪 D2 (Test Set 2)", d2_indices, "yellow")
 
 
 # Add aliases for backward compatibility

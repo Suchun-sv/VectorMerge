@@ -3,9 +3,21 @@ from typing import Optional
 from pathlib import Path
 from loguru import logger
 
+def load_reference(reference_path: str, reference_key: str) -> dict:
+    """
+    Load the reference from the reference_path, the reference is a dictionary with keys "d0_index", "d1_index", and "d2_index"
+    """
+    if not reference_key.endswith(".npz"):
+        reference_key = f"{reference_key}.npz"
+    # Test if the reference_key is exists in the reference_path
+    if not (Path(reference_path) / reference_key).exists():
+        raise FileNotFoundError(f"Reference key {reference_key} not found in {reference_path}")
+    
+    return np.load(Path(reference_path) / reference_key)
+
 class BaseSplit:
-    def __init__(self, dataset_name: str, dataset_index: np.ndarray, reference_ratio: float, reference_path: str):
-        self.dataset_index = dataset_index
+    def __init__(self, dataset_name: str, internal_index: np.ndarray, reference_ratio: float, reference_path: str):
+        self.internal_index = internal_index
         self.reference_ratio = reference_ratio
         self.reference_path = reference_path
         self.reference_path = Path(reference_path)
@@ -31,7 +43,7 @@ class BaseSplit:
             self.save_reference(d0_index, d1_index, d2_index)
         return d0_index, d1_index, d2_index
 
-    def _split(self, dataset_index: Optional[np.ndarray] = None, reference_ratio: Optional[float] = None) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def _split(self, internal_index: Optional[np.ndarray] = None, reference_ratio: Optional[float] = None) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """
         Split the dataset into three parts, basic random split.
         - D0: reference
@@ -48,14 +60,14 @@ class BaseSplit:
             d1_index: the index of the D1
             d2_index: the index of the D2
         """
-        if dataset_index is None:
-            dataset_index = self.dataset_index
+        if internal_index is None:
+            internal_index = self.internal_index
         if reference_ratio is None:
             reference_ratio = self.reference_ratio
         
         # random split reference_ratio of dataset_index to reference (D0), then evenly split the rest to d1 and d2 (D1 and D2)
-        d0_index = np.random.choice(dataset_index, size=int(len(dataset_index) * reference_ratio), replace=False)
-        remaining_index = np.setdiff1d(dataset_index, d0_index)
+        d0_index = np.random.choice(internal_index, size=int(len(internal_index) * reference_ratio), replace=False)
+        remaining_index = np.setdiff1d(internal_index, d0_index)
         
         # Evenly split the remaining indices between D1 and D2
         np.random.shuffle(remaining_index)

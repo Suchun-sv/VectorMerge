@@ -26,12 +26,14 @@ class Dataset:
     split: str = "test"
     source: str = "unknown"  # beir, custom, etc.
     corpus_ids2index: Dict[str, int] = field(default_factory=dict)
+    index2corpus_id: Dict[int, str] = field(default_factory=dict)
     metadata: Dict[str, Any] = field(default_factory=dict)
     
     def __post_init__(self):
         """Initialize corpus ID to index mapping."""
         if not self.corpus_ids2index:
             self.corpus_ids2index = {doc_id: i for i, doc_id in enumerate(self.corpus.keys())}
+            self.index2corpus_id = {i: doc_id for doc_id, i in self.corpus_ids2index.items()}
     
     def __len__(self) -> int:
         """Return number of documents in corpus."""
@@ -73,13 +75,77 @@ class Dataset:
         """
         return list(self.queries.values())
     
-    def get_dataset_index(self) -> np.ndarray:
-        """Get dataset indices as numpy array.
+    def get_dataset_index(self) -> List[str]:
+        """Get original document IDs.
         
         Returns:
-            Array of document indices as integers
+            List of original document IDs (strings)
         """
-        return np.array([int(doc_id) for doc_id in self.corpus.keys()])
+        return list(self.corpus.keys())
+    
+    def get_internal_index(self) -> np.ndarray:
+        """Get internal 0-based indices.
+        
+        Returns:
+            Array of internal indices from 0 to len(corpus)-1
+        """
+        return np.arange(len(self.corpus))
+    
+    def original_id_to_internal_index(self, doc_id: str) -> int:
+        """Convert original document ID to internal index.
+        
+        Args:
+            doc_id: Original document ID
+            
+        Returns:
+            Internal 0-based index
+            
+        Raises:
+            KeyError: If document ID not found
+        """
+        if doc_id not in self.corpus_ids2index:
+            raise KeyError(f"Document ID '{doc_id}' not found in corpus")
+        return self.corpus_ids2index[doc_id]
+    
+    def internal_index_to_original_id(self, index: int) -> str:
+        """Convert internal index to original document ID.
+        
+        Args:
+            index: Internal 0-based index
+            
+        Returns:
+            Original document ID
+            
+        Raises:
+            IndexError: If index out of range
+        """
+        if index < 0 or index >= len(self.corpus):
+            raise IndexError(f"Index {index} out of range [0, {len(self.corpus)})")
+        if index not in self.index2corpus_id:
+            raise IndexError(f"Index {index} not found in mapping")
+        return self.index2corpus_id[index]
+    
+    def batch_original_ids_to_internal_indices(self, doc_ids: List[str]) -> np.ndarray:
+        """Convert batch of original document IDs to internal indices.
+        
+        Args:
+            doc_ids: List of original document IDs
+            
+        Returns:
+            Array of internal indices
+        """
+        return np.array([self.original_id_to_internal_index(doc_id) for doc_id in doc_ids])
+    
+    def batch_internal_indices_to_original_ids(self, indices: np.ndarray) -> List[str]:
+        """Convert batch of internal indices to original document IDs.
+        
+        Args:
+            indices: Array of internal indices
+            
+        Returns:
+            List of original document IDs
+        """
+        return [self.internal_index_to_original_id(int(idx)) for idx in indices]
     
     def get_stats(self) -> Dict[str, Any]:
         """Get dataset statistics.

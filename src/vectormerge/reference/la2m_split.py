@@ -14,25 +14,29 @@ The steps are:
 """
 from .base_split import BaseSplit
 import numpy as np
-from typing import Optional, Dict, Set
+from typing import Optional, Dict, Set, List
 from pathlib import Path
 from loguru import logger
+from ..dataset import Dataset
 
 class LA2MSplit(BaseSplit):
-    def __init__(self, dataset_name: str, dataset_index: np.ndarray, answer_index: Optional[np.ndarray], reference_ratio: float, reference_path: str, remove_dup_answer: bool = True, qrels: Optional[Dict] = None, select_top_1: bool = True):
-        super().__init__(dataset_name, dataset_index, reference_ratio, reference_path)
-        if answer_index is None and qrels is not None:
+    def __init__(self, dataset_name: str, dataset_index: List[str], internal_index: np.ndarray, answer_index: Optional[np.ndarray], reference_ratio: float, reference_path: str, remove_dup_answer: bool = True, qrels: Optional[Dict] = None, select_top_1: bool = True, dataset_obj: Optional[Dataset] = None):
+        super().__init__(dataset_name, internal_index, reference_ratio, reference_path)
+        if answer_index is None and qrels is not None and isinstance(dataset_obj, Dataset):
             logger.info(f"Extracting answer indices from qrels, select_top_1={select_top_1}")
-            answer_index = self._extract_answer_indices_from_qrels(qrels, dataset_index, select_top_1)
+            original_answer_index = self._extract_answer_indices_from_qrels(qrels, dataset_index, select_top_1)
+            answer_index = dataset_obj.batch_original_ids_to_internal_indices(original_answer_index)
         elif answer_index is None:
             raise ValueError("Either answer_index or qrels must be provided")
         
         self.answer_index = answer_index
+        self.dataset_obj = dataset_obj
+        self.dataset_index = dataset_index
         self.remove_dup_answer = remove_dup_answer
         self.reference_key = Path(f"la2m_split_{dataset_name}_{reference_ratio:4f}_remove_dup_answer_{remove_dup_answer}_select_top_1_{select_top_1}")
         logger.info(f"LA2MSplit initialized with reference key: {self.reference_key}")
 
-    def _split(self, dataset_index: Optional[np.ndarray] = None, answer_index: Optional[np.ndarray] = None, reference_ratio: Optional[float] = None, save: bool = True) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def _split(self, internal_index: Optional[np.ndarray] = None, answer_index: Optional[np.ndarray] = None, reference_ratio: Optional[float] = None, save: bool = True) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """
         Split the dataset into three parts using LA2M strategy:
         - D0: reference (no answers)
@@ -48,8 +52,8 @@ class LA2MSplit(BaseSplit):
         Returns:
             tuple of (d0_index, d1_index, d2_index)
         """
-        if dataset_index is None:
-            dataset_index = self.dataset_index
+        if internal_index is None:
+            internal_index = self.internal_index
         if reference_ratio is None:
             reference_ratio = self.reference_ratio
         if answer_index is None:
@@ -59,22 +63,22 @@ class LA2MSplit(BaseSplit):
             raise ValueError("Answer index is required for LA2M split")
         
         logger.info("Starting LA2M split process")
-        logger.info(f"Dataset size: {len(dataset_index)}, Answer docs: {len(answer_index)}, Reference ratio: {reference_ratio}")
+        logger.info(f"Dataset size: {len(internal_index)}, Answer docs: {len(answer_index)}, Reference ratio: {reference_ratio}")
         
         # Step 1: Handle duplicate answers if needed
         unique_answer_index = self._process_answer_duplicates(answer_index)
         
         # Step 2: Categorize documents into answer and non-answer
-        answer_docs, non_answer_docs = self._categorize_documents(dataset_index, unique_answer_index)
+        answer_docs, non_answer_docs = self._categorize_documents(internal_index, unique_answer_index)
         
         # Step 3: Allocate D0 (reference) from non-answer documents only
-        d0_docs = self._allocate_reference_set(non_answer_docs, reference_ratio, len(dataset_index))
+        d0_docs = self._allocate_reference_set(non_answer_docs, reference_ratio, len(internal_index))
         
         # Step 4: Evenly distribute remaining documents between D1 and D2
         d1_docs, d2_docs = self._distribute_remaining_documents(answer_docs, non_answer_docs - d0_docs)
         
         # Step 5: Convert back to original indices
-        d0_index, d1_index, d2_index = self._convert_to_indices(dataset_index, d0_docs, d1_docs, d2_docs)
+        d0_index, d1_index, d2_index = self._convert_to_indices(internal_index, d0_docs, d1_docs, d2_docs)
         
         # Step 6: Validate LA2M constraints
         self._validate_la2m_split(d0_index, d1_index, d2_index, unique_answer_index)
@@ -236,7 +240,7 @@ class LA2MSplit(BaseSplit):
         logger.info("=" * 50)
     
     @classmethod
-    def from_qrels(cls, dataset_name: str, dataset_index: np.ndarray, qrels: Dict, reference_ratio: float, reference_path: str, remove_dup_answer: bool = True, select_top_1: bool = True):
+    def from_qrels(cls, dataset_name: str, dataset_index: List[str], internal_index: np.ndarray, dataset_obj: Dataset, qrels: Dict, reference_ratio: float, reference_path: str, remove_dup_answer: bool = True, select_top_1: bool = True):
         """
         Create LA2MSplit instance from qrels data.
         
@@ -253,10 +257,11 @@ class LA2MSplit(BaseSplit):
             LA2MSplit instance
         """
         answer_index = cls._extract_answer_indices_from_qrels(qrels, dataset_index, select_top_1)
-        return cls(dataset_name, dataset_index, answer_index, reference_ratio, reference_path, remove_dup_answer)
+        answer_internal_index = dataset_obj.batch_original_ids_to_internal_indices(answer_index)
+        return cls(dataset_name, dataset_index, internal_index, answer_internal_index, reference_ratio, reference_path, remove_dup_answer)
     
     @staticmethod
-    def _extract_answer_indices_from_qrels(qrels: Dict, dataset_index: np.ndarray, select_top_1: bool = True) -> np.ndarray:
+    def _extract_answer_indices_from_qrels(qrels: Dict, dataset_index: List[str], select_top_1: bool = True) -> List[str]:
         """
         Extract answer document indices from qrels.
 
@@ -284,18 +289,18 @@ class LA2MSplit(BaseSplit):
                 # Select only the document with highest relevance score
                 top_doc_id = max(relevant_docs.keys(), key=lambda x: relevant_docs[x])
                 selected_docs = [top_doc_id]
-                logger.debug(f"Query {query_id}: selected top doc {top_doc_id} (score: {relevant_docs[top_doc_id]}) from {len(relevant_docs)} relevant docs")
+                # logger.debug(f"Query {query_id}: selected top doc {top_doc_id} (score: {relevant_docs[top_doc_id]}) from {len(relevant_docs)} relevant docs")
             else:
                 # Select all relevant documents
                 selected_docs = list(relevant_docs.keys())
-                logger.debug(f"Query {query_id}: selected all {len(selected_docs)} relevant docs")
+                # logger.debug(f"Query {query_id}: selected all {len(selected_docs)} relevant docs")
             
             # Convert doc_ids to integers and add to answer set
             for doc_id in selected_docs:
                 try:
                     # Convert doc_id to int if it's a string
-                    doc_idx = int(doc_id) if isinstance(doc_id, str) else doc_id
-                    answer_doc_ids.add(doc_idx)
+                    # doc_idx = int(doc_id) if isinstance(doc_id, str) else doc_id
+                    answer_doc_ids.add(doc_id)
                 except (ValueError, TypeError):
                     logger.warning(f"Could not convert doc_id {doc_id} to integer, skipping")
         
@@ -312,5 +317,6 @@ class LA2MSplit(BaseSplit):
         if len(answer_doc_ids) != len(valid_answer_indices):
             excluded = len(answer_doc_ids) - len(valid_answer_indices)
             logger.warning(f"Excluded {excluded} answer docs not found in dataset")
+
+        return list(valid_answer_indices)
         
-        return np.array(list(valid_answer_indices))

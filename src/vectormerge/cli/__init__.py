@@ -12,7 +12,7 @@ from .base import set_seed
 from .utils import version_callback
 from .embedding import embedding_app
 from .mapping import mapping_app
-from .reference import reference_app
+from .reference import create_reference
 from .dataset import dataset_app
 from .config import config_app
 
@@ -29,7 +29,7 @@ app = typer.Typer(
 app.callback()(lambda version: None)
 app.add_typer(embedding_app, name="generate-embedding", help="Generate and manage embeddings")
 app.add_typer(mapping_app, name="map-embedding", help="Create and manage embedding mappings")
-app.add_typer(reference_app, name="create-reference", help="Create and manage reference datasets")
+app.command("create-reference", help="Create and manage reference datasets")(create_reference)
 app.add_typer(dataset_app, name="dataset", help="Download and manage datasets")
 app.add_typer(config_app, name="config", help="Manage VectorMerge configuration")
 

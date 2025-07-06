@@ -5,20 +5,27 @@
 data_path: "./data/raw/beir/"
 embedding_path: "./data/processed/embeddings/"
 reference_path: "./data/processed/references/"
-mapping_model_path: "./output/mapping_models/"
+mapping_param_path: "./output/mapping_models/"
 mapping_embedding_path: "./output/mapping_embeddings/"
 
 # ==================== Mapper Configuration ====================
 mapper:
-  num_clusters: 50
-  num_epochs: 100
-  learning_rate: 0.001
-  batch_size: 32
-  hidden_dim: 512
-  loss_type: "mse"
-  device: "auto"
-  force: false
-  save_transformed: true
+  nonlinear:
+    num_layers: 3
+    hidden_dim: 512
+    learning_rate: 0.001
+    batch_size: 32
+    num_epochs: 100
+    loss_type: "mse"
+    save_param: true
+    save_embedding: true
+
+  procrustes:
+    save_transformed: true
+
+  la2m:
+    num_clusters: 50
+    save_transformed: true
 
 # ==================== Embedding Models Configuration ====================
 embedding_models:

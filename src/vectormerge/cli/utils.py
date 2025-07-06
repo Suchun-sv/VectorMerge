@@ -106,7 +106,7 @@ def validate_model_and_dataset(model: str, dataset: str) -> Tuple[bool, Optional
     if dataset not in SUPPORTED_DATASETS:
         return False, f"Dataset '{dataset}' not supported. Use 'vectormerge list-datasets' to see available datasets."
     
-    return True, None
+    return True, ""
 
 
 def check_file_exists(file_path: Path, description: str, required: bool = True) -> bool:
