@@ -7,13 +7,12 @@ This module provides classes for mapping between different embedding spaces.
 from typing import Optional, Dict, Any
 import numpy as np
 from abc import ABC, abstractmethod
-from .config import MappingConfig
 
 
 class MappingStrategy(ABC):
     """Abstract base class for mapping strategies."""
     
-    def __init__(self, config: MappingConfig):
+    def __init__(self, config: Dict[str, Any]):
         self.config = config
         self.transformation_matrix: Optional[np.ndarray] = None
     

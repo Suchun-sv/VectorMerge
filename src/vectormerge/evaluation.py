@@ -4,17 +4,16 @@ Evaluation metrics functionality for VectorMerge.
 This module provides classes for calculating various evaluation metrics.
 """
 
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Any
 import numpy as np
-from .config import EvaluationConfig
 
 
 class MetricsCalculator:
     """Main class for calculating evaluation metrics."""
     
-    def __init__(self, config: EvaluationConfig):
+    def __init__(self, config: Dict[str, Any]):
         self.config = config
-        self.metrics = config.metrics
+        self.metrics = config.get("metrics", [])
     
     def calculate_all_metrics(self, predictions: np.ndarray, targets: np.ndarray) -> Dict[str, Dict[int, float]]:
         """Calculate all configured metrics."""
@@ -35,7 +34,7 @@ class MetricsCalculator:
         """Calculate recall@k for different k values."""
         recall_results = {}
         
-        for k in self.config.k_list:
+        for k in self.config.get("k_list", []):
             # Placeholder implementation
             recall_results[k] = np.random.rand()
         
@@ -45,7 +44,7 @@ class MetricsCalculator:
         """Calculate NDCG@k for different k values."""
         ndcg_results = {}
         
-        for k in self.config.k_list:
+        for k in self.config.get("k_list", []):
             # Placeholder implementation
             ndcg_results[k] = np.random.rand()
         
@@ -55,7 +54,7 @@ class MetricsCalculator:
         """Calculate MAP@k for different k values."""
         map_results = {}
         
-        for k in self.config.k_list:
+        for k in self.config.get("k_list", []):
             # Placeholder implementation
             map_results[k] = np.random.rand()
         

@@ -27,11 +27,6 @@ from .core import (
     EmbeddingDataset,
 )
 
-from .embeddings import (
-    EmbeddingGenerator,
-    get_embedding_generator,
-)
-
 from .mapping import (
     VectorSpaceMapper,
     ProcrustesMappingStrategy,
@@ -44,30 +39,19 @@ from .evaluation import (
     NDCGCalculator,
 )
 
-from .config import (
-    VectorMergeConfig,
-    ModelConfig,
-    EvaluationConfig,
-)
-
 # Package-level constants
 SUPPORTED_MODELS = [
-    "bert-base-uncased",
-    "roberta-base", 
-    "bge",
     "nv-embed",
     "openai",
     "mistral",
     "fast-text",
-    "word2vec",
     "glove",
+    "gte"
 ]
 
 SUPPORTED_DATASETS = [
     "scifact",
     "nfcorpus", 
-    "nq",
-    "cqadupstack",
     "arguana",
     "scidocs",
     "fiqa",
@@ -79,10 +63,6 @@ __all__ = [
     "EmbeddingEvaluator",
     "EvaluationMetrics", 
     "EmbeddingDataset",
-    
-    # Embedding generation
-    "EmbeddingGenerator",
-    "get_embedding_generator",
     
     # Vector space mapping
     "VectorSpaceMapper",
