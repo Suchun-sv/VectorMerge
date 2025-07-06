@@ -283,5 +283,5 @@ def _show_generation_success(embedding_path: Path, total_combinations: int) -> N
 
 
 # Add aliases for backward compatibility
-embedding_app.command("gen", help="Alias for generate")(generate_embeddings)
-embedding_app.command("g", help="Short alias for generate")(generate_embeddings) 
+# embedding_app.command("gen", help="Alias for generate")(generate_embeddings)
+# embedding_app.command("g", help="Short alias for generate")(generate_embeddings) 

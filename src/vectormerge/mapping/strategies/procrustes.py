@@ -25,7 +25,7 @@ def procrustes_mapping_torch(
     approximate: bool = False,
     q: int = 1500,
     with_rotation: bool = True
-) -> Tuple[np.ndarray, Optional[np.ndarray]]:
+) -> Tuple[np.ndarray, Optional[dict]]:
     """
     Procrustes mapping using PyTorch for GPU acceleration.
     
@@ -298,6 +298,11 @@ class ProcrustesMappingStrategy(MappingStrategy):
         if not self.is_fitted:
             raise ValueError("Mapping must be fitted before transformation")
         
+        # Ensure transformation parameters are available
+        assert self.rotation_matrix is not None, "Rotation matrix not fitted"
+        assert self.source_mean is not None, "Source mean not fitted"
+        assert self.target_mean is not None, "Target mean not fitted"
+        
         if self.pca_source is not None and self.pca_target is not None:
             # PCA-based transformation
             embeddings_reduced = self.pca_source.transform(embeddings)
@@ -333,29 +338,29 @@ class ProcrustesMappingStrategy(MappingStrategy):
             import joblib
             joblib.dump(self.pca_target, save_path / "pca_target.pkl")
     
-    @classmethod
-    def load(cls, path) -> 'ProcrustesMappingStrategy':
-        """Load Procrustes mapping parameters."""
-        instance = super().load(path)
+    # @classmethod
+    # def load(cls, path) -> 'ProcrustesMappingStrategy':
+    #     """Load Procrustes mapping parameters."""
+    #     instance = super().load(path)
         
-        load_path = Path(path)
+    #     load_path = Path(path)
         
-        # Load Procrustes-specific parameters
-        if (load_path / "rotation_matrix.npy").exists():
-            instance.rotation_matrix = np.load(load_path / "rotation_matrix.npy")
-        if (load_path / "source_mean.npy").exists():
-            instance.source_mean = np.load(load_path / "source_mean.npy")
-        if (load_path / "target_mean.npy").exists():
-            instance.target_mean = np.load(load_path / "target_mean.npy")
+    #     # Load Procrustes-specific parameters
+    #     if (load_path / "rotation_matrix.npy").exists():
+    #         instance.rotation_matrix = np.load(load_path / "rotation_matrix.npy")
+    #     if (load_path / "source_mean.npy").exists():
+    #         instance.source_mean = np.load(load_path / "source_mean.npy")
+    #     if (load_path / "target_mean.npy").exists():
+    #         instance.target_mean = np.load(load_path / "target_mean.npy")
         
-        # Load PCA models if available
-        try:
-            import joblib
-            if (load_path / "pca_source.pkl").exists():
-                instance.pca_source = joblib.load(load_path / "pca_source.pkl")
-            if (load_path / "pca_target.pkl").exists():
-                instance.pca_target = joblib.load(load_path / "pca_target.pkl")
-        except ImportError:
-            logger.warning("joblib not available, PCA models not loaded")
+    #     # Load PCA models if available
+    #     try:
+    #         import joblib
+    #         if (load_path / "pca_source.pkl").exists():
+    #             instance.pca_source = joblib.load(load_path / "pca_source.pkl")
+    #         if (load_path / "pca_target.pkl").exists():
+    #             instance.pca_target = joblib.load(load_path / "pca_target.pkl")
+    #     except ImportError:
+    #         logger.warning("joblib not available, PCA models not loaded")
         
-        return instance 
+    #     return instance 

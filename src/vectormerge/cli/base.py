@@ -26,17 +26,17 @@ console = Console()
 def load_cli_defaults() -> Dict[str, Any]:
     """Load CLI default configuration."""
     try:
-        from ..config_loader import VectorMergeConfigLoader
-        config_loader = VectorMergeConfigLoader()
-        config = config_loader.load_config()
+        from .config_loader import ConfigLoader
+        config_loader = ConfigLoader()
+        config = config_loader.get_cli_defaults()
         
         return {
-            'data_path': Path(config.default_data_path),
-            'embedding_path': Path(config.default_embedding_path),
-            'reference_path': Path(config.default_reference_path),
-            'type': config.default_type,
-            'verbose': config.default_verbose,
-            'force_download': config.default_force_download,
+            'data_path': Path(config['data_path']),
+            'embedding_path': Path(config['embedding_path']),
+            'reference_path': Path(config['reference_path']),
+            'type': config['type'],
+            'verbose': config['verbose'],
+            'force_download': config['force_download'],
         }
     except Exception:
         # Fallback defaults

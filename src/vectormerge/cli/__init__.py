@@ -61,8 +61,10 @@ def download_dataset_compat(
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Verbose output"),
 ):
     """Download datasets (backward compatibility)."""
-    from .dataset import download_dataset as download_dataset_func
-    download_dataset_func(dataset=dataset, data_path=data_path, force=force, interactive=False, verbose=verbose)
+    # from ..dataset import download_dataset as download_dataset_func
+    # download_dataset_func(dataset=dataset, data_path=data_path, force=force, interactive=False, verbose=verbose)
+    from ..dataset import load_dataset
+    load_dataset(dataset_name=dataset, data_path=data_path, force=force, interactive=False, verbose=verbose)
 
 
 @app.command("list-datasets", help="List available datasets")
@@ -140,35 +142,35 @@ def create_config_compat(
 
 
 # Add short aliases for frequently used commands
-@app.command("ge", help="Short alias for generate-embedding")
-def generate_embedding_short(
-    ctx: typer.Context,
-):
-    """Short alias for generate-embedding."""
-    # Forward to the embedding app
-    from .embedding import generate_embeddings
-    # Call with remaining args
-    generate_embeddings()
+# @app.command("ge", help="Short alias for generate-embedding")
+# def generate_embedding_short(
+#     ctx: typer.Context,
+# ):
+#     """Short alias for generate-embedding."""
+#     # Forward to the embedding app
+#     from .embedding import generate_embeddings
+#     # Call with remaining args
+#     generate_embeddings()
 
 
-@app.command("me", help="Short alias for map-embedding")
-def map_embedding_short():
-    """Short alias for map-embedding."""
-    rprint("[blue]🗺️ Map Embedding Commands:[/blue]")
-    rprint("[cyan]vectormerge map-embedding procrustes[/cyan] - Procrustes analysis")
-    rprint("[cyan]vectormerge map-embedding linear[/cyan] - Linear neural network")
-    rprint("[cyan]vectormerge map-embedding nonlinear[/cyan] - Nonlinear neural network")
-    rprint("[cyan]vectormerge map-embedding la2m[/cyan] - LA2M clustering strategy")
-    rprint("\n[blue]💡 Use --help for detailed options[/blue]")
+# @app.command("me", help="Short alias for map-embedding")
+# def map_embedding_short():
+#     """Short alias for map-embedding."""
+#     rprint("[blue]🗺️ Map Embedding Commands:[/blue]")
+#     rprint("[cyan]vectormerge map-embedding procrustes[/cyan] - Procrustes analysis")
+#     rprint("[cyan]vectormerge map-embedding linear[/cyan] - Linear neural network")
+#     rprint("[cyan]vectormerge map-embedding nonlinear[/cyan] - Nonlinear neural network")
+#     rprint("[cyan]vectormerge map-embedding la2m[/cyan] - LA2M clustering strategy")
+#     rprint("\n[blue]💡 Use --help for detailed options[/blue]")
 
 
-@app.command("cr", help="Short alias for create-reference")
-def create_reference_short(
-    ctx: typer.Context,
-):
-    """Short alias for create-reference."""
-    from .reference import create_reference
-    create_reference()
+# @app.command("cr", help="Short alias for create-reference")
+# def create_reference_short(
+#     ctx: typer.Context,
+# ):
+#     """Short alias for create-reference."""
+#     from .reference import create_reference
+#     create_reference()
 
 
 # Export main app for backward compatibility

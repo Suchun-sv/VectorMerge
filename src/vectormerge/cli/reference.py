@@ -213,4 +213,4 @@ def _show_reference_results(dataset: str, strategy: str, reference_file: Path, r
 
 
 # Add aliases for backward compatibility
-reference_app.command("cr", help="Short alias for create")(create_reference) 
+# reference_app.command("cr", help="Short alias for create")(create_reference) 

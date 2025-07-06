@@ -13,6 +13,8 @@ License: MIT
 """
 
 from typing import List, Dict, Any
+from .embeddings import SUPPORTED_MODELS
+from .dataset import SUPPORTED_DATASETS
 
 # Version management
 __version__ = "1.0.0"
@@ -26,35 +28,18 @@ from .dataset import (
     validate_dataset,
 )
 
+from .embeddings import (
+    EmbeddingGenerator,
+    get_embedding_generator,
+    generate_embeddings,
+)
+
 from .mapping import (
     VectorSpaceMapper,
     ProcrustesMappingStrategy,
     NonLinearMappingStrategy,
+    LA2MStrategy,
 )
-
-from .evaluation import (
-    MetricsCalculator,
-    RecallCalculator,
-    NDCGCalculator,
-)
-
-# Package-level constants
-SUPPORTED_MODELS = [
-    "nv-embed",
-    "openai",
-    "mistral",
-    "fast-text",
-    "glove",
-    "gte"
-]
-
-SUPPORTED_DATASETS = [
-    "scifact",
-    "nfcorpus", 
-    "arguana",
-    "scidocs",
-    "fiqa",
-]
 
 # Public API
 __all__ = [
@@ -63,16 +48,18 @@ __all__ = [
     "list_datasets",
     "validate_dataset",
     
+    # Embeddings
+    "EmbeddingGenerator",
+    "get_embedding_generator",
+    "generate_embeddings",
+
     # Vector space mapping
     "VectorSpaceMapper",
     "ProcrustesMappingStrategy",
     "NonLinearMappingStrategy",
+    "LA2MStrategy",
     
-    # Evaluation
-    "MetricsCalculator",
-    "RecallCalculator", 
-    "NDCGCalculator",
-    
+
     # Constants
     "SUPPORTED_MODELS",
     "SUPPORTED_DATASETS",

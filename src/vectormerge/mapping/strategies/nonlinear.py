@@ -10,8 +10,9 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from torch.optim.adam import Adam
 from torch.utils.data import DataLoader, TensorDataset
-from typing import Optional, List
+from typing import Optional, List, Any
 from pathlib import Path
 from loguru import logger
 from tqdm import trange
@@ -95,9 +96,9 @@ class NonLinearMappingStrategy(MappingStrategy):
             config: Configuration object
         """
         super().__init__(config)
-        self.model: Optional[NonLinearMappingModel] = None
-        self.optimizer: Optional[optim.Optimizer] = None
-        self.scheduler: Optional[optim.lr_scheduler.StepLR] = None
+        self.model: NonLinearMappingModel
+        self.optimizer: torch.optim.adam.Adam
+        self.scheduler: torch.optim.lr_scheduler.StepLR
         self.input_dim: Optional[int] = None
         self.output_dim: Optional[int] = None
         
@@ -131,7 +132,7 @@ class NonLinearMappingStrategy(MappingStrategy):
         ).to(self.device)
         
         # Create optimizer with weight decay
-        self.optimizer = optim.Adam(
+        self.optimizer = Adam(
             self.model.parameters(), 
             lr=self.config.learning_rate,
             weight_decay=1e-5
@@ -406,39 +407,39 @@ class NonLinearMappingStrategy(MappingStrategy):
         
         logger.info(f"Saved non-linear mapping model to {save_path}")
     
-    @classmethod
-    def load(cls, path) -> 'NonLinearMappingStrategy':
-        """Load a fitted non-linear mapping model."""
-        instance = super().load(path)
+    # @classmethod
+    # def load(cls, path) -> 'NonLinearMappingStrategy':
+    #     """Load a fitted non-linear mapping model."""
+    #     instance = super().load(path)
         
-        load_path = Path(path)
+    #     load_path = Path(path)
         
-        # Load model architecture info
-        import json
-        with open(load_path / "model_architecture.json", "r") as f:
-            model_info = json.load(f)
+    #     # Load model architecture info
+    #     import json
+    #     with open(load_path / "model_architecture.json", "r") as f:
+    #         model_info = json.load(f)
         
-        # Update instance attributes
-        instance.hidden_dims = model_info['hidden_dims']
-        instance.dropout_rate = model_info['dropout_rate']
+    #     # Update instance attributes
+    #     instance.hidden_dims = model_info['hidden_dims']
+    #     instance.dropout_rate = model_info['dropout_rate']
         
-        # Create model
-        instance._create_model(model_info['input_dim'], model_info['output_dim'])
+    #     # Create model
+    #     instance._create_model(model_info['input_dim'], model_info['output_dim'])
         
-        # Load model checkpoint
-        if instance.model is not None:
-            checkpoint = torch.load(load_path / "model_checkpoint.pth", 
-                                   map_location=instance.device)
+    #     # Load model checkpoint
+    #     if instance.model is not None:
+    #         checkpoint = torch.load(load_path / "model_checkpoint.pth", 
+    #                                map_location=instance.device)
             
-            instance.model.load_state_dict(checkpoint['model_state_dict'])
+    #         instance.model.load_state_dict(checkpoint['model_state_dict'])
             
-            if instance.optimizer and checkpoint['optimizer_state_dict']:
-                instance.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+    #         if instance.optimizer and checkpoint['optimizer_state_dict']:
+    #             instance.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
             
-            if instance.scheduler and checkpoint['scheduler_state_dict']:
-                instance.scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
+    #         if instance.scheduler and checkpoint['scheduler_state_dict']:
+    #             instance.scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
             
-            instance.model.eval()
+    #         instance.model.eval()
         
-        logger.info(f"Loaded non-linear mapping model from {load_path}")
-        return instance 
+    #     logger.info(f"Loaded non-linear mapping model from {load_path}")
+    #     return instance 

@@ -316,11 +316,13 @@ class VectorSpaceMapper:
             info['strategy_metadata'] = self.mapping_strategy.metadata
         
         # Add strategy-specific information
-        if hasattr(self.mapping_strategy, 'get_cluster_statistics'):
-            info['cluster_statistics'] = self.mapping_strategy.get_cluster_statistics()
+        cluster_stats = getattr(self.mapping_strategy, 'get_cluster_statistics', None)
+        if cluster_stats is not None:
+            info['cluster_statistics'] = cluster_stats()
         
-        if hasattr(self.mapping_strategy, 'get_training_history'):
-            info['training_losses'] = self.mapping_strategy.get_training_history()
+        training_history = getattr(self.mapping_strategy, 'get_training_history', None)
+        if training_history is not None:
+            info['training_losses'] = training_history()
         
         return info
     

@@ -84,77 +84,77 @@ def procrustes_mapping(
     )
 
 
-@mapping_app.command("linear", help="Create mapping using linear neural network")
-def linear_mapping(
-    source_model: Optional[str] = typer.Option(None, "--source", "-s", help="Source model"),
-    target_model: Optional[str] = typer.Option(None, "--target", "-t", help="Target model"),
-    dataset: Optional[str] = typer.Option(None, "--dataset", "-d", help="Dataset name"),
-    embedding_path: Path = typer.Option(cli_defaults['embedding_path'], "--embedding-path", help="Path to embeddings"),
-    reference_path: Path = typer.Option(cli_defaults['reference_path'], "--reference-path", help="Path to reference files"),
-    output_path: Path = typer.Option(Path("./data/processed/mappings/"), "--output-path", help="Path to save mappings"),
-    hidden_size: int = typer.Option(512, "--hidden-size", help="Hidden layer size"),
-    num_layers: int = typer.Option(2, "--num-layers", help="Number of layers"),
-    learning_rate: float = typer.Option(0.001, "--lr", help="Learning rate"),
-    batch_size: int = typer.Option(256, "--batch-size", help="Batch size"),
-    epochs: int = typer.Option(100, "--epochs", help="Number of epochs"),
-    loss_function: str = typer.Option("mse", "--loss", help="Loss function (mse, cosine, ranking)"),
-    force: bool = typer.Option(False, "--force", help="Force regeneration"),
-    save_transformed: bool = typer.Option(False, "--save-transformed", help="Save transformed embeddings"),
-    interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
-    verbose: bool = typer.Option(cli_defaults['verbose'], "--verbose", "-v", help="Verbose output"),
-):
-    """Create mapping using linear neural network."""
+# @mapping_app.command("linear", help="Create mapping using linear neural network")
+# def linear_mapping(
+#     source_model: Optional[str] = typer.Option(None, "--source", "-s", help="Source model"),
+#     target_model: Optional[str] = typer.Option(None, "--target", "-t", help="Target model"),
+#     dataset: Optional[str] = typer.Option(None, "--dataset", "-d", help="Dataset name"),
+#     embedding_path: Path = typer.Option(cli_defaults['embedding_path'], "--embedding-path", help="Path to embeddings"),
+#     reference_path: Path = typer.Option(cli_defaults['reference_path'], "--reference-path", help="Path to reference files"),
+#     output_path: Path = typer.Option(Path("./data/processed/mappings/"), "--output-path", help="Path to save mappings"),
+#     hidden_size: int = typer.Option(512, "--hidden-size", help="Hidden layer size"),
+#     num_layers: int = typer.Option(2, "--num-layers", help="Number of layers"),
+#     learning_rate: float = typer.Option(0.001, "--lr", help="Learning rate"),
+#     batch_size: int = typer.Option(256, "--batch-size", help="Batch size"),
+#     epochs: int = typer.Option(100, "--epochs", help="Number of epochs"),
+#     loss_function: str = typer.Option("mse", "--loss", help="Loss function (mse, cosine, ranking)"),
+#     force: bool = typer.Option(False, "--force", help="Force regeneration"),
+#     save_transformed: bool = typer.Option(False, "--save-transformed", help="Save transformed embeddings"),
+#     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
+#     verbose: bool = typer.Option(cli_defaults['verbose'], "--verbose", "-v", help="Verbose output"),
+# ):
+#     """Create mapping using linear neural network."""
     
-    # Set random seed
-    set_seed()
+#     # Set random seed
+#     set_seed()
     
-    # Interactive mode
-    if interactive:
-        if not source_model:
-            rprint("[cyan]Select source model:[/cyan]")
-            source_model = select_model_interactively()
-        if not target_model:
-            rprint("[cyan]Select target model:[/cyan]")
-            target_model = select_model_interactively()
-        if not dataset:
-            dataset = select_dataset_interactively()
+#     # Interactive mode
+#     if interactive:
+#         if not source_model:
+#             rprint("[cyan]Select source model:[/cyan]")
+#             source_model = select_model_interactively()
+#         if not target_model:
+#             rprint("[cyan]Select target model:[/cyan]")
+#             target_model = select_model_interactively()
+#         if not dataset:
+#             dataset = select_dataset_interactively()
     
-    # Validate inputs
-    if not source_model or not target_model or not dataset:
-        display_error_and_exit("Please specify source model, target model, and dataset (or use --interactive)")
+#     # Validate inputs
+#     if not source_model or not target_model or not dataset:
+#         display_error_and_exit("Please specify source model, target model, and dataset (or use --interactive)")
     
-    # Validate models and dataset
-    for model in [source_model, target_model]:
-        is_valid, error_msg = validate_model_and_dataset(model, dataset)
-        if not is_valid:
-            display_error_and_exit(error_msg)
+#     # Validate models and dataset
+#     for model in [source_model, target_model]:
+#         is_valid, error_msg = validate_model_and_dataset(model, dataset)
+#         if not is_valid:
+#             display_error_and_exit(error_msg)
     
-    # Create configuration
-    from ..mapping.base import MappingConfig
-    config = MappingConfig(
-        strategy="linear",
-        hidden_size=hidden_size,
-        num_layers=num_layers,
-        learning_rate=learning_rate,
-        batch_size=batch_size,
-        epochs=epochs,
-        loss_function=loss_function,
-        verbose=verbose
-    )
+#     # Create configuration
+#     from ..mapping.base import MappingConfig
+#     config = MappingConfig(
+#         strategy="linear",
+#         hidden_size=hidden_size,
+#         num_layers=num_layers,
+#         learning_rate=learning_rate,
+#         batch_size=batch_size,
+#         epochs=epochs,
+#         loss_function=loss_function,
+#         verbose=verbose
+#     )
     
-    # Run mapping workflow
-    _common_mapping_workflow(
-        source_model=source_model,
-        target_model=target_model,
-        dataset=dataset,
-        strategy="linear",
-        embedding_path=embedding_path,
-        reference_path=reference_path,
-        output_path=output_path,
-        config=config,
-        force=force,
-        save_transformed=save_transformed
-    )
+#     # Run mapping workflow
+#     _common_mapping_workflow(
+#         source_model=source_model,
+#         target_model=target_model,
+#         dataset=dataset,
+#         strategy="linear",
+#         embedding_path=embedding_path,
+#         reference_path=reference_path,
+#         output_path=output_path,
+#         config=config,
+#         force=force,
+#         save_transformed=save_transformed
+#     )
 
 
 @mapping_app.command("nonlinear", help="Create mapping using nonlinear neural network")
@@ -302,5 +302,5 @@ def la2m_mapping(
 
 
 # Add aliases for backward compatibility
-mapping_app.command("ours", help="Alias for la2m")(la2m_mapping)
-mapping_app.command("LA2M", help="Uppercase alias for la2m")(la2m_mapping) 
+# mapping_app.command("ours", help="Alias for la2m")(la2m_mapping)
+# mapping_app.command("LA2M", help="Uppercase alias for la2m")(la2m_mapping) 
