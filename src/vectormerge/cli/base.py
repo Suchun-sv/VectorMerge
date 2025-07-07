@@ -16,9 +16,10 @@ from rich.table import Table
 from rich.text import Text
 from rich import print as rprint
 import typer
+from ..clustering import SUPPORTED_CLUSTERING_METHODS
 from ..dataset import SUPPORTED_DATASETS
 from ..embeddings import SUPPORTED_MODELS, get_embedding
-from ..reference import load_reference
+from ..reference import get_reference
 from ..mapping import VectorSpaceMapper, MappingConfig
 from loguru import logger
 
@@ -247,8 +248,8 @@ def _common_mapping_workflow(
     target_embeddings = get_embedding(target_model, dataset, embedding_path, type_="corpus")
 
     # Load reference indices
-    reference_data = load_reference(reference_path, reference_key)
-    d0_index = reference_data['d0_index']  # Reference indices
+    reference_data = get_reference(reference_path, reference_key)
+    d0_index = reference_data['d0_index']
     
     # Create and fit mapper
     mapper = VectorSpaceMapper(strategy=strategy, 

@@ -22,6 +22,7 @@ class VectorMergeConfig:
     mapping_path: str = "./data/processed/mappings/"
     mapping_param_path: str = "./output/mapping_models/"
     mapping_embedding_path: str = "./output/mapping_embeddings/"
+    cluster_path: str = "./data/processed/clusters/"
     
     # Model settings
     model_1: str = "bert-base-uncased"
@@ -132,6 +133,7 @@ class ConfigLoader:
             'mapping_param_path': 'mapping_param_path',
             'mapping_embedding_path': 'mapping_embedding_path',
             'verbose': 'verbose',
+            'cluster_path': 'cluster_path',
             'use_cache': 'use_cache',
             'force_download': 'force_download'
         }

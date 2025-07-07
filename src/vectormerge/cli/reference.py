@@ -36,8 +36,31 @@ def create_reference(
     force: bool = typer.Option(False, "--force", help="Force regeneration"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
     verbose: bool = typer.Option(cli_defaults['verbose'], "--verbose", "-v", help="Verbose output"),
+    check: bool = typer.Option(False, "--check", help="Check for existing references and list them."),
 ):
     """Create reference dataset splits for mapping."""
+    
+    if check:
+        if not reference_path.exists():
+            rprint(f"[yellow]Reference path does not exist:[/yellow] {reference_path}")
+            return
+
+        rprint(f"[blue]🔍 Checking for existing references in:[/blue] {reference_path}")
+
+        reference_files = list(reference_path.glob("*.npz"))
+
+        if not reference_files:
+            rprint("[yellow]No reference files found.[/yellow]")
+            return
+
+        table = Table(title="Existing Reference Keys")
+        table.add_column("Reference Key", style="cyan")
+
+        for ref_file in reference_files:
+            table.add_row(ref_file.stem)
+
+        console.print(table)
+        return
     
     # Set random seed
     set_seed()

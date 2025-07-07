@@ -34,6 +34,12 @@ from .embeddings import (
     generate_embeddings,
 )
 
+from .clustering import (
+    ClusterManager,
+    ClusteringConfig,
+    ClusteringResult,
+)
+
 from .mapping import (
     VectorSpaceMapper,
     ProcrustesMappingStrategy,
@@ -52,6 +58,11 @@ __all__ = [
     "EmbeddingGenerator",
     "get_embedding_generator",
     "generate_embeddings",
+
+    # Clustering
+    "ClusterManager",
+    "ClusteringConfig",
+    "ClusteringResult",
 
     # Vector space mapping
     "VectorSpaceMapper",

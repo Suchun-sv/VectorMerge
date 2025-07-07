@@ -13,6 +13,17 @@ if reference strategy is ours, we need to specify m1 and m2, because we need to 
 the reference will output to the reference_path, 
 ```
 
+# Cluster Reference
+
+vectormerge cluster-reference 
+-d [dataset_name] 
+--reference-key -rk [reference_key]
+--reference-path [reference_path] 
+--cluster-method [cluster_method] 
+--cluster-path [cluster_path]
+--force [force retrain, default is use existing cluster]
+
+
 # Map Embedding [Core]
 ## vectormerge map-embedding
 vectormerge map-embedding -m1 [model_name] -m2 [model_name] --m1--m2 [replace default m1 and m2] -d [dataset_name] --load-reference-path [reference_path] --mapping-method [mapping_method] --mapping-config [mapping_config] --output-path [output_path]

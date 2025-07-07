@@ -3582,6 +3582,12 @@ wheels = [
 ]
 
 [[package]]
+name = "umap"
+version = "0.1.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/4b/46/08ab68936625400fe690684428d4db4764f49b406782cc133df1d0299d06/umap-0.1.1.tar.gz", hash = "sha256:5d08c1a335cc7ee175811a99dc9356d3d4b8567ad082e2b1b205198cf27c4256", size = 3191, upload-time = "2016-01-20T16:33:11.724Z" }
+
+[[package]]
 name = "unlzw3"
 version = "0.2.3"
 source = { registry = "https://pypi.org/simple" }
@@ -3602,7 +3608,7 @@ wheels = [
 [[package]]
 name = "vectormerge"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "beir" },
     { name = "dotenv" },
@@ -3626,6 +3632,7 @@ dependencies = [
     { name = "tqdm" },
     { name = "transformers" },
     { name = "typer" },
+    { name = "umap" },
     { name = "wandb" },
 ]
 
@@ -3653,6 +3660,7 @@ requires-dist = [
     { name = "tqdm", specifier = ">=4.67.1" },
     { name = "transformers", specifier = ">=4.43.4" },
     { name = "typer", specifier = ">=0.16.0" },
+    { name = "umap", specifier = ">=0.1.1" },
     { name = "wandb", specifier = ">=0.19.0" },
 ]
 

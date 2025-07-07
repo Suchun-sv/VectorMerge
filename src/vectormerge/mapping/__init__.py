@@ -12,7 +12,6 @@ Main Classes:
 
 Mapping Strategies:
 - ProcrustesMappingStrategy: Procrustes analysis-based mapping
-- LinearMappingStrategy: Linear neural network mapping
 - NonLinearMappingStrategy: Non-linear neural network mapping
 - LA2MStrategy: Clustering-based mapping from the LA2M paper
 
@@ -35,20 +34,14 @@ transformed = mapper.fit_transform(
 """
 
 # Core classes
-from .base import MappingStrategy, MappingConfig, MappingResult, ClusterData, ClusteringStrategy
-from .mapper import VectorSpaceMapper
+from .base import MappingStrategy, MappingConfig, MappingResult
+from .manager import VectorSpaceMapper
 
 # Mapping strategies
 from .strategies import (
     ProcrustesMappingStrategy,
     NonLinearMappingStrategy,
     LA2MStrategy
-)
-
-# Clustering strategies
-from .clustering import (
-    KMeansClusteringStrategy,
-    HierarchicalClusteringStrategy
 )
 
 # Loss functions
@@ -80,17 +73,11 @@ __all__ = [
     "MappingStrategy", 
     "MappingConfig",
     "MappingResult",
-    "ClusterData",
-    "ClusteringStrategy",
     
     # Mapping strategies
     "ProcrustesMappingStrategy",
     "NonLinearMappingStrategy", 
     "LA2MStrategy",
-    
-    # Clustering strategies
-    "KMeansClusteringStrategy",
-    "HierarchicalClusteringStrategy",
     
     # Loss functions
     "cosine_similarity_loss",

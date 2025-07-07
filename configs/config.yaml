@@ -5,6 +5,7 @@
 data_path: "./data/raw/beir/"
 embedding_path: "./data/processed/embeddings/"
 reference_path: "./data/processed/references/"
+cluster_path: "./data/processed/clusters/"
 mapping_param_path: "./output/mapping_models/"
 mapping_embedding_path: "./output/mapping_embeddings/"
 
@@ -25,6 +26,7 @@ mapper:
 
   la2m:
     num_clusters: 50
+    cluster_method: "la2m-cluster"
     save_transformed: true
 
 # ==================== Embedding Models Configuration ====================

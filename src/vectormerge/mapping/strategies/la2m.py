@@ -12,7 +12,8 @@ from pathlib import Path
 from loguru import logger
 
 from ..base import MappingStrategy, MappingConfig, ClusterData
-from ..clustering import KMeansClusteringStrategy, HierarchicalClusteringStrategy
+from ...clustering import KMeansClusteringStrategy, LA2MClusteringStrategy
+from ...clustering.base import ClusteringConfig
 from .procrustes import procrustes_mapping_torch
 
 
@@ -35,12 +36,25 @@ class LA2MStrategy(MappingStrategy):
         """
         super().__init__(config)
         
-        # Initialize clustering strategy
+        # Create clustering configuration from mapping config
         cluster_method = getattr(config, 'clustering_method', getattr(config, 'cluster_method', 'kmeans'))
-        if cluster_method == "hierarchical":
-            self.clustering_strategy = HierarchicalClusteringStrategy(config)
+        clustering_config = ClusteringConfig(
+            num_clusters=getattr(config, 'num_clusters', 50),
+            method=cluster_method,
+            min_cluster_size=getattr(config, 'min_cluster_size', 5),
+            random_state=42,
+            linkage=getattr(config, 'linkage', 'ward'),
+            distance_threshold=getattr(config, 'distance_threshold', None),
+            device=getattr(config, 'device', 'auto'),
+            verbose=getattr(config, 'verbose', False),
+            compute_metrics=False  # We'll compute metrics separately if needed
+        )
+        
+        # Initialize clustering strategy
+        if cluster_method == "la2m-cluster":
+            self.clustering_strategy = LA2MClusteringStrategy(clustering_config)
         else:
-            self.clustering_strategy = KMeansClusteringStrategy(config)
+            self.clustering_strategy = KMeansClusteringStrategy(clustering_config)
         
         # Storage for cluster data and local mappings
         self.cluster_data_list: List[ClusterData] = []

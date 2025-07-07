@@ -3,7 +3,7 @@ from typing import Optional
 from pathlib import Path
 from loguru import logger
 
-def load_reference(reference_path: str, reference_key: str) -> dict:
+def get_reference(reference_path: str, reference_key: str) -> dict:
     """
     Load the reference from the reference_path, the reference is a dictionary with keys "d0_index", "d1_index", and "d2_index"
     """
