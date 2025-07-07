@@ -18,44 +18,106 @@ from loguru import logger
 class ClusterData:
     """Data structure to store cluster information."""
     
-    ref_index: List[int]      # Indices of reference points in this cluster
-    bound_index: List[int]    # Indices of target points assigned to this cluster
-    diameter: float = 0.0     # Cluster diameter (optional)
-    center: Optional[np.ndarray] = None  # Cluster center (optional)
+    reference_indices: List[int] = field(default_factory=list) 
+    linked_target_indices: List[int] = field(default_factory=list)
+    reference_embeddings: Optional[np.ndarray] = None
+    center_embedding: Optional[np.ndarray] = None
+    linked_target_embeddings: Optional[np.ndarray] = None
     
     def __len__(self) -> int:
         """Return total number of points in cluster."""
-        return len(self.ref_index) + len(self.bound_index)
+        return len(self.reference_indices) + len(self.linked_target_indices)
     
     @property
     def ref_size(self) -> int:
         """Return number of reference points."""
-        return len(self.ref_index)
+        return len(self.reference_indices)
     
     @property
     def bound_size(self) -> int:
         """Return number of bound points."""
-        return len(self.bound_index)
+        return len(self.linked_target_indices)
+    
+    @property
+    def total_size(self) -> int:
+        """Return total number of points in cluster."""
+        return len(self)
+    
+    @property
+    def has_center(self) -> bool:
+        """Check if cluster has a center."""
+        return self.center_embedding is not None
+    
+    def compute_center(self) -> Optional[np.ndarray]:
+        """Compute cluster center from reference embeddings."""
+        if self.reference_embeddings is None or len(self.reference_embeddings) == 0:
+            return None
+        
+        center = np.mean(self.reference_embeddings, axis=0)
+        self.center_embedding = center
+        return center
+    
+    def add_reference_point(self, index: int, embedding: Optional[np.ndarray] = None) -> None:
+        """Add a reference point to the cluster."""
+        if index not in self.reference_indices:
+            self.reference_indices.append(index)
+            if embedding is not None:
+                if self.reference_embeddings is None:
+                    self.reference_embeddings = embedding.reshape(1, -1)
+                else:
+                    self.reference_embeddings = np.vstack([self.reference_embeddings, embedding.reshape(1, -1)])
+    
+    def add_target_point(self, index: int, embedding: Optional[np.ndarray] = None) -> None:
+        """Add a target point to the cluster."""
+        if index not in self.linked_target_indices:
+            self.linked_target_indices.append(index)
+            if embedding is not None:
+                if self.linked_target_embeddings is None:
+                    self.linked_target_embeddings = embedding.reshape(1, -1)
+                else:
+                    self.linked_target_embeddings = np.vstack([self.linked_target_embeddings, embedding.reshape(1, -1)])
     
     def to_dict(self) -> Dict[str, Any]:
-        """Convert cluster data to dictionary for serialization."""
+        """Convert cluster data to dictionary for serialization.
+        
+        Note: Embeddings are not serialized to save space.
+        They can be recomputed from the original data when needed.
+        """
         return {
-            'ref_index': self.ref_index,
-            'bound_index': self.bound_index,
-            'diameter': self.diameter,
-            'center': self.center.tolist() if self.center is not None else None
+            'reference_indices': self.reference_indices,
+            'linked_target_indices': self.linked_target_indices,
+            'total_size': self.total_size
         }
     
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'ClusterData':
-        """Create cluster data from dictionary."""
-        center = np.array(data['center']) if data['center'] is not None else None
+        """Create cluster data from dictionary.
+        
+        Note: Embeddings are not loaded and need to be computed separately.
+        """
         return cls(
-            ref_index=data['ref_index'],
-            bound_index=data['bound_index'],
-            diameter=data.get('diameter', 0.0),
-            center=center
+            reference_indices=data.get('reference_indices', []),
+            linked_target_indices=data.get('linked_target_indices', []),
+            reference_embeddings=None,
+            center_embedding=None,
+            linked_target_embeddings=None
         )
+    
+    # Backward compatibility properties
+    @property
+    def ref_index(self) -> List[int]:
+        """Backward compatibility: return reference indices."""
+        return self.reference_indices
+    
+    @property
+    def bound_index(self) -> List[int]:
+        """Backward compatibility: return linked target indices."""
+        return self.linked_target_indices
+    
+    @property
+    def center(self) -> Optional[np.ndarray]:
+        """Backward compatibility: return center embedding."""
+        return self.center_embedding
 
 
 @dataclass
@@ -145,9 +207,64 @@ class ClusteringResult:
         return len(self.cluster_data_list)
     
     @property
+    def has_embeddings(self) -> bool:
+        """Check if cluster result has embeddings."""
+        return all(cluster.reference_embeddings is not None for cluster in self.cluster_data_list)
+    
+    @property
     def cluster_sizes(self) -> List[int]:
         """Return sizes of all clusters."""
-        return [len(cluster.ref_index) for cluster in self.cluster_data_list]
+        return [len(cluster.reference_indices) for cluster in self.cluster_data_list]
+    
+    @property
+    def reference_cluster_sizes(self) -> List[int]:
+        """Return sizes of reference points in each cluster."""
+        return [cluster.ref_size for cluster in self.cluster_data_list]
+    
+    @property
+    def target_cluster_sizes(self) -> List[int]:
+        """Return sizes of target points in each cluster."""
+        return [cluster.bound_size for cluster in self.cluster_data_list]
+    
+    @property
+    def total_reference_points(self) -> int:
+        """Return total number of reference points across all clusters."""
+        return sum(cluster.ref_size for cluster in self.cluster_data_list)
+    
+    @property
+    def total_target_points(self) -> int:
+        """Return total number of target points across all clusters."""
+        return sum(cluster.bound_size for cluster in self.cluster_data_list)
+    
+    def get_cluster_centers(self) -> Optional[np.ndarray]:
+        """Get cluster centers from cluster data."""
+        centers = []
+        for cluster in self.cluster_data_list:
+            if cluster.center_embedding is not None:
+                centers.append(cluster.center_embedding)
+            elif cluster.reference_embeddings is not None and len(cluster.reference_embeddings) > 0:
+                # Compute center if not available
+                center = np.mean(cluster.reference_embeddings, axis=0)
+                centers.append(center)
+            else:
+                return None  # Cannot compute centers
+        
+        return np.array(centers) if centers else None
+    
+    def compute_all_centers(self) -> bool:
+        """Compute centers for all clusters that don't have them."""
+        success = True
+        for cluster in self.cluster_data_list:
+            if cluster.center_embedding is None:
+                computed_center = cluster.compute_center()
+                if computed_center is None:
+                    success = False
+        
+        # Update cluster_centers array
+        if success:
+            self.cluster_centers = self.get_cluster_centers()
+        
+        return success
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert result to dictionary for serialization."""
@@ -164,7 +281,7 @@ class ClusteringResult:
         """Create result from dictionary."""
         cluster_data_list = [ClusterData.from_dict(cluster_data) for cluster_data in data['cluster_data_list']]
         cluster_labels = np.array(data['cluster_labels'])
-        cluster_centers = np.array(data['cluster_centers']) if data['cluster_centers'] is not None else None
+        cluster_centers = np.array(data['cluster_centers']) if data.get('cluster_centers') is not None else None
         
         return cls(
             cluster_data_list=cluster_data_list,
@@ -225,6 +342,7 @@ class ClusteringStrategy(ABC):
             reference_indices: Indices of reference points to cluster
             
         Returns:
+            ClusteringResult object with clustering information
         """
         pass
     
@@ -239,8 +357,6 @@ class ClusteringStrategy(ABC):
             Cluster assignments for each embedding
         """
         pass
-
-    
     
     def assign_to_clusters(self, embeddings: np.ndarray, target_indices: np.ndarray,
                           clustering_result: ClusteringResult) -> ClusteringResult:
@@ -254,7 +370,9 @@ class ClusteringStrategy(ABC):
         Returns:
             Updated clustering result with assigned target points
         """
-        if clustering_result.cluster_centers is None:
+        # Get cluster centers
+        cluster_centers = clustering_result.get_cluster_centers()
+        if cluster_centers is None:
             raise ValueError("Cannot assign points without cluster centers")
         
         logger.info(f"Assigning {len(target_indices)} target points to clusters")
@@ -271,13 +389,15 @@ class ClusteringStrategy(ABC):
             # Find target points assigned to this cluster
             cluster_mask = (cluster_assignments == cluster_id)
             cluster_target_indices = target_indices[cluster_mask]
+            cluster_target_embeddings = target_embeddings[cluster_mask] if len(cluster_target_indices) > 0 else None
             
             # Create updated cluster data
             updated_cluster = ClusterData(
-                ref_index=cluster_data.ref_index.copy(),
-                bound_index=cluster_target_indices.tolist(),
-                diameter=cluster_data.diameter,
-                center=cluster_data.center.copy() if cluster_data.center is not None else None
+                reference_indices=cluster_data.reference_indices.copy(),
+                linked_target_indices=cluster_target_indices.tolist(),
+                reference_embeddings=cluster_data.reference_embeddings.copy() if cluster_data.reference_embeddings is not None else None,
+                center_embedding=cluster_data.center_embedding.copy() if cluster_data.center_embedding is not None else None,
+                linked_target_embeddings=cluster_target_embeddings.copy() if cluster_target_embeddings is not None else None
             )
             updated_clusters.append(updated_cluster)
         
@@ -291,7 +411,7 @@ class ClusteringStrategy(ABC):
         )
         
         # Log assignment statistics
-        assignment_counts = [len(cluster.bound_index) for cluster in updated_clusters]
+        assignment_counts = [len(cluster.linked_target_indices) for cluster in updated_clusters]
         logger.info(f"Target point assignment completed. Points per cluster: {assignment_counts}")
         
         return updated_result
@@ -314,9 +434,9 @@ class ClusteringStrategy(ABC):
         cluster_wcss = []
         
         for cluster_data in clustering_result.cluster_data_list:
-            if len(cluster_data.ref_index) > 0:
-                cluster_embeddings = embeddings[cluster_data.ref_index]
-                center = cluster_data.center
+            if len(cluster_data.reference_indices) > 0:
+                cluster_embeddings = embeddings[cluster_data.reference_indices]
+                center = cluster_data.center_embedding
                 
                 if center is not None:
                     # Compute sum of squared distances to center
@@ -330,7 +450,7 @@ class ClusteringStrategy(ABC):
                 cluster_wcss.append(0.0)
         
         # Compute average cluster size
-        cluster_sizes = [len(cluster.ref_index) for cluster in clustering_result.cluster_data_list]
+        cluster_sizes = [len(cluster.reference_indices) for cluster in clustering_result.cluster_data_list]
         avg_cluster_size = float(np.mean(cluster_sizes)) if cluster_sizes else 0.0
         
         # Compute cluster size variance

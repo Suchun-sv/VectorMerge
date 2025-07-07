@@ -113,28 +113,39 @@ class ClusterManager:
         if self.strategy is None:
             raise ValueError("Strategy not initialized")
         
+        # Check if we should use existing results
         if not self.force and self._check_fit():
             logger.info(f"Found existing cluster result, loading from {self.final_save_path}")
-            return self.load()
+            result = self.load()
+            
+            # If result exists but lacks embeddings, assemble and return
+            if not result.has_embeddings:
+                logger.info(f"Loading embeddings to assemble cluster result")
+                source_embeddings = get_embedding(self.model, self.dataset_name, self.embedding_path, type_="corpus")
+                if source_embeddings is None:
+                    raise ValueError(f"Could not load embeddings for {self.dataset_name}")
+                return self.assembles_cluster_result(source_embeddings, result)
+            
+            return result
         
-        # Load embeddings and reference indices
+        # Load embeddings and reference indices for new clustering
         logger.info(f"Loading embeddings for {self.dataset_name}")
         source_embeddings = get_embedding(self.model, self.dataset_name, self.embedding_path, type_="corpus")
-        
         if source_embeddings is None:
             raise ValueError(f"Could not load embeddings for {self.dataset_name}")
         
         logger.info(f"Loading reference indices for {self.dataset_name}")
         reference_data = get_reference(self.reference_path, self.reference_key)
         reference_indices = reference_data['d0_index']
-        
         if reference_indices is None:
             raise ValueError(f"Could not load reference indices for {self.dataset_name} with reference key {self.reference_key}")
         
+        # Perform clustering
         logger.info(f"Starting clustering with {len(reference_indices)} reference points")
         cluster_result = self.strategy.fit(source_embeddings, reference_indices)
         self.last_result = cluster_result
         
+        # Auto-save if enabled
         if self.auto_save_results:
             self.save_cluster_to_disk(cluster_result)
         
@@ -150,6 +161,14 @@ class ClusterManager:
         logger.info(f"Loading cluster from {self.final_save_path}")
         clustering_result = joblib.load(self.final_save_path)
         self.last_result = clustering_result
+        return clustering_result
+    
+    def assembles_cluster_result(self, embeddings: np.ndarray, clustering_result: ClusteringResult) -> ClusteringResult:
+        """Assemble cluster result from embeddings and clustering result."""
+        for cluster in clustering_result.cluster_data_list:
+            cluster.reference_embeddings = embeddings[cluster.reference_indices]
+            cluster.linked_target_embeddings = embeddings[cluster.linked_target_indices]
+            cluster.center_embedding = np.mean(cluster.reference_embeddings, axis=0)
         return clustering_result
     
     def save_cluster_to_disk(self, clustering_result: ClusteringResult) -> None:
@@ -247,11 +266,11 @@ class ClusterManager:
         stats = {
             'num_clusters': clustering_result.num_clusters,
             'cluster_sizes': clustering_result.cluster_sizes,
-            'total_points': sum(len(cluster.ref_index) + len(cluster.bound_index) 
+            'total_points': sum(len(cluster.reference_indices) + len(cluster.linked_target_indices) 
                               for cluster in clustering_result.cluster_data_list),
-            'total_reference_points': sum(len(cluster.ref_index) 
+            'total_reference_points': sum(len(cluster.reference_indices) 
                                         for cluster in clustering_result.cluster_data_list),
-            'total_bound_points': sum(len(cluster.bound_index) 
+            'total_linked_target_points': sum(len(cluster.linked_target_indices) 
                                     for cluster in clustering_result.cluster_data_list),
             'avg_cluster_size': np.mean(clustering_result.cluster_sizes),
             'cluster_size_std': np.std(clustering_result.cluster_sizes),
@@ -382,7 +401,7 @@ class ClusterManager:
         
         valid_clusters = []
         for i, cluster_data in enumerate(clustering_result.cluster_data_list):
-            cluster_size = len(cluster_data.ref_index) + len(cluster_data.bound_index)
+            cluster_size = len(cluster_data.reference_indices) + len(cluster_data.linked_target_indices)
             if min_size <= cluster_size <= max_size:
                 valid_clusters.append(i)
         
@@ -416,7 +435,7 @@ class ClusterManager:
         valid_clusters = []
         
         for i, cluster_data in enumerate(clustering_result.cluster_data_list):
-            cluster_size = len(cluster_data.ref_index) + len(cluster_data.bound_index)
+            cluster_size = len(cluster_data.reference_indices) + len(cluster_data.linked_target_indices)
             if cluster_size < min_size:
                 small_clusters.append(i)
             else:
@@ -432,7 +451,7 @@ class ClusterManager:
         for small_cluster_id in small_clusters:
             small_cluster = clustering_result.cluster_data_list[small_cluster_id]
             
-            if small_cluster.center is None or clustering_result.cluster_centers is None:
+            if small_cluster.center_embedding is None or clustering_result.cluster_centers is None:
                 # If no centers available, merge with first valid cluster
                 if valid_clusters:
                     target_cluster_id = valid_clusters[0]
@@ -445,7 +464,7 @@ class ClusterManager:
                 
                 for valid_cluster_id in valid_clusters:
                     distance = np.linalg.norm(
-                        small_cluster.center - clustering_result.cluster_centers[valid_cluster_id]
+                        small_cluster.center_embedding - clustering_result.cluster_centers[valid_cluster_id]
                     )
                     if distance < min_distance:
                         min_distance = distance
@@ -456,19 +475,24 @@ class ClusterManager:
             
             # Merge small cluster into target cluster
             target_cluster = clustering_result.cluster_data_list[target_cluster_id]
-            target_cluster.ref_index.extend(small_cluster.ref_index)
-            target_cluster.bound_index.extend(small_cluster.bound_index)
+            target_cluster.reference_indices.extend(small_cluster.reference_indices)
+            target_cluster.linked_target_indices.extend(small_cluster.linked_target_indices)
             
-            # Recompute center and diameter
-            all_indices = target_cluster.ref_index + target_cluster.bound_index
+            # Recompute center and update embeddings
+            all_indices = target_cluster.reference_indices + target_cluster.linked_target_indices
             if all_indices:
                 cluster_embeddings = embeddings[all_indices]
-                target_cluster.center = np.mean(cluster_embeddings, axis=0)
+                target_cluster.center_embedding = np.mean(cluster_embeddings, axis=0)
                 
-                if len(all_indices) > 1:
-                    from sklearn.metrics import pairwise_distances
-                    distances = pairwise_distances(cluster_embeddings)
-                    target_cluster.diameter = float(np.max(distances))
+                # Update reference embeddings if needed
+                if target_cluster.reference_embeddings is not None:
+                    ref_embeddings = embeddings[target_cluster.reference_indices]
+                    target_cluster.reference_embeddings = ref_embeddings
+                
+                # Update target embeddings if needed
+                if len(target_cluster.linked_target_indices) > 0:
+                    target_embeddings = embeddings[target_cluster.linked_target_indices]
+                    target_cluster.linked_target_embeddings = target_embeddings
         
         # Remove small clusters
         updated_clusters = [cluster for i, cluster in enumerate(clustering_result.cluster_data_list)

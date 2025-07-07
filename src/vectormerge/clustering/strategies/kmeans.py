@@ -68,21 +68,15 @@ class KMeansClusteringStrategy(ClusteringStrategy):
             # Find reference points in this cluster
             cluster_mask = (cluster_labels == cluster_id)
             cluster_ref_indices = reference_indices[cluster_mask]
+            cluster_ref_embeddings = reference_embeddings[cluster_mask]
             
-            # Compute cluster diameter (maximum distance between points in cluster)
-            if len(cluster_ref_indices) > 1:
-                cluster_embeddings = embeddings[cluster_ref_indices]
-                distances = pairwise_distances(cluster_embeddings)
-                diameter = float(np.max(distances))  # type: ignore
-            else:
-                diameter = 0.0
-            
-            # Create cluster data
+            # Create cluster data using new structure
             cluster_data = ClusterData(
-                ref_index=cluster_ref_indices.tolist(),
-                bound_index=[],  # Will be populated later
-                diameter=diameter,
-                center=self.cluster_centers[cluster_id].copy() if self.cluster_centers is not None else None
+                reference_indices=cluster_ref_indices.tolist(),
+                linked_target_indices=[],  # Will be populated later
+                reference_embeddings=cluster_ref_embeddings.copy(),
+                center_embedding=self.cluster_centers[cluster_id].copy() if self.cluster_centers is not None else None,
+                linked_target_embeddings=None
             )
             cluster_data_list.append(cluster_data)
         
@@ -94,8 +88,8 @@ class KMeansClusteringStrategy(ClusteringStrategy):
             metadata={
                 'method': 'kmeans',
                 'n_clusters': n_clusters,
-                'inertia': float(self.kmeans_model.inertia_),  # type: ignore
-                'n_iter': int(self.kmeans_model.n_iter_),  # type: ignore
+                'inertia': float(self.kmeans_model.inertia_) if self.kmeans_model.inertia_ is not None else 0.0,
+                'n_iter': int(self.kmeans_model.n_iter_) if self.kmeans_model.n_iter_ is not None else 0,
                 'reference_size': len(reference_indices)
             }
         )
@@ -107,7 +101,7 @@ class KMeansClusteringStrategy(ClusteringStrategy):
         self.is_fitted = True
         
         logger.info(f"K-means clustering completed. "
-                   f"Cluster sizes: {[len(cluster.ref_index) for cluster in cluster_data_list]}")
+                   f"Cluster sizes: {[len(cluster.reference_indices) for cluster in cluster_data_list]}")
         
         return clustering_result
     
@@ -177,8 +171,10 @@ class KMeansClusteringStrategy(ClusteringStrategy):
         
         return {
             'n_clusters': self.kmeans_model.n_clusters,
-            'inertia': float(self.kmeans_model.inertia_),  # type: ignore
-            'n_iter': int(self.kmeans_model.n_iter_),  # type: ignore
+            'inertia': float(self.kmeans_model.inertia_)  # type: ignore
+            if self.kmeans_model.inertia_ is not None else 0.0,
+            'n_iter': int(self.kmeans_model.n_iter_)  # type: ignore
+            if self.kmeans_model.n_iter_ is not None else 0,
             'cluster_centers_shape': self.cluster_centers.shape if self.cluster_centers is not None else None
         }
     
@@ -201,7 +197,7 @@ class KMeansClusteringStrategy(ClusteringStrategy):
             all_labels = []
             
             for cluster_id, cluster_data in enumerate(cluster_data_list):
-                for ref_idx in cluster_data.ref_index:
+                for ref_idx in cluster_data.reference_indices:
                     all_ref_indices.append(ref_idx)
                     all_labels.append(cluster_id)
             
