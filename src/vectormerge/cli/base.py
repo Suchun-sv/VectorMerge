@@ -264,5 +264,6 @@ def _common_mapping_workflow(
                              force=force)
     
     # Transform embeddings
-    mapper.fit(source_embeddings, target_embeddings, d0_index)
-    transformed_embeddings = mapper.transform(source_embeddings)
+    # mapper.fit(source_embeddings, target_embeddings, d0_index)
+    # transformed_embeddings = mapper.transform(source_embeddings)
+    mapper.fit_and_transform(source_embeddings, target_embeddings, d0_index)

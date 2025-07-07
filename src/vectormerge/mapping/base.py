@@ -53,6 +53,7 @@ class MappingConfig:
     
     # Procrustes settings
     with_rotation: bool = True
+    with_scaling: bool = True
     approximate: bool = False
     q: int = 1500  # Approximation parameter
     
@@ -74,6 +75,10 @@ class MappingConfig:
     reduced_dim: int = 0
     procrustes_pca_type: str = "none"  # "none", "inner", "outer"
     use_norm: bool = True
+
+    # LA2M settings
+    min_cluster_size: int = 10
+    local_strategy: str = "procrustes"
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""

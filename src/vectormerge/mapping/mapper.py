@@ -203,7 +203,7 @@ class VectorSpaceMapper:
         
         return transformed
     
-    def fit_transform(self, source_embeddings: np.ndarray, target_embeddings: np.ndarray,
+    def fit_and_transform(self, source_embeddings: np.ndarray, target_embeddings: np.ndarray,
                      reference_indices: np.ndarray, embeddings_to_transform: Optional[np.ndarray] = None,
                      **kwargs) -> np.ndarray:
         """Fit the mapping and transform embeddings in one step.

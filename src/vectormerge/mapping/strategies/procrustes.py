@@ -211,11 +211,12 @@ class ProcrustesMappingStrategy(MappingStrategy):
         self.rotation_matrix: Optional[np.ndarray] = None
         self.source_mean: Optional[np.ndarray] = None
         self.target_mean: Optional[np.ndarray] = None
+        self.scale: Optional[float] = None
         self.pca_source: Optional[PCA] = None
         self.pca_target: Optional[PCA] = None
         
         logger.info(f"Procrustes mapping initialized with approximate={config.approximate}, "
-                   f"with_rotation={config.with_rotation}")
+                   f"with_rotation={config.with_rotation}, with_scaling={config.with_scaling}")
     
     def fit(self, source_embeddings: np.ndarray, target_embeddings: np.ndarray,
             reference_indices: np.ndarray, **kwargs) -> None:
@@ -272,12 +273,14 @@ class ProcrustesMappingStrategy(MappingStrategy):
             self.rotation_matrix = params['rotation_matrix']
             self.source_mean = params['source_mean']
             self.target_mean = params['target_mean']
+            self.scale = params.get('scale', 1.0)
         
         self.is_fitted = True
         self.metadata = {
             'reference_size': len(reference_indices),
             'approximate': self.config.approximate,
             'with_rotation': self.config.with_rotation,
+            'with_scaling': self.config.with_scaling,
             'use_norm': self.config.use_norm,
             'procrustes_pca_type': self.config.procrustes_pca_type,
             'reduced_dim': self.config.reduced_dim
@@ -302,17 +305,18 @@ class ProcrustesMappingStrategy(MappingStrategy):
         assert self.rotation_matrix is not None, "Rotation matrix not fitted"
         assert self.source_mean is not None, "Source mean not fitted"
         assert self.target_mean is not None, "Target mean not fitted"
+        assert self.scale is not None, "Scale not fitted"
         
         if self.pca_source is not None and self.pca_target is not None:
             # PCA-based transformation
             embeddings_reduced = self.pca_source.transform(embeddings)
             embeddings_centered = embeddings_reduced - self.source_mean
-            transformed_reduced = np.dot(embeddings_centered, self.rotation_matrix.T) + self.target_mean
+            transformed_reduced = self.scale * np.dot(embeddings_centered, self.rotation_matrix.T) + self.target_mean
             transformed = self.pca_target.inverse_transform(transformed_reduced)
         else:
-            # Standard transformation
+            # Standard transformation: center, scale, rotate, then translate
             embeddings_centered = embeddings - self.source_mean
-            transformed = np.dot(embeddings_centered, self.rotation_matrix.T) + self.target_mean
+            transformed = self.scale * np.dot(embeddings_centered, self.rotation_matrix.T) + self.target_mean
         
         return transformed
     
@@ -329,6 +333,8 @@ class ProcrustesMappingStrategy(MappingStrategy):
             np.save(save_path / "source_mean.npy", self.source_mean)
         if self.target_mean is not None:
             np.save(save_path / "target_mean.npy", self.target_mean)
+        if self.scale is not None:
+            np.save(save_path / "scale.npy", self.scale)
         
         # Save PCA models if available
         if self.pca_source is not None:
@@ -338,29 +344,53 @@ class ProcrustesMappingStrategy(MappingStrategy):
             import joblib
             joblib.dump(self.pca_target, save_path / "pca_target.pkl")
     
-    # @classmethod
-    # def load(cls, path) -> 'ProcrustesMappingStrategy':
-    #     """Load Procrustes mapping parameters."""
-    #     instance = super().load(path)
+    @classmethod
+    def load(cls, path) -> 'ProcrustesMappingStrategy':
+        """Load Procrustes mapping parameters."""
+        load_path = Path(path)
         
-    #     load_path = Path(path)
+        # Load metadata
+        import json
+        with open(load_path / "mapping_info.json", "r") as f:
+            metadata = json.load(f)
         
-    #     # Load Procrustes-specific parameters
-    #     if (load_path / "rotation_matrix.npy").exists():
-    #         instance.rotation_matrix = np.load(load_path / "rotation_matrix.npy")
-    #     if (load_path / "source_mean.npy").exists():
-    #         instance.source_mean = np.load(load_path / "source_mean.npy")
-    #     if (load_path / "target_mean.npy").exists():
-    #         instance.target_mean = np.load(load_path / "target_mean.npy")
+        # Create instance
+        config = MappingConfig.from_dict(metadata["config"])
+        instance = cls(config)
         
-    #     # Load PCA models if available
-    #     try:
-    #         import joblib
-    #         if (load_path / "pca_source.pkl").exists():
-    #             instance.pca_source = joblib.load(load_path / "pca_source.pkl")
-    #         if (load_path / "pca_target.pkl").exists():
-    #             instance.pca_target = joblib.load(load_path / "pca_target.pkl")
-    #     except ImportError:
-    #         logger.warning("joblib not available, PCA models not loaded")
+        # Load transformation matrix from base class if available
+        transformation_path = load_path / "transformation_matrix.npy"
+        if transformation_path.exists():
+            instance.transformation_matrix = np.load(transformation_path)
         
-    #     return instance 
+        # Load Procrustes-specific parameters
+        if (load_path / "rotation_matrix.npy").exists():
+            instance.rotation_matrix = np.load(load_path / "rotation_matrix.npy")
+        if (load_path / "source_mean.npy").exists():
+            instance.source_mean = np.load(load_path / "source_mean.npy")
+        if (load_path / "target_mean.npy").exists():
+            instance.target_mean = np.load(load_path / "target_mean.npy")
+        if (load_path / "scale.npy").exists():
+            instance.scale = np.load(load_path / "scale.npy")
+        
+        # Load PCA models if available
+        try:
+            import joblib
+            if (load_path / "pca_source.pkl").exists():
+                instance.pca_source = joblib.load(load_path / "pca_source.pkl")
+            if (load_path / "pca_target.pkl").exists():
+                instance.pca_target = joblib.load(load_path / "pca_target.pkl")
+        except ImportError:
+            logger.warning("joblib not available, PCA models not loaded")
+        
+        # Restore state
+        instance.is_fitted = metadata["is_fitted"]
+        instance.metadata = metadata["metadata"]
+        
+        logger.info(f"Loaded Procrustes mapping from {load_path}")
+        return instance 
+    
+    def check_fit(self, path) -> bool:
+        """Check if the mapping is fitted."""
+        load_path = Path(path)
+        return (load_path/ "rotation_matrix.npy").exists() and (load_path/ "source_mean.npy").exists() and (load_path/ "target_mean.npy").exists() and (load_path/ "scale.npy").exists()

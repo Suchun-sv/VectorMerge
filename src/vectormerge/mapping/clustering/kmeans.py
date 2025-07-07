@@ -63,7 +63,7 @@ class KMeansClusteringStrategy(ClusteringStrategy):
             random_state=self.random_state,
             max_iter=self.max_iter,
             tol=self.tol,
-            n_init=10
+            init="k-means++"
         )
         
         cluster_labels = self.kmeans_model.fit_predict(reference_embeddings)
@@ -88,8 +88,8 @@ class KMeansClusteringStrategy(ClusteringStrategy):
             cluster_data = ClusterData(
                 ref_index=cluster_ref_indices.tolist(),
                 bound_index=[],  # Will be populated later
-                diameter=diameter,
-                center=self.cluster_centers[cluster_id].copy()
+                diameter=float(diameter),
+                center=self.cluster_centers[cluster_id].copy() if self.cluster_centers is not None else None
             )
             cluster_data_list.append(cluster_data)
         
