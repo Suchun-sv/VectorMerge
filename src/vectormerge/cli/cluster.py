@@ -822,9 +822,8 @@ def cluster_analyze(
             # Show cluster size details
             rprint(f"\n[yellow]Cluster Size Details:[/yellow]")
             for i, cluster_data in enumerate(clustering_result.cluster_data_list):
-                rprint(f"  Cluster {i:2d}: {len(cluster_data.ref_index):4d} reference points, "
-                      f"{len(cluster_data.bound_index):4d} bound points, "
-                      f"diameter: {cluster_data.diameter:.4f}")
+                rprint(f"  Cluster {i:2d}: {len(cluster_data.reference_indices):4d} reference points, "
+                      f"{len(cluster_data.linked_target_indices):4d} linked target points")
             
             # Show embedding statistics
             rprint(f"\n[yellow]Embedding Statistics:[/yellow]")
