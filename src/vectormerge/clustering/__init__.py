@@ -28,7 +28,7 @@ cluster_results = manager.cluster_embeddings(
 """
 
 # Core classes
-from .base import ClusteringStrategy, ClusteringConfig, ClusteringResult
+from .base import ClusteringStrategy, ClusteringConfig, ClusteringResult, ClusterData
 from .manager import ClusterManager, load_cluster_result, load_cluster_config
 from .manager import SUPPORTED_CLUSTERING_METHODS
 
@@ -56,6 +56,7 @@ __all__ = [
     "ClusteringConfig",
     "ClusteringResult",
     "ClusterManager",
+    "ClusterData",
     "SUPPORTED_CLUSTERING_METHODS",
     "load_cluster_result",
     "load_cluster_config",

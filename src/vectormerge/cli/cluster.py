@@ -23,7 +23,6 @@ from .utils import (
 )
 from ..clustering import ClusterManager, ClusteringConfig
 from ..embeddings import get_embedding
-from ..reference import get_reference
 from ..clustering import load_cluster_result, load_cluster_config
 from .base import SUPPORTED_DATASETS, SUPPORTED_CLUSTERING_METHODS, SUPPORTED_MODELS
 

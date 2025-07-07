@@ -13,31 +13,6 @@ import numpy as np
 import torch
 from loguru import logger
 
-
-@dataclass
-class ClusterData:
-    """Data structure to store cluster information."""
-    
-    ref_index: List[int]      # Indices of reference points in this cluster
-    bound_index: List[int]    # Indices of target points assigned to this cluster
-    diameter: float = 0.0     # Cluster diameter (optional)
-    center: Optional[np.ndarray] = None  # Cluster center (optional)
-    
-    def __len__(self) -> int:
-        """Return total number of points in cluster."""
-        return len(self.ref_index) + len(self.bound_index)
-    
-    @property
-    def ref_size(self) -> int:
-        """Return number of reference points."""
-        return len(self.ref_index)
-    
-    @property
-    def bound_size(self) -> int:
-        """Return number of bound points."""
-        return len(self.bound_index)
-
-
 @dataclass
 class MappingConfig:
     """Configuration for mapping strategies."""
@@ -79,6 +54,15 @@ class MappingConfig:
     # LA2M settings
     min_cluster_size: int = 10
     local_strategy: str = "procrustes"
+
+    force: bool = False
+
+    dataset_name: str = "scifact"
+    model: str = "mistral"
+    reference_key: str = "random_split_scifact_0.33"
+    reference_path: str = "./data/processed/references"
+    cluster_path: str = "./data/processed/cluster"
+    embedding_path: str = "./data/processed/embeddings"
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
@@ -168,6 +152,11 @@ class MappingStrategy(ABC):
             embeddings_to_transform = source_embeddings
             
         return self.transform(embeddings_to_transform, **kwargs)
+
+    @classmethod
+    def check_on_disk(cls, path: Union[str, Path]) -> bool:
+        """Check if the mapping is fitted and on disk."""
+        return Path(path).exists()
     
     def save(self, path: Union[str, Path]) -> None:
         """Save the fitted mapping to disk.

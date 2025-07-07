@@ -227,7 +227,7 @@ def la2m_mapping(
     mapping_param_path: Path = typer.Option(cli_defaults['mapping_param_path'], "--param-save-path", help="Path to save mapping parameters"),
     mapping_embedding_path: Path = typer.Option(cli_defaults['mapping_embedding_path'], "--embedding-save-path", help="Path to save mapping embeddings"),
     num_clusters: int = typer.Option(10, "--num-clusters", help="Number of clusters"),
-    clustering_method: str = typer.Option("kmeans", "--clustering", help="Clustering method (kmeans, hierarchical)"),
+    cluster_method: str = typer.Option("la2m-cluster", "--cluster-method", help="Clustering method (kmeans, hierarchical)"),
     local_strategy: str = typer.Option("procrustes", "--local-strategy", help="Local mapping strategy"),
     min_cluster_size: int = typer.Option(10, "--min-cluster-size", help="Minimum cluster size"),
     save_param: bool = typer.Option(False, "--save-param", help="Save mapping parameters"),
@@ -268,7 +268,7 @@ def la2m_mapping(
     from ..mapping.base import MappingConfig
     config = MappingConfig(
         num_clusters=num_clusters,
-        cluster_method=clustering_method,
+        cluster_method=cluster_method,
         min_cluster_size=min_cluster_size,
         local_strategy=local_strategy,
         with_scaling=with_scaling,

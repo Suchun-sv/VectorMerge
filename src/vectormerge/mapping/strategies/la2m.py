@@ -11,9 +11,8 @@ from typing import List, Optional, Dict, Any, Tuple
 from pathlib import Path
 from loguru import logger
 
-from ..base import MappingStrategy, MappingConfig, ClusterData
-from ...clustering import KMeansClusteringStrategy, LA2MClusteringStrategy
-from ...clustering.base import ClusteringConfig
+from ..base import MappingStrategy, MappingConfig
+from ...clustering import ClusterData, ClusteringConfig, ClusterManager
 from .procrustes import procrustes_mapping_torch
 
 
@@ -22,8 +21,8 @@ class LA2MStrategy(MappingStrategy):
     Clustering-based mapping strategy (LA2M method from the paper).
     
     This strategy:
-    1. Clusters reference points using K-means or hierarchical clustering
-    2. Assigns target points to clusters
+    1. Uses ClusterManager to cluster reference points
+    2. Assigns target points to clusters through ClusterManager
     3. Learns local Procrustes mappings for each cluster
     4. Applies appropriate local mapping based on cluster assignment
     """
@@ -37,24 +36,21 @@ class LA2MStrategy(MappingStrategy):
         super().__init__(config)
         
         # Create clustering configuration from mapping config
-        cluster_method = getattr(config, 'clustering_method', getattr(config, 'cluster_method', 'kmeans'))
+        cluster_method = getattr(config, 'clustering_method', getattr(config, 'cluster_method', 'la2m-cluster'))
         clustering_config = ClusteringConfig(
             num_clusters=getattr(config, 'num_clusters', 50),
             method=cluster_method,
             min_cluster_size=getattr(config, 'min_cluster_size', 5),
             random_state=42,
-            linkage=getattr(config, 'linkage', 'ward'),
-            distance_threshold=getattr(config, 'distance_threshold', None),
             device=getattr(config, 'device', 'auto'),
             verbose=getattr(config, 'verbose', False),
             compute_metrics=False  # We'll compute metrics separately if needed
         )
         
-        # Initialize clustering strategy
-        if cluster_method == "la2m-cluster":
-            self.clustering_strategy = LA2MClusteringStrategy(clustering_config)
-        else:
-            self.clustering_strategy = KMeansClusteringStrategy(clustering_config)
+        # Initialize cluster manager (we'll set paths during fit)
+        self.cluster_manager: Optional[ClusterManager] = None
+        self.clustering_config = clustering_config
+        self.cluster_method = cluster_method
         
         # Storage for cluster data and local mappings
         self.cluster_data_list: List[ClusterData] = []
@@ -75,11 +71,25 @@ class LA2MStrategy(MappingStrategy):
         """
         logger.info(f"Fitting LA2M mapping strategy with {len(reference_indices)} reference points")
         
-        # Step 1: Cluster reference points
-        logger.info("Step 1: Clustering reference points...")
-        cluster_data_list, cluster_labels = self.clustering_strategy.cluster_reference(
-            source_embeddings, reference_indices
+        # Create a temporary cluster manager for this fit operation
+        # Since we don't have actual dataset/model info, we'll use memory-based clustering
+        temp_cluster_manager = ClusterManager(
+            dataset_name=self.config.dataset_name,
+            model=self.config.model, 
+            reference_key=self.config.reference_key,
+            reference_path=self.config.reference_path,
+            cluster_path=self.config.cluster_path,
+            embedding_path=self.config.embedding_path,
+            strategy_name=self.cluster_method,
+            force=self.config.force,
+            strategy_config=self.clustering_config,
+            auto_save_results=True,
+            verbose=self.config.verbose
         )
+        
+        # Step 1: Cluster reference points using ClusterManager
+        logger.info("Step 1: Clustering reference points...")
+        clustering_results = temp_cluster_manager.fit()
         
         # Step 2: Learn local mappings for each cluster
         logger.info("Step 2: Learning local mappings for each cluster...")
@@ -88,11 +98,11 @@ class LA2MStrategy(MappingStrategy):
         
         min_cluster_size = getattr(self.config, 'min_cluster_size', 5)
         
-        for cluster_id, cluster_data in enumerate(cluster_data_list):
-            if len(cluster_data.ref_index) >= min_cluster_size:  # Need minimum points for stable mapping
+        for cluster_id, cluster_data in enumerate(clustering_results.cluster_data_list):
+            if len(cluster_data.reference_indices) >= min_cluster_size:
                 try:
                     # Extract cluster reference embeddings
-                    cluster_ref_indices = np.array(cluster_data.ref_index)
+                    cluster_ref_indices = np.array(cluster_data.reference_indices)
                     cluster_source_ref = source_embeddings[cluster_ref_indices]
                     cluster_target_ref = target_embeddings[cluster_ref_indices]
                     
@@ -120,7 +130,7 @@ class LA2MStrategy(MappingStrategy):
                     logger.warning(f"Failed to learn mapping for cluster {cluster_id}: {e}")
                     # Skip this cluster - will use global fallback
             else:
-                logger.warning(f"Cluster {cluster_id} has insufficient points ({len(cluster_data.ref_index)} < {min_cluster_size})")
+                logger.warning(f"Cluster {cluster_id} has insufficient points ({len(cluster_data.reference_indices)} < {min_cluster_size})")
         
         # Step 3: Learn global fallback mapping using all reference points
         logger.info("Step 3: Learning global fallback mapping...")
@@ -150,7 +160,8 @@ class LA2MStrategy(MappingStrategy):
             logger.error(f"Failed to learn global fallback mapping: {e}")
             raise
         
-        # Step 4: Store cluster data for later use
+        # Step 4: Store cluster manager and data for later use
+        self.cluster_manager = temp_cluster_manager
         self.cluster_data_list = cluster_data_list
         
         self.is_fitted = True
@@ -158,9 +169,9 @@ class LA2MStrategy(MappingStrategy):
             'reference_size': len(reference_indices),
             'num_clusters': len(cluster_data_list),
             'successful_local_mappings': successful_clusters,
-            'cluster_method': getattr(self.config, 'clustering_method', getattr(self.config, 'cluster_method', 'kmeans')),
-            'cluster_sizes': [len(cluster.ref_index) for cluster in cluster_data_list],
-            'clustering_info': self.clustering_strategy.get_cluster_info()
+            'cluster_method': self.cluster_method,
+            'cluster_sizes': [len(cluster.reference_indices) for cluster in cluster_data_list],
+            'clustering_metadata': clustering_result.metadata
         }
         
         logger.info(f"LA2M mapping strategy fitted successfully. "
@@ -178,50 +189,38 @@ class LA2MStrategy(MappingStrategy):
         Returns:
             Transformed embeddings
         """
-        if not self.is_fitted:
+        if not self.is_fitted or self.cluster_manager is None:
             raise ValueError("Mapping must be fitted before transformation")
         
         logger.info(f"Transforming {len(embeddings)} embeddings using LA2M strategy")
         
-        # If no specific cluster assignment strategy, use distance to cluster centers
-        if hasattr(self.clustering_strategy, 'cluster_centers') and self.clustering_strategy.cluster_centers is not None:
-            # Assign all points to nearest cluster centers
-            from sklearn.metrics import pairwise_distances
-            distances = pairwise_distances(embeddings, self.clustering_strategy.cluster_centers)
-            cluster_assignments = np.argmin(distances, axis=1)
+        # Use ClusterManager to predict cluster assignments
+        cluster_assignments = self.cluster_manager.predict(embeddings)
+        
+        transformed = np.zeros_like(embeddings)
+        
+        for cluster_id in range(len(self.cluster_data_list)):
+            cluster_mask = (cluster_assignments == cluster_id)
+            cluster_indices = np.where(cluster_mask)[0]
             
-            transformed = np.zeros_like(embeddings)
-            
-            for cluster_id in range(len(self.cluster_data_list)):
-                cluster_mask = (cluster_assignments == cluster_id)
-                cluster_indices = np.where(cluster_mask)[0]
+            if len(cluster_indices) > 0:
+                cluster_embeddings = embeddings[cluster_indices]
                 
-                if len(cluster_indices) > 0:
-                    cluster_embeddings = embeddings[cluster_indices]
-                    
-                    if cluster_id in self.local_mappings:
-                        # Use local mapping
+                if cluster_id in self.local_mappings:
+                    # Use local mapping
+                    transformed_cluster = self._apply_local_mapping(
+                        cluster_embeddings, self.local_mappings[cluster_id]
+                    )
+                else:
+                    # Use global fallback
+                    if self.global_fallback_mapping is not None:
                         transformed_cluster = self._apply_local_mapping(
-                            cluster_embeddings, self.local_mappings[cluster_id]
+                            cluster_embeddings, self.global_fallback_mapping
                         )
                     else:
-                        # Use global fallback
-                        if self.global_fallback_mapping is not None:
-                            transformed_cluster = self._apply_local_mapping(
-                                cluster_embeddings, self.global_fallback_mapping
-                            )
-                        else:
-                            transformed_cluster = cluster_embeddings  # No transformation available
-                    
-                    transformed[cluster_indices] = transformed_cluster
-        else:
-            # No cluster centers available - use global fallback for all points
-            logger.warning("No cluster centers available, using global fallback for all points")
-            if self.global_fallback_mapping is not None:
-                transformed = self._apply_local_mapping(embeddings, self.global_fallback_mapping)
-            else:
-                logger.error("No global fallback mapping available")
-                transformed = embeddings  # Return original embeddings as fallback
+                        transformed_cluster = cluster_embeddings  # No transformation available
+                
+                transformed[cluster_indices] = transformed_cluster
         
         return transformed
     
@@ -265,10 +264,10 @@ class LA2MStrategy(MappingStrategy):
         Returns:
             Cluster assignments
         """
-        if not self.is_fitted:
+        if not self.is_fitted or self.cluster_manager is None:
             raise ValueError("Mapping must be fitted before getting cluster assignments")
         
-        return self.clustering_strategy.predict_cluster(embeddings)
+        return self.cluster_manager.predict(embeddings)
     
     def get_cluster_statistics(self) -> Dict[str, Any]:
         """Get detailed statistics about the clustering and mappings.
@@ -282,11 +281,15 @@ class LA2MStrategy(MappingStrategy):
         stats = {
             'num_clusters': len(self.cluster_data_list),
             'successful_local_mappings': len(self.local_mappings),
-            'cluster_sizes': [len(cluster.ref_index) for cluster in self.cluster_data_list],
-            'cluster_diameters': [cluster.diameter for cluster in self.cluster_data_list],
+            'cluster_sizes': [len(cluster.reference_indices) for cluster in self.cluster_data_list],
             'has_global_fallback': self.global_fallback_mapping is not None,
-            'clustering_method': getattr(self.config, 'clustering_method', getattr(self.config, 'cluster_method', 'kmeans'))
+            'clustering_method': self.cluster_method
         }
+        
+        # Add cluster manager statistics if available
+        if self.cluster_manager and self.cluster_manager.last_result:
+            cluster_manager_stats = self.cluster_manager.get_cluster_statistics()
+            stats.update({'cluster_manager_stats': cluster_manager_stats})
         
         return stats
     
@@ -303,10 +306,9 @@ class LA2MStrategy(MappingStrategy):
         cluster_data_dict = {}
         for i, cluster_data in enumerate(self.cluster_data_list):
             cluster_data_dict[i] = {
-                'ref_index': cluster_data.ref_index,
-                'bound_index': cluster_data.bound_index,
-                'diameter': cluster_data.diameter,
-                'center': cluster_data.center.tolist() if cluster_data.center is not None else None
+                'reference_indices': cluster_data.reference_indices,
+                'linked_target_indices': cluster_data.linked_target_indices,
+                'center_embedding': cluster_data.center_embedding.tolist() if cluster_data.center_embedding is not None else None
             }
         
         import json
@@ -352,10 +354,9 @@ class LA2MStrategy(MappingStrategy):
         for i in range(len(cluster_data_dict)):
             cluster_info = cluster_data_dict[str(i)]
             cluster_data = ClusterData(
-                ref_index=cluster_info['ref_index'],
-                bound_index=cluster_info['bound_index'],
-                diameter=cluster_info['diameter'],
-                center=np.array(cluster_info['center']) if cluster_info['center'] else None
+                reference_indices=cluster_info['reference_indices'],
+                linked_target_indices=cluster_info['linked_target_indices'],
+                center_embedding=np.array(cluster_info['center_embedding']) if cluster_info['center_embedding'] else None
             )
             instance.cluster_data_list.append(cluster_data)
         

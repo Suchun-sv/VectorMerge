@@ -114,6 +114,10 @@ class VectorSpaceMapper:
         
         return final_param_path, final_embedding_path
     
+    def check_on_disk(self, path: Union[str, Path]) -> bool:
+        """Check if the mapping is fitted and on disk."""
+        return Path(path).exists() and self.mapping_strategy.check_on_disk(path)
+    
     def fit(self, source_embeddings: np.ndarray, target_embeddings: np.ndarray,
             reference_indices: np.ndarray, **kwargs) -> 'VectorSpaceMapper':
         """Fit the mapping strategy on reference data.
@@ -137,7 +141,7 @@ class VectorSpaceMapper:
         start_time = time.time()
 
         if not self.force:
-            if self.mapping_param_path.exists() and self.mapping_strategy.check_fit(self.mapping_param_path):
+            if self.check_on_disk(self.mapping_param_path):
                 logger.info(f"Loading existing mapping parameters from {self.mapping_param_path}")
                 try:
                     self.mapping_strategy = self.mapping_strategy.load(self.mapping_param_path)
