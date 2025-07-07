@@ -61,7 +61,7 @@ class MappingConfig:
     model: str = "mistral"
     reference_key: str = "random_split_scifact_0.33"
     reference_path: str = "./data/processed/references"
-    cluster_path: str = "./data/processed/cluster"
+    cluster_path: str = "./data/processed/clusters"
     embedding_path: str = "./data/processed/embeddings"
     
     def to_dict(self) -> Dict[str, Any]:

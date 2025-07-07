@@ -307,6 +307,20 @@ class ClusteringStrategy(ABC):
         self.is_fitted = False
         
         logger.info(f"Initialized {self.__class__.__name__} with {config.num_clusters} clusters")
+
+    @abstractmethod
+    def predict(self, clustering_result: ClusteringResult, embeddings: np.ndarray) -> np.ndarray:
+        """Predict cluster assignments for new embeddings.
+        
+        Args:
+            clustering_result: Clustering result to use for prediction
+            embeddings: New embeddings to assign to clusters
+
+        Returns:
+            Cluster assignments for each embedding
+        """
+        pass
+
     
     @abstractmethod
     def fit(self, embeddings: np.ndarray, reference_indices: np.ndarray) -> ClusteringResult:
@@ -322,18 +336,6 @@ class ClusteringStrategy(ABC):
         pass
     
     @abstractmethod
-    def predict(self, embeddings: np.ndarray) -> np.ndarray:
-        """Predict cluster assignments for new embeddings.
-        
-        Args:
-            embeddings: New embeddings to assign to clusters
-            
-        Returns:
-            Cluster assignments for each embedding
-        """
-        pass
-    
-    @abstractmethod
     def _fit(self, embeddings: np.ndarray, reference_indices: np.ndarray) -> ClusteringResult:
         """Fit the clustering strategy to the data.
         
@@ -345,18 +347,38 @@ class ClusteringStrategy(ABC):
             ClusteringResult object with clustering information
         """
         pass
+
+    def _concat_clustering_centers(self, clusters: List[ClusterData]) -> np.ndarray:
+        """Concatenate clustering centers."""
+        centers = []
+        for cluster in clusters:
+            if cluster.center_embedding is not None:
+                centers.append(cluster.center_embedding)
+        return np.array(centers)
+
+    def _predict(self, clustering_result: ClusteringResult, embeddings: np.ndarray) -> np.ndarray:
+        """Predict cluster assignments for new embeddings."""
+        if not self.is_fitted:
+            raise ValueError("Strategy must be fitted before prediction")
     
-    @abstractmethod
-    def _predict(self, embeddings: np.ndarray) -> np.ndarray:
-        """Predict cluster assignments for new embeddings.
+        if not hasattr(self, 'cluster_centers_') or self.cluster_centers_ is None:
+            self.cluster_centers_ = self._concat_clustering_centers(clustering_result.cluster_data_list)
         
-        Args:
-            embeddings: New embeddings to assign to clusters
+        # For simplicity, assign each point to the nearest cluster center
+        if hasattr(self, 'cluster_centers_') and self.cluster_centers_ is not None:
+            embeddings_tensor = torch.tensor(embeddings, dtype=torch.float32)
+            centers_tensor = torch.tensor(self.cluster_centers_, dtype=torch.float32)
             
-        Returns:
-            Cluster assignments for each embedding
-        """
-        pass
+            # Compute distances to all centers
+            distances = torch.cdist(embeddings_tensor, centers_tensor)
+            
+            # Assign to nearest center
+            cluster_assignments = torch.argmin(distances, dim=1)
+            
+            return cluster_assignments.numpy()
+        else:
+            # Fallback: assign all to cluster 0
+            raise ValueError("Strategy must be fitted before prediction")
     
     def assign_to_clusters(self, embeddings: np.ndarray, target_indices: np.ndarray,
                           clustering_result: ClusteringResult) -> ClusteringResult:
@@ -381,7 +403,7 @@ class ClusteringStrategy(ABC):
         target_embeddings = embeddings[target_indices]
         
         # Predict cluster assignments
-        cluster_assignments = self.predict(target_embeddings)
+        cluster_assignments = self.predict(clustering_result, target_embeddings)
         
         # Update cluster data with assigned target points
         updated_clusters = []

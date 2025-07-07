@@ -408,6 +408,10 @@ class VectorSpaceMapper:
         mapper = cls(
             strategy=mapper_info['strategy_name'], 
             config=config,
+            dataset_name=mapper_info['dataset_name'],
+            source_model=mapper_info['source_model'],
+            target_model=mapper_info['target_model'],
+            reference_key=mapper_info['reference_key'],
             mapping_param_path=mapping_param_path,
             mapping_embedding_path=mapping_embedding_path
         )

@@ -33,10 +33,6 @@ class LA2MClusteringStrategy(ClusteringStrategy):
         """Fit clustering strategy to reference embeddings."""
         return self._fit(embeddings, reference_indices)
     
-    def predict(self, embeddings: np.ndarray) -> np.ndarray:
-        """Predict cluster assignments for new embeddings."""
-        return self._predict(embeddings)
-    
     def _fit(self, embeddings: np.ndarray, reference_indices: np.ndarray) -> ClusteringResult:
         """Fit the LA2M clustering strategy."""
         logger.info(f"Starting LA2M clustering with d_prime={self.d_prime}")
@@ -56,10 +52,13 @@ class LA2MClusteringStrategy(ClusteringStrategy):
         
         return result
     
-    def _predict(self, embeddings: np.ndarray) -> np.ndarray:
+    def _predict(self, result: ClusteringResult, embeddings: np.ndarray) -> np.ndarray:
         """Predict cluster assignments for new embeddings."""
         if not self.is_fitted:
             raise ValueError("Strategy must be fitted before prediction")
+    
+        if not hasattr(self, 'cluster_centers_') or self.cluster_centers_ is None:
+            self.cluster_centers_ = self._concat_clustering_centers(result.cluster_data_list)
         
         # For simplicity, assign each point to the nearest cluster center
         if hasattr(self, 'cluster_centers_') and self.cluster_centers_ is not None:
@@ -75,8 +74,12 @@ class LA2MClusteringStrategy(ClusteringStrategy):
             return cluster_assignments.numpy()
         else:
             # Fallback: assign all to cluster 0
-            return np.zeros(len(embeddings), dtype=int)
+            raise ValueError("Strategy must be fitted before prediction")
     
+    def predict(self, clustering_result: ClusteringResult, embeddings: np.ndarray) -> np.ndarray:
+        """Predict cluster assignments for new embeddings."""
+        return self._predict(clustering_result, embeddings)
+
     def _compute_neighborhoods(self, embeddings: torch.Tensor, 
                              reference_indices: np.ndarray) -> List[ClusterData]:
         """Compute neighborhoods for individual points."""
@@ -105,6 +108,7 @@ class LA2MClusteringStrategy(ClusteringStrategy):
             neighborhoods.append(cluster_data)
         
         return neighborhoods
+    
     
     def _create_clustering_result(self, clusters: List[ClusterData], 
                                  embeddings: np.ndarray,

@@ -125,7 +125,8 @@ class ClusterManager:
                 if source_embeddings is None:
                     raise ValueError(f"Could not load embeddings for {self.dataset_name}")
                 return self.assembles_cluster_result(source_embeddings, result)
-            
+            self.is_fitted = True
+            self.strategy.is_fitted = True
             return result
         
         # Load embeddings and reference indices for new clustering
@@ -148,7 +149,7 @@ class ClusterManager:
         # Auto-save if enabled
         if self.auto_save_results:
             self.save_cluster_to_disk(cluster_result)
-        
+        self.is_fitted = True
         return cluster_result
     
     def load(self) -> ClusteringResult:
@@ -159,7 +160,7 @@ class ClusterManager:
             raise FileNotFoundError(f"Clustering result not found: {self.final_save_path}")
         
         logger.info(f"Loading cluster from {self.final_save_path}")
-        clustering_result = joblib.load(self.final_save_path)
+        clustering_result = joblib.load(self.final_save_path / "cluster.pkl")
         self.last_result = clustering_result
         return clustering_result
     
@@ -188,7 +189,7 @@ class ClusterManager:
         
         logger.info(f"Clustering result saved to {self.final_save_path}")
     
-    def predict(self, embeddings: np.ndarray) -> np.ndarray:
+    def predict(self, clustering_result: ClusteringResult, embeddings: np.ndarray) -> np.ndarray:
         """Predict cluster assignments for new embeddings."""
         if self.strategy is None:
             raise ValueError("Strategy not initialized")
@@ -196,7 +197,7 @@ class ClusterManager:
         if not self.strategy.is_fitted:
             raise ValueError("Strategy not fitted. Run fit() first.")
         
-        return self.strategy.predict(embeddings)
+        return self.strategy.predict(clustering_result, embeddings)
     
     def cluster_embeddings(self, embeddings: np.ndarray, 
                           reference_indices: np.ndarray) -> ClusteringResult:

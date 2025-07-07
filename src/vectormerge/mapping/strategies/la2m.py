@@ -10,6 +10,8 @@ import torch
 from typing import List, Optional, Dict, Any, Tuple
 from pathlib import Path
 from loguru import logger
+import time
+from tqdm import tqdm
 
 from ..base import MappingStrategy, MappingConfig
 from ...clustering import ClusterData, ClusteringConfig, ClusterManager
@@ -98,7 +100,8 @@ class LA2MStrategy(MappingStrategy):
         
         min_cluster_size = getattr(self.config, 'min_cluster_size', 5)
         
-        for cluster_id, cluster_data in enumerate(clustering_results.cluster_data_list):
+        training_time_start = time.time()
+        for cluster_id, cluster_data in tqdm(enumerate(clustering_results.cluster_data_list), total=len(clustering_results.cluster_data_list)):
             if len(cluster_data.reference_indices) >= min_cluster_size:
                 try:
                     # Extract cluster reference embeddings
@@ -122,7 +125,18 @@ class LA2MStrategy(MappingStrategy):
                         self.local_mappings[cluster_id] = local_mapping
                         successful_clusters += 1
                         
-                        logger.debug(f"Cluster {cluster_id}: learned mapping with {len(cluster_ref_indices)} points")
+                        # Calculate elapsed time and estimate remaining time
+                        elapsed_time = time.time() - training_time_start
+                        if successful_clusters > 0:
+                            avg_time_per_cluster = elapsed_time / successful_clusters
+                            remaining_clusters = len(clustering_results.cluster_data_list) - cluster_id - 1
+                            estimated_remaining_time = avg_time_per_cluster * remaining_clusters
+                            
+                            logger.info(f"Cluster {cluster_id}: learned mapping with {len(cluster_ref_indices)} points, "
+                                      f"remaining {remaining_clusters} clusters, "
+                                      f"estimated time remaining: {time.strftime('%H:%M:%S', time.gmtime(estimated_remaining_time))}")
+                        else:
+                            logger.info(f"Cluster {cluster_id}: learned mapping with {len(cluster_ref_indices)} points")
                     else:
                         logger.warning(f"Failed to get valid mapping for cluster {cluster_id}")
                 
@@ -162,20 +176,24 @@ class LA2MStrategy(MappingStrategy):
         
         # Step 4: Store cluster manager and data for later use
         self.cluster_manager = temp_cluster_manager
-        self.cluster_data_list = cluster_data_list
-        
+        self.cluster_data_list = clustering_results.cluster_data_list
+        self.training_time = time.time() - training_time_start
+        self.formated_training_time = time.strftime("%H:%M:%S", time.gmtime(self.training_time))
+
         self.is_fitted = True
         self.metadata = {
             'reference_size': len(reference_indices),
-            'num_clusters': len(cluster_data_list),
+            'num_clusters': len(self.cluster_data_list),
             'successful_local_mappings': successful_clusters,
             'cluster_method': self.cluster_method,
-            'cluster_sizes': [len(cluster.reference_indices) for cluster in cluster_data_list],
-            'clustering_metadata': clustering_result.metadata
+            'cluster_sizes': [len(cluster.reference_indices) for cluster in self.cluster_data_list],
+            'clustering_metadata': clustering_results.metadata,
+            'training_time': self.training_time,
+            'formated_training_time': self.formated_training_time
         }
         
         logger.info(f"LA2M mapping strategy fitted successfully. "
-                   f"Local mappings: {successful_clusters}/{len(cluster_data_list)}")
+                   f"Local mappings: {successful_clusters}/{len(self.cluster_data_list)}")
     
     def transform(self, embeddings: np.ndarray, 
                  target_indices: Optional[np.ndarray] = None, **kwargs) -> np.ndarray:
@@ -195,7 +213,8 @@ class LA2MStrategy(MappingStrategy):
         logger.info(f"Transforming {len(embeddings)} embeddings using LA2M strategy")
         
         # Use ClusterManager to predict cluster assignments
-        cluster_assignments = self.cluster_manager.predict(embeddings)
+        cluster_result = self.cluster_manager.fit()
+        cluster_assignments = self.cluster_manager.predict(cluster_result, embeddings[target_indices])
         
         transformed = np.zeros_like(embeddings)
         
@@ -254,20 +273,6 @@ class LA2MStrategy(MappingStrategy):
         except Exception as e:
             logger.error(f"Error applying local mapping: {e}")
             return embeddings
-    
-    def get_cluster_assignments(self, embeddings: np.ndarray) -> np.ndarray:
-        """Get cluster assignments for embeddings.
-        
-        Args:
-            embeddings: Embeddings to assign to clusters
-            
-        Returns:
-            Cluster assignments
-        """
-        if not self.is_fitted or self.cluster_manager is None:
-            raise ValueError("Mapping must be fitted before getting cluster assignments")
-        
-        return self.cluster_manager.predict(embeddings)
     
     def get_cluster_statistics(self) -> Dict[str, Any]:
         """Get detailed statistics about the clustering and mappings.
