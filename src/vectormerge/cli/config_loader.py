@@ -155,10 +155,18 @@ class ConfigLoader:
     def __init__(self):
         self.config = VectorMergeConfig()
         self._cached_configs = {}
-        # self._load_configs()
     
     def load_config(self) -> "ConfigLoader":
         self._load_configs()
+        return self
+    
+    def __getitem__(self, key: str) -> Any:
+        """Get a configuration value by key."""
+        return getattr(self.config, key)
+    
+    def update_config(self, update_dict: Dict[str, Any]) -> "ConfigLoader":
+        """Update configuration with a dictionary."""
+        self.config = self.config.from_dict(update_dict)
         return self
     
     def to_commented_yaml(self) -> str:
