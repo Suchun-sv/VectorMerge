@@ -1,3 +1,3 @@
-uv venv
-uv sync
-pip install -e .
+~/.local/bin/uv venv
+~/.local/bin/uv sync
+~/.local/bin/uv pip install -e .
