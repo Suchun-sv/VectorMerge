@@ -40,7 +40,7 @@ The configuration is stored in the following files (will be loaded in order of p
 ============================ VectorMerge Config ============================
 """
 
-# 一个类型变量，用于正确的类型提示
+# Type variable for proper type hints
 T = TypeVar('T')
 
 @dataclasses.dataclass
