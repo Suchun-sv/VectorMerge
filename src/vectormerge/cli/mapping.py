@@ -13,10 +13,13 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.panel import Panel
 from rich.table import Table
 import json
-from ..embeddings import SUPPORTED_MODELS
+from ..embeddings import SUPPORTED_MODELS, get_embedding
 from ..dataset import SUPPORTED_DATASETS
+from ..reference import get_reference
+from ..mapping import VectorSpaceMapper
+from ..mapping.base import MappingConfig
 
-from .base import cli_defaults, set_seed, _common_mapping_workflow, console
+from .base import cli_defaults, set_seed, console
 from .utils import (
     select_model_interactively, select_dataset_interactively,
     validate_model_and_dataset, display_error_and_exit
@@ -303,3 +306,31 @@ def la2m_mapping(
         save_embedding=save_embedding,
         verbose=verbose,
     )
+
+
+def _common_mapping_workflow(
+    strategy: str, strategy_config: MappingConfig, source_model: str, target_model: str, dataset: str, reference_key: str, reference_path: str, embedding_path: str, mapping_param_path: str, mapping_embedding_path: str,  force: bool, save_param: bool, save_embedding: bool, verbose: bool):
+
+    # Load embeddings
+    source_embeddings = get_embedding(source_model, dataset, embedding_path, type_="corpus")
+    target_embeddings = get_embedding(target_model, dataset, embedding_path, type_="corpus")
+
+    # Load reference indices
+    reference_data = get_reference(reference_path, reference_key)
+    d0_index = reference_data['d0_index']
+    
+    # Create and fit mapper
+    mapper = VectorSpaceMapper(strategy=strategy, 
+                             config=strategy_config, 
+                             dataset_name=dataset,
+                             source_model=source_model,
+                             target_model=target_model,
+                             reference_key=reference_key,
+                             mapping_param_path=mapping_param_path, 
+                             mapping_embedding_path=mapping_embedding_path, 
+                             save_param=save_param,
+                             save_embedding=save_embedding,
+                             force=force)
+    
+    # Transform embeddings
+    mapper.fit_and_transform(source_embeddings, target_embeddings, d0_index)

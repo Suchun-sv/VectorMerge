@@ -21,6 +21,7 @@ mapping_path: ./data/processed/mappings/
 mapping_param_path: ./output/mapping_models/
 mapping_embedding_path: ./output/mapping_embeddings/
 cluster_path: ./data/processed/clusters/
+wandb_project: vector-merge
 # ============================ Mapper config ============================
 mapping_config:
   device: auto
@@ -29,10 +30,10 @@ mapping_config:
   la2m_config:
     num_clusters: 50
     cluster_method: la2m-cluster
-    d_prime: 30
+    d_prime: 10
     pca_mapping: true
-    pca_dim: 23
-    use_norm: true
+    pca_dim: 14
+    use_norm: false
     save_param: false
     save_embedding: false
   nonlinear_config:

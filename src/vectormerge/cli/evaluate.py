@@ -1,10 +1,11 @@
 import typer
 from typing import Any
 from click import Context
+import wandb
 
 from vectormerge.cli import config_loader
 from vectormerge.cli.config_loader import ConfigLoader
-from .base import SUPPORTED_DATASETS, SUPPORTED_MODELS, SUPPORTED_MAPPING_METHODS
+from .base import SUPPORTED_DATASETS, SUPPORTED_MODELS, SUPPORTED_MAPPING_METHODS, set_wandb
 from . import parse_dynamic_config
 from ..mapping.manager import VectorSpaceMapper
 from ..dataset import load_dataset
@@ -30,6 +31,7 @@ def single_run(
     force: bool = typer.Option(False, "--force", "-f", help="Force evaluation"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Verbose output"),
+    wandb_entity: str = typer.Option(None, "--wandb-entity", "-we", help="Weights and Biases"),
 ):
     """
     Evaluate the performance of a mapping model, you can pass extra arguments to the command to override the default values.
@@ -41,6 +43,8 @@ def single_run(
         config_loader.update_config(extra_dict)
     
     config = config_loader.config
+
+    set_wandb(wandb_entity=wandb_entity, wandb_project=config.wandb_project, config_dict=config.to_dict())
 
     dataset = load_dataset(dataset_name=dataset_name, data_path=config.data_path, force=force, interactive=False, verbose=verbose)
 
@@ -86,6 +90,7 @@ def single_run(
     print("transformed_embeddings.shape", transformed_embeddings.shape)
 
     recalls = evaluator.evaluate()
+    wandb.log(recalls)
     print(recalls)
     
 

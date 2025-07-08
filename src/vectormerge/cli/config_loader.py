@@ -97,6 +97,8 @@ class VectorMergeConfig(BaseConfig):
     mapping_embedding_path: str = "./output/mapping_embeddings/"
     cluster_path: str = "./data/processed/clusters/"
 
+    wandb_project: str = "vector-merge"
+
     mapping_config: MappingConfig = MappingConfig()
     clustering_config: ClusteringConfig = ClusteringConfig()
     embedding_models: EmbeddingModelConfig = EmbeddingModelConfig()
