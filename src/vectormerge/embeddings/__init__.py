@@ -1,5 +1,6 @@
 from .embedding_generator import EmbeddingGenerator, get_embedding_generator
 from .generate import generate_embeddings, get_embedding
+from .base import EmbeddingModelConfig
 
 SUPPORTED_MODELS = [
     "mistral",
@@ -9,4 +10,4 @@ SUPPORTED_MODELS = [
     "fast-text"
 ]
 
-__all__ = ["EmbeddingGenerator", "get_embedding_generator", "generate_embeddings", "SUPPORTED_MODELS", "get_embedding"]
+__all__ = ["EmbeddingGenerator", "get_embedding_generator", "generate_embeddings", "SUPPORTED_MODELS", "get_embedding", "EmbeddingModelConfig"]

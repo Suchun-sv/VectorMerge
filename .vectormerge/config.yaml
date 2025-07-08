@@ -21,7 +21,7 @@ mapping_path: ./data/processed/mappings/
 mapping_param_path: ./output/mapping_models/
 mapping_embedding_path: ./output/mapping_embeddings/
 cluster_path: ./data/processed/clusters/
-# ============================ mapper config ============================
+# ============================ Mapper config ============================
 mapping_config:
   device: auto
   batch_size: 32
@@ -52,7 +52,7 @@ mapping_config:
     use_norm: true
     save_param: false
     save_embedding: false
-# ============================ clustering config ============================
+# ============================ Clustering config ============================
 clustering_config:
   clustering_method: kmeans
   device: auto
@@ -65,3 +65,48 @@ clustering_config:
     tol: 0.0001
     random_state: 42
   compute_metrics: true
+# ============================ Embedding models config ============================
+embedding_models:
+  model: mistral
+  dataset: scifact
+  type_: corpus
+  mistral_config:
+    model_name: mistral-embed
+    batch_size: 32
+    device: cpu
+    max_tokens: 8192
+    sleep_time: 2
+  openai_config:
+    model_name: text-embedding-3-small
+    batch_size: 16
+    device: cpu
+    max_tokens: 8192
+    sleep_time: 2
+  nv_embed_config:
+    model_name: nv-embed
+    batch_size: 32
+    device: cuda
+    model_path: ~/.cache/embedding_models/nv-embed/
+    max_tokens: 8192
+  gte_config:
+    model_name: Alibaba-NLP/gte-Qwen2-7B-instruct
+    batch_size: 32
+    device: cuda
+    model_path: ~/.cache/embedding_models/gte/
+    max_tokens: 8192
+  fast_text_config:
+    model_name: fast-text
+    batch_size: 64
+    device: cpu
+    model_path: ~/.cache/embedding_models/fast-text/
+  word2vec_config:
+    model_name: word2vec
+    batch_size: 64
+    device: cpu
+    model_path: ~/.cache/embedding_models/word2vec/
+  glove_config:
+    model_name: glove
+    batch_size: 64
+    device: cpu
+    model_path: ~/.cache/embedding_models/glove.6B/
+verbose: false

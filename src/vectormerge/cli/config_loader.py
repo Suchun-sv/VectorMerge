@@ -12,6 +12,7 @@ from typing import Dict, Any, Optional, Union
 from dataclasses import dataclass, field
 from ..mapping.base import MappingConfig
 from ..clustering.base import ClusteringConfig
+from ..embeddings.base import EmbeddingModelConfig
 from ruamel.yaml import YAML
 from ruamel.yaml.comments import CommentedMap
 import io
@@ -96,7 +97,8 @@ class VectorMergeConfig(BaseConfig):
 
     mapping_config: MappingConfig = MappingConfig()
     clustering_config: ClusteringConfig = ClusteringConfig()
-    
+    embedding_models: EmbeddingModelConfig = EmbeddingModelConfig()
+    verbose: bool = False
 
     def to_yaml(self) -> str:
         """Convert configuration to YAML string."""
@@ -121,13 +123,19 @@ class VectorMergeConfig(BaseConfig):
         config_dict.yaml_set_start_comment(copyright_info)
         config_dict.yaml_set_comment_before_after_key(
             'mapping_config',
-            before='============================ mapper config ============================',
+            before='============================ Mapper config ============================',
             indent=0
         )
         
         config_dict.yaml_set_comment_before_after_key(
             'clustering_config', 
-            before='============================ clustering config ============================',
+            before='============================ Clustering config ============================',
+            indent=0
+        )
+
+        config_dict.yaml_set_comment_before_after_key(
+            'embedding_models',
+            before='============================ Embedding models config ============================',
             indent=0
         )
         

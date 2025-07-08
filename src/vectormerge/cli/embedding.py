@@ -34,7 +34,7 @@ def generate_embeddings(
     data_path: Path = typer.Option(cli_defaults['data_path'], "--data-path", help="Path to raw data directory"),
     embedding_path: Path = typer.Option(cli_defaults['embedding_path'], "--embedding-path", help="Path to save embeddings"),
     cache_dir: Path = typer.Option(Path("./cache/embeddings/"), "--cache-dir", help="Path to cache directory"),
-    type_: str = typer.Option(cli_defaults['type'], "--type", help="Type of embeddings to generate"),
+    type_: str = typer.Option(cli_defaults['embedding_models']['type_'], "--type", help="Type of embeddings to generate"),
     batch_size: int = typer.Option(32, "--batch-size", help="Batch size for processing"),
     force: bool = typer.Option(False, "--force", help="Force regeneration of existing embeddings"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
