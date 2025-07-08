@@ -12,6 +12,7 @@ from typing import List, Tuple, Optional, Dict, Any
 from pathlib import Path
 import logging
 from tqdm import tqdm
+from dataclasses import dataclass
 
 from ..base import ClusteringStrategy, ClusteringResult, ClusterData, ClusteringConfig
 
@@ -26,7 +27,7 @@ class LA2MClusteringStrategy(ClusteringStrategy):
     
     def __init__(self, config: ClusteringConfig):
         super().__init__(config)
-        self.d_prime = config.d_prime
+        self.d_prime = config.la2m_config.d_prime
         self.is_fitted = False
         
     def fit(self, embeddings: np.ndarray, reference_indices: np.ndarray) -> ClusteringResult:
@@ -138,7 +139,7 @@ class LA2MClusteringStrategy(ClusteringStrategy):
             cluster_centers=cluster_centers,
             metadata={
                 'method': 'la2m-cluster',
-                'd_prime': self.d_prime,
+                'd_prime': self.config.la2m_config.d_prime,
                 'num_reference_points': len(reference_indices)
             }
         ) 

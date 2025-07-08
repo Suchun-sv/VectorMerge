@@ -17,7 +17,6 @@ from ..base import MappingStrategy, MappingConfig
 from ...clustering import ClusterData, ClusteringConfig, ClusterManager
 from .procrustes import procrustes_mapping_torch
 
-
 class LA2MStrategy(MappingStrategy):
     """
     Clustering-based mapping strategy (LA2M method from the paper).
@@ -76,14 +75,7 @@ class LA2MStrategy(MappingStrategy):
         # Create a temporary cluster manager for this fit operation
         # Since we don't have actual dataset/model info, we'll use memory-based clustering
         temp_cluster_manager = ClusterManager(
-            dataset_name=self.config.dataset_name,
-            model=self.config.model, 
-            reference_key=self.config.reference_key,
-            reference_path=self.config.reference_path,
-            cluster_path=self.config.cluster_path,
-            embedding_path=self.config.embedding_path,
             strategy_name=self.cluster_method,
-            force=self.config.force,
             strategy_config=self.clustering_config,
             auto_save_results=True,
             verbose=self.config.verbose

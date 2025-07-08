@@ -28,14 +28,21 @@ cluster_results = manager.cluster_embeddings(
 """
 
 # Core classes
-from .base import ClusteringStrategy, ClusteringConfig, ClusteringResult, ClusterData
+from .base import (
+    ClusteringStrategy, 
+    ClusteringConfig, 
+    ClusteringResult, 
+    ClusterData,
+)
+
 from .manager import ClusterManager, load_cluster_result, load_cluster_config
-from .manager import SUPPORTED_CLUSTERING_METHODS
+# from .manager import SUPPORTED_CLUSTERING_METHODS
+from .strategies import SUPPORTED_CLUSTERING_METHODS
 
 # Clustering strategies
 from .strategies import (
     KMeansClusteringStrategy,
-    LA2MClusteringStrategy
+    LA2MClusteringStrategy,
 )
 
 # Utility functions
@@ -45,6 +52,7 @@ from .utils import (
     compute_cluster_metrics,
     visualize_clusters
 )
+
 
 # Version information
 __version__ = "1.0.0"

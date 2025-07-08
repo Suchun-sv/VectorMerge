@@ -13,6 +13,44 @@ import numpy as np
 import torch
 from loguru import logger
 
+from vectormerge.mapping.utils.io import save_embeddings
+
+@dataclass
+class LA2MConfig():
+    """Configuration for LA2M mapping strategy."""
+    num_clusters: int = 50
+    d_prime: int = 10
+    save_param: bool = False
+    save_embedding: bool = False
+
+@dataclass
+class NonLinearMappingConfig():
+    """Configuration for non-linear mapping strategy."""
+    num_layers: int = 3
+    batch_size: int = 32
+    learning_rate: float = 0.001
+    num_epochs: int = 100
+    hidden_dim: int = 512
+    dropout_rate: float = 0.1
+    loss_type: str = "mse"
+    save_param: bool = False
+    save_embedding: bool = False
+
+@dataclass
+class ProcrustesConfig():
+    """Configuration for Procrustes mapping strategy."""
+    approximate: bool = False
+    q: int = 1500
+    with_rotation: bool = True
+    with_scaling: bool = True
+    use_pca: bool = False
+    reduced_dim: int = 0
+    procrustes_pca_type: str = "none"
+    use_norm: bool = True
+    save_param: bool = False
+    save_embedding: bool = False
+
+
 @dataclass
 class MappingConfig:
     """Configuration for mapping strategies."""
@@ -21,48 +59,11 @@ class MappingConfig:
     device: str = "auto"
     batch_size: int = 32
     verbose: bool = False
-    
-    # Training settings
-    num_epochs: int = 100
-    learning_rate: float = 0.001
-    
-    # Procrustes settings
-    with_rotation: bool = True
-    with_scaling: bool = True
-    approximate: bool = False
-    q: int = 1500  # Approximation parameter
-    
-    # Linear mapping settings
-    hidden_dim: int = 512
-    loss_type: str = "mse"  # "mse", "cosine", "triplet"
-    
-    # Clustering settings
-    num_clusters: int = 50
-    cluster_method: str = "kmeans"  # "kmeans", "hierarchical"
-    
-    # Loss function settings
-    triplet_margin: float = 1.0
-    rank_margin: float = 0.1
-    lambda_: float = 1.0
-    
-    # Advanced settings
-    use_pca: bool = False
-    reduced_dim: int = 0
-    procrustes_pca_type: str = "none"  # "none", "inner", "outer"
-    use_norm: bool = True
 
-    # LA2M settings
-    min_cluster_size: int = 10
-    local_strategy: str = "procrustes"
-
-    force: bool = False
-
-    dataset_name: str = "scifact"
-    model: str = "mistral"
-    reference_key: str = "random_split_scifact_0.33"
-    reference_path: str = "./data/processed/references"
-    cluster_path: str = "./data/processed/clusters"
-    embedding_path: str = "./data/processed/embeddings"
+    # Mapping strategy settings
+    la2m_config: LA2MConfig = LA2MConfig()
+    nonlinear_config: NonLinearMappingConfig = NonLinearMappingConfig()
+    procrustes_config: ProcrustesConfig = ProcrustesConfig()
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""

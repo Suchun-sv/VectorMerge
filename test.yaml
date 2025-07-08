@@ -1,0 +1,72 @@
+cluster_path: ./data/processed/clusters/
+clustering_config: !!python/object:vectormerge.clustering.base.ClusteringConfig
+  clustering_method: kmeans
+  compute_metrics: true
+  device: auto
+  kmeans_config: !!python/object:vectormerge.clustering.base.KMeansConfig
+    max_iter: 300
+    n_clusters: 10
+    random_state: 42
+    tol: 0.0001
+  la2m_config: !!python/object:vectormerge.clustering.base.LA2MClusteringConfig
+    d_prime: 10
+  verbose: false
+data_path: ./data/raw/beir/
+dataset: scifact
+default_batch_size: 32
+default_d0_ratio: 0.33
+default_dataset: scifact
+default_device: auto
+default_k_list:
+- 10
+- 100
+- 1000
+default_mapping_method: procrustes
+default_metrics:
+- recall
+- ndcg
+- map
+default_model: mistral
+default_num_clusters: 50
+default_reference_strategy: ours
+default_type: all
+embedding_path: ./data/processed/embeddings/
+force_download: false
+mapping_config: !!python/object:vectormerge.mapping.base.MappingConfig
+  batch_size: 32
+  device: auto
+  la2m_config: !!python/object:vectormerge.mapping.base.LA2MConfig
+    d_prime: 10
+    num_clusters: 50
+    save_embedding: false
+    save_param: false
+  nonlinear_config: !!python/object:vectormerge.mapping.base.NonLinearMappingConfig
+    batch_size: 32
+    dropout_rate: 0.1
+    hidden_dim: 512
+    learning_rate: 0.001
+    loss_type: mse
+    num_epochs: 100
+    num_layers: 3
+    save_embedding: false
+    save_param: false
+  procrustes_config: !!python/object:vectormerge.mapping.base.ProcrustesConfig
+    approximate: false
+    procrustes_pca_type: none
+    q: 1500
+    reduced_dim: 0
+    save_embedding: false
+    save_param: false
+    use_norm: true
+    use_pca: false
+    with_rotation: true
+    with_scaling: true
+  verbose: false
+mapping_embedding_path: ./output/mapping_embeddings/
+mapping_param_path: ./output/mapping_models/
+mapping_path: ./data/processed/mappings/
+model_1: bert-base-uncased
+model_2: roberta-base
+reference_path: ./data/processed/references/
+use_cache: true
+verbose: false

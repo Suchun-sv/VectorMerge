@@ -19,7 +19,6 @@ from tqdm import trange
 
 from ..base import MappingStrategy, MappingConfig
 
-
 class NonLinearMappingModel(nn.Module):
     """
     Deep non-linear neural network for embedding mapping.
@@ -104,12 +103,12 @@ class NonLinearMappingStrategy(MappingStrategy):
         
         # Define hidden layer architecture
         self.hidden_dims = [
-            config.hidden_dim, 
-            config.hidden_dim * 2, 
-            config.hidden_dim * 2, 
-            config.hidden_dim
+            config.nonlinear_config.hidden_dim, 
+            config.nonlinear_config.hidden_dim * 2, 
+            config.nonlinear_config.hidden_dim * 2, 
+            config.nonlinear_config.hidden_dim
         ]
-        self.dropout_rate = getattr(config, 'dropout_rate', 0.1)
+        self.dropout_rate = getattr(config.nonlinear_config, 'dropout_rate', 0.1)
         
         logger.info(f"Non-linear mapping initialized with hidden_dims={self.hidden_dims}")
     
@@ -134,14 +133,14 @@ class NonLinearMappingStrategy(MappingStrategy):
         # Create optimizer with weight decay
         self.optimizer = Adam(
             self.model.parameters(), 
-            lr=self.config.learning_rate,
+            lr=self.config.nonlinear_config.learning_rate,
             weight_decay=1e-5
         )
         
         # Learning rate scheduler
         self.scheduler = optim.lr_scheduler.StepLR(
             self.optimizer, 
-            step_size=self.config.num_epochs // 3, 
+            step_size=self.config.nonlinear_config.num_epochs // 3, 
             gamma=0.5
         )
         
@@ -181,13 +180,13 @@ class NonLinearMappingStrategy(MappingStrategy):
         # Create data loaders
         train_loader = DataLoader(
             train_dataset, 
-            batch_size=self.config.batch_size, 
+            batch_size=self.config.nonlinear_config.batch_size, 
             shuffle=True
         )
         
         val_loader = DataLoader(
             val_dataset, 
-            batch_size=self.config.batch_size, 
+            batch_size=self.config.nonlinear_config.batch_size, 
             shuffle=False
         ) if n_val > 0 else None
         
@@ -203,15 +202,15 @@ class NonLinearMappingStrategy(MappingStrategy):
         Returns:
             Loss value
         """
-        if self.config.loss_type == "mse":
+        if self.config.nonlinear_config.loss_type == "mse":
             return nn.MSELoss()(predictions, targets)
         
-        elif self.config.loss_type == "cosine":
+        elif self.config.nonlinear_config.loss_type == "cosine":
             # Cosine embedding loss
             cos_sim = nn.CosineSimilarity(dim=1)(predictions, targets)
             return (1 - cos_sim).mean()
         
-        elif self.config.loss_type == "huber":
+        elif self.config.nonlinear_config.loss_type == "huber":
             # Huber loss for robustness
             return nn.SmoothL1Loss()(predictions, targets)
         
@@ -250,9 +249,9 @@ class NonLinearMappingStrategy(MappingStrategy):
         validation_losses = []
         best_val_loss = float('inf')
         patience_counter = 0
-        patience = self.config.num_epochs // 10  # Early stopping patience
+        patience = self.config.nonlinear_config.num_epochs // 10  # Early stopping patience
         
-        epoch_bar = trange(self.config.num_epochs, desc="Training")
+        epoch_bar = trange(self.config.nonlinear_config.num_epochs, desc="Training")
         for epoch in epoch_bar:
             # Training phase
             self.model.train()
@@ -314,12 +313,12 @@ class NonLinearMappingStrategy(MappingStrategy):
             
             # Log every 20 epochs
             if (epoch + 1) % 20 == 0:
-                logger.info(f"Epoch {epoch+1}/{self.config.num_epochs}, "
+                logger.info(f"Epoch {epoch+1}/{self.config.nonlinear_config.num_epochs}, "
                            f"Train Loss: {avg_train_loss:.6f}, "
                            f"Val Loss: {val_loss:.6f}")
             
             # Early stopping
-            if patience_counter >= patience and epoch > self.config.num_epochs // 2:
+            if patience_counter >= patience and epoch > self.config.nonlinear_config.num_epochs // 2:
                 logger.info(f"Early stopping at epoch {epoch+1}")
                 break
         
@@ -330,7 +329,7 @@ class NonLinearMappingStrategy(MappingStrategy):
             'output_dim': self.output_dim,
             'hidden_dims': self.hidden_dims,
             'num_epochs_trained': len(training_losses),
-            'loss_type': self.config.loss_type,
+            'loss_type': self.config.nonlinear_config.loss_type,
             'final_train_loss': training_losses[-1] if training_losses else None,
             'final_val_loss': validation_losses[-1] if validation_losses else None,
             'best_val_loss': best_val_loss,
@@ -361,7 +360,7 @@ class NonLinearMappingStrategy(MappingStrategy):
         self.model.eval()
         with torch.no_grad():
             # Process in batches
-            batch_size = self.config.batch_size
+            batch_size = self.config.nonlinear_config.batch_size
             num_samples = len(embeddings)
             transformed_list = []
             

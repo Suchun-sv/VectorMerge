@@ -10,9 +10,9 @@ from typing import List, Tuple, Optional, Dict, Any
 from sklearn.cluster import KMeans
 from sklearn.metrics import pairwise_distances
 from loguru import logger
+from dataclasses import dataclass
 
 from ..base import ClusteringStrategy, ClusterData, ClusteringConfig, ClusteringResult
-
 
 class KMeansClusteringStrategy(ClusteringStrategy):
     """K-means clustering strategy for reference point clustering."""
@@ -27,7 +27,7 @@ class KMeansClusteringStrategy(ClusteringStrategy):
         self.kmeans_model: Optional[KMeans] = None
         self.cluster_centers: Optional[np.ndarray] = None
         
-        logger.info(f"K-means clustering initialized with {config.num_clusters} clusters")
+        logger.info(f"K-means clustering initialized with {config.kmeans_config.n_clusters} clusters")
     
     def fit(self, embeddings: np.ndarray, reference_indices: np.ndarray) -> ClusteringResult:
         """Fit K-means clustering to reference embeddings.
@@ -45,17 +45,17 @@ class KMeansClusteringStrategy(ClusteringStrategy):
         reference_embeddings = embeddings[reference_indices]
         
         # Adjust number of clusters if we have fewer reference points
-        n_clusters = min(self.config.num_clusters, len(reference_indices))
-        if n_clusters < self.config.num_clusters:
-            logger.warning(f"Reducing number of clusters from {self.config.num_clusters} to {n_clusters} "
+        n_clusters = min(self.config.kmeans_config.n_clusters, len(reference_indices))
+        if n_clusters < self.config.kmeans_config.n_clusters:
+            logger.warning(f"Reducing number of clusters from {self.config.kmeans_config.n_clusters} to {n_clusters} "
                           f"due to insufficient reference points")
         
         # Perform K-means clustering
         self.kmeans_model = KMeans(
             n_clusters=n_clusters,
-            random_state=self.config.random_state,
-            max_iter=self.config.max_iter,
-            tol=self.config.tol,
+            random_state=self.config.kmeans_config.random_state,
+            max_iter=self.config.kmeans_config.max_iter,
+            tol=self.config.kmeans_config.tol,
             init="k-means++"
         )
         

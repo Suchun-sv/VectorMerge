@@ -13,6 +13,18 @@ import numpy as np
 import torch
 from loguru import logger
 
+@dataclass
+class KMeansConfig():
+    """Configuration for KMeans clustering strategy."""
+    n_clusters: int = 10
+    max_iter: int = 300
+    tol: float = 1e-4
+    random_state: int = 42
+
+@dataclass
+class LA2MClusteringConfig():
+    """Configuration for LA2M clustering strategy."""
+    d_prime: int = 10
 
 @dataclass
 class ClusterData:
@@ -125,38 +137,22 @@ class ClusteringConfig:
     """Configuration for clustering operations."""
     
     # Basic clustering parameters
-    num_clusters: int = 50
-    method: str = "kmeans"  # "kmeans", "la2m-cluster"
-    min_cluster_size: int = 5
-    max_cluster_size: int = 1000
-    
-    # K-means specific parameters
-    random_state: int = 42
-    max_iter: int = 300
-    tol: float = 1e-4
-    
-    # LA2M clustering parameters
-    d_prime: int = 10  # Number of top neighbors for LA2M neighborhood construction
-    
+    clustering_method: str = "kmeans"  # "kmeans", "la2m-cluster"
+
     # General parameters
     device: str = "auto"
     verbose: bool = False
+
+    la2m_config: LA2MClusteringConfig = LA2MClusteringConfig()
+    kmeans_config: KMeansConfig = KMeansConfig()
     
     # Quality metrics
     compute_metrics: bool = True
     
     def __post_init__(self):
         """Validate configuration parameters."""
-        if self.num_clusters <= 0:
-            raise ValueError("num_clusters must be positive")
-        if self.min_cluster_size <= 0:
-            raise ValueError("min_cluster_size must be positive")
-        if self.max_cluster_size <= self.min_cluster_size:
-            raise ValueError("max_cluster_size must be greater than min_cluster_size")
-        if self.method not in ["kmeans", "la2m-cluster"]:
-            raise ValueError(f"Unsupported clustering method: {self.method}")
-        if self.d_prime <= 0:
-            raise ValueError("d_prime must be positive")
+        if self.clustering_method not in ["kmeans", "la2m-cluster"]:
+            raise ValueError(f"Unsupported clustering method: {self.clustering_method}")
         
     def to_string(self) -> str:
         """Convert configuration to string."""
@@ -165,14 +161,7 @@ class ClusteringConfig:
     def to_dict(self) -> Dict[str, Any]:
         """Convert configuration to dictionary."""
         return {
-            'num_clusters': self.num_clusters,
-            'method': self.method,
-            'min_cluster_size': self.min_cluster_size,
-            'max_cluster_size': self.max_cluster_size,
-            'random_state': self.random_state,
-            'max_iter': self.max_iter,
-            'tol': self.tol,
-            'd_prime': self.d_prime,
+            'clustering_method': self.clustering_method,
             'device': self.device,
             'verbose': self.verbose,
             'compute_metrics': self.compute_metrics
@@ -306,7 +295,7 @@ class ClusteringStrategy(ABC):
                                  else ("cuda" if torch.cuda.is_available() else "cpu"))
         self.is_fitted = False
         
-        logger.info(f"Initialized {self.__class__.__name__} with {config.num_clusters} clusters")
+        logger.info(f"Initialized {self.__class__.__name__} with {config.clustering_method} clustering method")
 
     @abstractmethod
     def predict(self, clustering_result: ClusteringResult, embeddings: np.ndarray) -> np.ndarray:

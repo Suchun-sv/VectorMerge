@@ -21,18 +21,18 @@ from .utils import (
     select_model_interactively, select_dataset_interactively,
     validate_model_and_dataset, display_error_and_exit
 )
-from .config_loader import get_config
+from .config_loader import VectorMergeConfig
 
 # Initialize mapping command group
 mapping_app = typer.Typer(help="Create and manage embedding mappings")
 
 # Load configuration
-config_loader = get_config()
+config_loader = VectorMergeConfig()
 
 # Get mapper defaults
-nonlinear_defaults = config_loader.get_mapper_defaults('nonlinear')
-procrustes_defaults = config_loader.get_mapper_defaults('procrustes')
-la2m_defaults = config_loader.get_mapper_defaults('la2m')
+nonlinear_defaults = config_loader.mapping_config.nonlinear_config
+procrustes_defaults = config_loader.mapping_config.procrustes_config
+la2m_defaults = config_loader.mapping_config.la2m_config
 
 
 @mapping_app.command("procrustes", help="Create mapping using Procrustes analysis")
@@ -50,8 +50,8 @@ def procrustes_mapping(
     with_rotation: bool = typer.Option(True, "--with-rotation", help="Use rotation"),
     approximate: bool = typer.Option(False, "--approximate", help="Use approximate SVD"),
     q: int = typer.Option(1500, "--q", help="Approximation parameter"),
-    save_param: bool = typer.Option(nonlinear_defaults['save_param'], "--save-param", help="Save mapping parameters"),
-    save_embedding: bool = typer.Option(nonlinear_defaults['save_embedding'], "--save-embedding", help="Save mapping embeddings"),
+    save_param: bool = typer.Option(procrustes_defaults.save_param, "--save-param", help="Save mapping parameters"),
+    save_embedding: bool = typer.Option(procrustes_defaults.save_embedding, "--save-embedding", help="Save mapping embeddings"),
     force: bool = typer.Option(False, "--force", help="Force regeneration"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
     verbose: bool = typer.Option(cli_defaults['verbose'], "--verbose", "-v", help="Verbose output"),
@@ -124,16 +124,16 @@ def nonlinear_mapping(
     reference_path: Path = typer.Option(cli_defaults['reference_path'], "--reference-path", help="Path to reference files"),
     mapping_param_path: Path = typer.Option(cli_defaults['mapping_param_path'], "--param-save-path", help="Path to save mapping parameters"),
     mapping_embedding_path: Path = typer.Option(cli_defaults['mapping_embedding_path'], "--embedding-save-path", help="Path to save mapping embeddings"),
-    hidden_size: int = typer.Option(nonlinear_defaults['hidden_size'], "--hidden-size", help="Hidden layer size"),
-    num_layers: int = typer.Option(nonlinear_defaults['num_layers'], "--num-layers", help="Number of layers"),
-    learning_rate: float = typer.Option(nonlinear_defaults['learning_rate'], "--lr", help="Learning rate"),
-    batch_size: int = typer.Option(nonlinear_defaults['batch_size'], "--batch-size", help="Batch size"),
-    epochs: int = typer.Option(nonlinear_defaults['epochs'], "--epochs", help="Number of epochs"),
-    dropout: float = typer.Option(nonlinear_defaults['dropout'], "--dropout", help="Dropout rate"),
-    loss_function: str = typer.Option(nonlinear_defaults['loss_function'], "--loss", help="Loss function (mse, cosine, ranking)"),
+    hidden_size: int = typer.Option(nonlinear_defaults.hidden_dim, "--hidden-size", help="Hidden layer size"),
+    num_layers: int = typer.Option(nonlinear_defaults.num_layers, "--num-layers", help="Number of layers"),
+    learning_rate: float = typer.Option(nonlinear_defaults.learning_rate, "--lr", help="Learning rate"),
+    batch_size: int = typer.Option(nonlinear_defaults.batch_size, "--batch-size", help="Batch size"),
+    epochs: int = typer.Option(nonlinear_defaults.num_epochs, "--epochs", help="Number of epochs"),
+    dropout: float = typer.Option(nonlinear_defaults.dropout_rate, "--dropout", help="Dropout rate"),
+    loss_function: str = typer.Option(nonlinear_defaults.loss_type, "--loss", help="Loss function (mse, cosine, ranking)"),
     force: bool = typer.Option(False, "--force", help="Force regeneration"),
-    save_param: bool = typer.Option(nonlinear_defaults['save_param'], "--save-param", help="Save mapping parameters"),
-    save_embedding: bool = typer.Option(nonlinear_defaults['save_embedding'], "--save-embedding", help="Save mapping embeddings"),
+    save_param: bool = typer.Option(nonlinear_defaults.save_param, "--save-param", help="Save mapping parameters"),
+    save_embedding: bool = typer.Option(nonlinear_defaults.save_embedding, "--save-embedding", help="Save mapping embeddings"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
     verbose: bool = typer.Option(cli_defaults['verbose'], "--verbose", "-v", help="Verbose output"),
 ):

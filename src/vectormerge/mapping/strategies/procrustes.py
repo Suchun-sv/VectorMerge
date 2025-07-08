@@ -15,7 +15,6 @@ from sklearn.decomposition import PCA
 
 from ..base import MappingStrategy, MappingConfig
 
-
 def procrustes_mapping_torch(
     source_embeddings: np.ndarray,
     target_embeddings: np.ndarray,
@@ -215,8 +214,8 @@ class ProcrustesMappingStrategy(MappingStrategy):
         self.pca_source: Optional[PCA] = None
         self.pca_target: Optional[PCA] = None
         
-        logger.info(f"Procrustes mapping initialized with approximate={config.approximate}, "
-                   f"with_rotation={config.with_rotation}, with_scaling={config.with_scaling}")
+        logger.info(f"Procrustes mapping initialized with approximate={config.procrustes_config.approximate}, "
+                   f"with_rotation={config.procrustes_config.with_rotation}, with_scaling={config.procrustes_config.with_scaling}")
     
     def fit(self, source_embeddings: np.ndarray, target_embeddings: np.ndarray,
             reference_indices: np.ndarray, **kwargs) -> None:
@@ -234,38 +233,38 @@ class ProcrustesMappingStrategy(MappingStrategy):
         source_ref = source_embeddings[reference_indices]
         target_ref = target_embeddings[reference_indices]
         
-        if self.config.procrustes_pca_type == "inner" and self.config.reduced_dim > 0:
+        if self.config.procrustes_config.procrustes_pca_type == "inner" and self.config.procrustes_config.reduced_dim > 0:
             # Use PCA-based Procrustes
             _, params = procrustes_pca_mapping(
                 source_embeddings, target_embeddings, reference_indices,
                 source_ref, target_ref,
-                approximate=self.config.approximate,
-                q=self.config.q,
-                with_rotation=self.config.with_rotation,
-                reduced_dim=self.config.reduced_dim
+                approximate=self.config.procrustes_config.approximate,
+                q=self.config.procrustes_config.q,
+                with_rotation=self.config.procrustes_config.with_rotation,
+                reduced_dim=self.config.procrustes_config.reduced_dim
             )
             
             if params:
                 self.pca_source = params.get('pca_source')
                 self.pca_target = params.get('pca_target')
         
-        elif self.config.use_norm:
+        elif self.config.procrustes_config.use_norm:
             # Standard Procrustes with normalization
             _, params = procrustes_mapping_torch(
                 source_embeddings, target_embeddings, reference_indices,
                 source_ref, target_ref,
-                approximate=self.config.approximate,
-                q=self.config.q,
-                with_rotation=self.config.with_rotation
+                approximate=self.config.procrustes_config.approximate,
+                q=self.config.procrustes_config.q,
+                with_rotation=self.config.procrustes_config.with_rotation
             )
         else:
             # Procrustes without normalization
             _, params = procrustes_no_norm_scale_with_param(
                 source_embeddings, target_embeddings, reference_indices,
                 source_ref, target_ref,
-                approximate=self.config.approximate,
-                q=self.config.q,
-                with_rotation=self.config.with_rotation
+                approximate=self.config.procrustes_config.approximate,
+                q=self.config.procrustes_config.q,
+                with_rotation=self.config.procrustes_config.with_rotation
             )
         
         # Store transformation parameters
@@ -278,12 +277,11 @@ class ProcrustesMappingStrategy(MappingStrategy):
         self.is_fitted = True
         self.metadata = {
             'reference_size': len(reference_indices),
-            'approximate': self.config.approximate,
-            'with_rotation': self.config.with_rotation,
-            'with_scaling': self.config.with_scaling,
-            'use_norm': self.config.use_norm,
-            'procrustes_pca_type': self.config.procrustes_pca_type,
-            'reduced_dim': self.config.reduced_dim
+            'approximate': self.config.procrustes_config.approximate,
+            'with_rotation': self.config.procrustes_config.with_rotation,
+            'with_scaling': self.config.procrustes_config.with_scaling,
+            'use_norm': self.config.procrustes_config.use_norm,
+            'procrustes_pca_type': self.config.procrustes_config
         }
         
         logger.info("Procrustes mapping fitting completed")
