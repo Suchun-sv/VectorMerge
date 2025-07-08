@@ -20,6 +20,10 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r docs/requirements.txt || true
+          pip install numpydoc 
+          pip install sphinx
+          pip install pydata-sphinx-theme
+          pip install sphinx-copybutton
           pip install -e .
 
       - name: Build documentation

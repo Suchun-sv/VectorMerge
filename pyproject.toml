@@ -46,6 +46,3 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
-[tool.uv.sources]
-jasminetool = { git = "https://github.com/Suchun-sv/JasmineTool.git", rev = "v0.2.0" }
