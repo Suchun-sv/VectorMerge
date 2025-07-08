@@ -168,7 +168,9 @@ class ConfigLoader:
     
     def update_config(self, update_dict: Dict[str, Any]) -> "ConfigLoader":
         """Update configuration with a dictionary."""
-        self.config = self.config.from_dict(update_dict)
+        default_config = self.config.to_dict()
+        default_config.update(update_dict)
+        self.config = from_dict(self.config.__class__, default_config)
         return self
     
     def to_commented_yaml(self) -> str:

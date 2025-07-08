@@ -31,7 +31,7 @@ mapping_config:
     cluster_method: la2m-cluster
     d_prime: 10
     pca_mapping: true
-    pca_dim: 20
+    pca_dim: 16
     save_param: false
     save_embedding: false
   nonlinear_config:

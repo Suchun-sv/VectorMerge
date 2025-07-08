@@ -200,6 +200,9 @@ class LA2MStrategy(MappingStrategy):
         Returns:
             Transformed embeddings
         """
+        if target_indices is None:
+            target_indices = np.arange(embeddings.shape[0])
+
         if not self.is_fitted or self.cluster_manager is None:
             raise ValueError("Mapping must be fitted before transformation")
         
@@ -219,6 +222,7 @@ class LA2MStrategy(MappingStrategy):
             transformed = np.zeros((embeddings.shape[0], target_dimension))
 
         
+        transformed_cluster_indices = []
         for cluster_id in range(len(self.cluster_data_list)):
             cluster_mask = (cluster_assignments == cluster_id)
             cluster_indices = np.where(cluster_mask)[0]
@@ -241,11 +245,20 @@ class LA2MStrategy(MappingStrategy):
                         transformed_cluster = cluster_embeddings  # No transformation available
                 
                 transformed[cluster_indices] = transformed_cluster
-        
+                transformed_cluster_indices.extend(cluster_indices)
+
         # revert PCA mapping
         if self.config.la2m_config.pca_mapping:
             transformed = self.target_pca.inverse_transform(transformed)
+
+        self._check_indices(transformed_cluster_indices, target_indices)
+
         return transformed
+    
+    def _check_indices(self, transformed_cluster_indices: List[int], target_indices: np.ndarray):
+        """Check if the transformed cluster indices are the same as the target indices."""
+        if not set(transformed_cluster_indices) == set(target_indices):
+            raise ValueError("The transformed cluster indices are not the same as the target indices")
     
     def _apply_local_mapping(self, embeddings: np.ndarray, 
                            mapping_params: Dict[str, np.ndarray]) -> np.ndarray:
