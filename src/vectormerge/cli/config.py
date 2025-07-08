@@ -5,7 +5,8 @@ This module contains commands for managing VectorMerge configuration.
 """
 
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Any
+import click
 import typer
 from rich import print as rprint
 from rich.table import Table
@@ -233,3 +234,16 @@ def _display_config_status():
             rprint(f"[green]✅ {name} configuration found: {path}[/green]")
         else:
             rprint(f"[yellow]❌ {name} configuration not found: {path}[/yellow]")
+
+def parse_dynamic_config(ctx: click.Context) -> dict[str, Any]:
+    extra = ctx.args  # All unknown parameters are here
+    dynamic: dict[str, Any] = {}
+    for arg in extra:
+        if arg.startswith("--") and "=" in arg:
+            key_path, val = arg.lstrip("-").split("=", 1)
+            ptr = dynamic
+            parts = key_path.split(".")
+            for p in parts[:-1]:
+                ptr = ptr.setdefault(p, {})
+            ptr[parts[-1]] = val
+    return dynamic

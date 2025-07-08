@@ -3,6 +3,7 @@ from typing import Any
 from click import Context
 from .base import SUPPORTED_DATASETS
 from .base import SUPPORTED_MODELS
+from . import parse_dynamic_config
 
 evaluate_app = typer.Typer(
     name="evaluate",
@@ -26,21 +27,22 @@ def single_run(
     Evaluate the performance of a mapping model, you can pass extra arguments to the command to override the default values.
     E.g. --mapping_config.la2m.num_clusters=50
     """
-    extra = ctx.args  # 所有未知参数都在这里
-    dynamic: dict[str, Any] = {}
-    for arg in extra:
-        if arg.startswith("--") and "=" in arg:
-            key_path, val = arg.lstrip("-").split("=", 1)
-            ptr = dynamic
-            parts = key_path.split(".")
-            for p in parts[:-1]:
-                ptr = ptr.setdefault(p, {})
-            ptr[parts[-1]] = val
+    # extra = ctx.args  # 所有未知参数都在这里
+    # dynamic: dict[str, Any] = {}
+    # for arg in extra:
+    #     if arg.startswith("--") and "=" in arg:
+    #         key_path, val = arg.lstrip("-").split("=", 1)
+    #         ptr = dynamic
+    #         parts = key_path.split(".")
+    #         for p in parts[:-1]:
+    #             ptr = ptr.setdefault(p, {})
+    #         ptr[parts[-1]] = val
+    extra_dict = parse_dynamic_config(ctx)
 
     typer.secho("✅ Parsed known args:", fg="green")
     typer.echo(f" dataset={dataset}, source_model={source_model}, target_model={target_model}")
     typer.echo(f" force={force}, interactive={interactive}, verbose={verbose}")
     typer.secho("🔧 Parsed dynamic config:", fg="cyan")
-    typer.echo(dynamic)
+    typer.echo(extra_dict)
 
     # TODO: 把 dynamic merge 到你的 config 对象里，并继续 evaluate 流程

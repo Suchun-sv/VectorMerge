@@ -14,9 +14,10 @@ from .embedding import embedding_app
 from .mapping import mapping_app
 from .reference import create_reference
 from .dataset import dataset_app
-from .config import config_app
+from .config import config_app, parse_dynamic_config
 from .evaluate import evaluate_app
 from .cluster import create_cluster_app
+
 
 # Initialize main CLI application
 app = typer.Typer(
