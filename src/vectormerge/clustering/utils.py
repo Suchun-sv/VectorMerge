@@ -279,12 +279,13 @@ def visualize_clusters(embeddings: np.ndarray,
             reducer = PCA(n_components=2)
         elif method == "umap":
             try:
-                import umap
+                import umap.umap_ as umap
                 reducer = umap.UMAP(n_components=2, random_state=42)
             except ImportError:
                 logger.warning("UMAP not available, falling back to t-SNE")
                 from sklearn.manifold import TSNE
                 reducer = TSNE(n_components=2, random_state=42)
+                method = "tsne"  # Update method to prevent center plotting
         else:
             raise ValueError(f"Unsupported dimensionality reduction method: {method}")
         
@@ -296,15 +297,15 @@ def visualize_clusters(embeddings: np.ndarray,
         
         # Plot clusters
         unique_labels = np.unique(all_labels)
-        colors = plt.cm.Set3(np.linspace(0, 1, len(unique_labels)))
+        colors = plt.cm.tab10(np.linspace(0, 1, len(unique_labels)))
         
         for label, color in zip(unique_labels, colors):
             mask = np.array(all_labels) == label
             plt.scatter(reduced_embeddings[mask, 0], reduced_embeddings[mask, 1], 
                        c=[color], label=f'Cluster {label}', alpha=0.7, s=50)
         
-        # Plot cluster centers if available
-        if clustering_result.cluster_centers is not None:
+        # Plot cluster centers if available (not supported for t-SNE)
+        if clustering_result.cluster_centers is not None and method in ["pca", "umap"]:
             center_reduced = reducer.transform(clustering_result.cluster_centers)
             plt.scatter(center_reduced[:, 0], center_reduced[:, 1], 
                        c='red', marker='x', s=200, linewidths=3, label='Centers')
