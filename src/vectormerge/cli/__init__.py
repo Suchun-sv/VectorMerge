@@ -15,9 +15,8 @@ from .mapping import mapping_app
 from .reference import create_reference
 from .dataset import dataset_app
 from .config import config_app
+from .evaluate import evaluate_app
 from .cluster import create_cluster_app
-from ..mapping import MappingConfig
-from ..clustering import ClusteringConfig
 
 # Initialize main CLI application
 app = typer.Typer(
@@ -26,6 +25,7 @@ app = typer.Typer(
     add_completion=False,
     rich_markup_mode="rich",
     no_args_is_help=True,
+    context_settings={"allow_extra_args": True, "ignore_unknown_options": True}
 )
 
 # Add version callback
@@ -36,7 +36,7 @@ app.command("create-reference", help="Create and manage reference datasets")(cre
 app.add_typer(create_cluster_app, name="create-cluster", help="Create and manage clustering operations")
 app.add_typer(dataset_app, name="dataset", help="Download and manage datasets")
 app.add_typer(config_app, name="config", help="Manage VectorMerge configuration")
-
+app.add_typer(evaluate_app, name="evaluate", help="Evaluate the performance of a mapping model.")
 # Add global options
 @app.callback()
 def main(
@@ -124,25 +124,25 @@ def list_models():
     console.print(table)
 
 
-@app.command("show-config", help="Show current configuration")
-def show_config_compat(
-    scope: str = typer.Option("all", "--scope", help="Configuration scope"),
-    format_: str = typer.Option("table", "--format", help="Output format"),
-):
-    """Show current configuration (backward compatibility)."""
-    from .config import show_config
-    show_config(scope=scope, format_=format_)
+# @app.command("show-config", help="Show current configuration")
+# def show_config_compat(
+#     scope: str = typer.Option("all", "--scope", help="Configuration scope"),
+#     format_: str = typer.Option("table", "--format", help="Output format"),
+# ):
+#     """Show current configuration (backward compatibility)."""
+#     from .config import show_config
+#     show_config(scope=scope, format_=format_)
 
 
-@app.command("create-config", help="Create configuration file")
-def create_config_compat(
-    scope: str = typer.Option("local", "--scope", help="Configuration scope"),
-    force: bool = typer.Option(False, "--force", help="Overwrite existing"),
-    interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
-):
-    """Create configuration file (backward compatibility)."""
-    from .config import create_config
-    create_config(scope=scope, force=force, interactive=interactive)
+# @app.command("create-config", help="Create configuration file")
+# def create_config_compat(
+#     scope: str = typer.Option("local", "--scope", help="Configuration scope"),
+#     force: bool = typer.Option(False, "--force", help="Overwrite existing"),
+#     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
+# ):
+#     """Create configuration file (backward compatibility)."""
+#     from .config import create_config
+#     create_config(scope=scope, force=force, interactive=interactive)
 
 
 # Add short aliases for frequently used commands
