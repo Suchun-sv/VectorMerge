@@ -133,6 +133,8 @@ class VectorSpaceMapper:
         """
         logger.info(f"Fitting {self.strategy_name} mapping strategy...")
 
+        # self.source_dimension = source_embeddings.shape[1]
+        # self.target_dimension = target_embeddings.shape[1]
         
         # Validate inputs
         self._validate_inputs(source_embeddings, target_embeddings, reference_indices)

@@ -105,7 +105,6 @@ class MappingStrategy(ABC):
         """Return a string representation of the mapping strategy."""
         return f"{self.__class__.__name__} is_fitted={self.is_fitted}"
     
-    @abstractmethod
     def fit(self, source_embeddings: np.ndarray, target_embeddings: np.ndarray,
             reference_indices: np.ndarray, **kwargs) -> None:
         """Fit the mapping from source to target embeddings using reference data.
@@ -116,9 +115,25 @@ class MappingStrategy(ABC):
             reference_indices: Indices of reference points (D0)
             **kwargs: Additional arguments specific to each strategy
         """
+        self.metadata['source_dimension'] = source_embeddings.shape[1]
+        self.metadata['target_dimension'] = target_embeddings.shape[1]
+        self.metadata['num_reference_points'] = len(reference_indices)
+        self._fit(source_embeddings, target_embeddings, reference_indices, **kwargs)
+        self.is_fitted = True
+
+    @abstractmethod
+    def _fit(self, source_embeddings: np.ndarray, target_embeddings: np.ndarray,
+             reference_indices: np.ndarray, **kwargs) -> None:
+        """Fit the mapping from source to target embeddings using reference data.
+        
+        Args:
+            source_embeddings: Source embedding space (model 1)
+            target_embeddings: Target embedding space (model 2) 
+            reference_indices: Indices of reference points (D0)
+            **kwargs: Additional arguments specific to each strategy
+        """
         pass
     
-    @abstractmethod
     def transform(self, embeddings: np.ndarray, **kwargs) -> np.ndarray:
         """Transform embeddings using the learned mapping.
         
@@ -128,6 +143,16 @@ class MappingStrategy(ABC):
             
         Returns:
             Transformed embeddings
+        """
+        return self._transform(embeddings, **kwargs)
+    
+    @abstractmethod
+    def _transform(self, embeddings: np.ndarray, **kwargs) -> np.ndarray:
+        """Transform embeddings using the learned mapping.
+        
+        Args:
+            embeddings: Embeddings to transform
+            **kwargs: Additional arguments specific to each strategy
         """
         pass
     

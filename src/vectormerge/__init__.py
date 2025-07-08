@@ -8,7 +8,7 @@ This library provides tools for:
 - Clustering-based reference generation
 - Comprehensive evaluation metrics
 
-Author: Beining Yang
+Author: SuchunSV
 License: MIT
 """
 

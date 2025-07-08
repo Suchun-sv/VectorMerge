@@ -61,7 +61,7 @@ class LA2MStrategy(MappingStrategy):
         
         logger.info(f"LA2M mapping strategy initialized with {cluster_method} clustering")
     
-    def fit(self, source_embeddings: np.ndarray, target_embeddings: np.ndarray,
+    def _fit(self, source_embeddings: np.ndarray, target_embeddings: np.ndarray,
             reference_indices: np.ndarray, **kwargs) -> None:
         """Fit the clustering-based mapping strategy.
         
@@ -181,7 +181,7 @@ class LA2MStrategy(MappingStrategy):
         self.formated_training_time = time.strftime("%H:%M:%S", time.gmtime(self.training_time))
 
         self.is_fitted = True
-        self.metadata = {
+        self.metadata.update({
             'reference_size': len(reference_indices),
             'num_clusters': len(self.cluster_data_list),
             'successful_local_mappings': successful_clusters,
@@ -190,12 +190,12 @@ class LA2MStrategy(MappingStrategy):
             'clustering_metadata': clustering_results.metadata,
             'training_time': self.training_time,
             'formated_training_time': self.formated_training_time
-        }
+        })
         
         logger.info(f"LA2M mapping strategy fitted successfully. "
                    f"Local mappings: {successful_clusters}/{len(self.cluster_data_list)}")
     
-    def transform(self, embeddings: np.ndarray, 
+    def _transform(self, embeddings: np.ndarray, 
                  target_indices: Optional[np.ndarray] = None, **kwargs) -> np.ndarray:
         """Transform embeddings using the clustering-based mapping.
         
@@ -216,7 +216,9 @@ class LA2MStrategy(MappingStrategy):
         cluster_result = self.cluster_manager.fit()
         cluster_assignments = self.cluster_manager.predict(cluster_result, embeddings[target_indices])
         
-        transformed = np.zeros_like(embeddings)
+        target_dimension = self.metadata['target_dimension']
+        transformed = np.zeros((embeddings.shape[0], target_dimension))
+
         
         for cluster_id in range(len(self.cluster_data_list)):
             cluster_mask = (cluster_assignments == cluster_id)
