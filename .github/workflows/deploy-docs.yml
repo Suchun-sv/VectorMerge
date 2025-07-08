@@ -19,9 +19,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install sphinx
           pip install -r docs/requirements.txt || true
-          pip install numpydoc
+          pip install -e .
 
       - name: Build documentation
         run: sphinx-build -b html docs/source docs/_build/html
