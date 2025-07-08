@@ -44,7 +44,7 @@ def single_run(
     
     config = config_loader.config
 
-    set_wandb(wandb_entity=wandb_entity, wandb_project=config.wandb_project, config_dict=config.to_dict())
+    set_wandb(wandb_entity=wandb_entity, wandb_project="vector-merge", config_dict=config.to_dict())
 
     dataset = load_dataset(dataset_name=dataset_name, data_path=config.data_path, force=force, interactive=False, verbose=verbose)
 
