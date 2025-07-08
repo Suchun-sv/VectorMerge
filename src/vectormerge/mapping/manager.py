@@ -14,6 +14,7 @@ import time
 from loguru import logger
 
 from .base import MappingStrategy, MappingConfig, MappingResult
+from ..clustering import ClusteringConfig, ClusterManager
 from .strategies import (
     ProcrustesMappingStrategy,
     NonLinearMappingStrategy,
@@ -41,7 +42,7 @@ class VectorSpaceMapper:
         "la2m": LA2MStrategy,
     }
     
-    def __init__(self, strategy, config: MappingConfig, dataset_name: str, source_model: str, target_model: str, reference_key: str, mapping_param_path: Union[str, Path], mapping_embedding_path: Union[str, Path], force: bool = False, save_param: bool = False, save_embedding: bool = False):
+    def __init__(self, strategy, config: MappingConfig, dataset_name: str, source_model: str, target_model: str, reference_key: str, reference_path: str, cluster_path: str, embedding_path: str, mapping_param_path: Union[str, Path], mapping_embedding_path: Union[str, Path], force: bool = False, save_param: bool = False, save_embedding: bool = False, clustering_config: Optional[ClusteringConfig] = None):
         """Initialize the VectorSpaceMapper.
         
         Args:
@@ -64,8 +65,13 @@ class VectorSpaceMapper:
         self.dataset_name = dataset_name
         self.source_model = source_model
         self.target_model = target_model
+        self.reference_key = reference_key
+        self.reference_path = reference_path
+        self.embedding_path = embedding_path
+        self.cluster_path = cluster_path
         self.save_param = save_param
         self.save_embedding = save_embedding
+        self.cluster_config = clustering_config
 
         self.hash_path = config_hash_path(dataset_name, source_model, target_model, strategy, config, reference_key)
         
@@ -76,7 +82,13 @@ class VectorSpaceMapper:
         
         # Initialize the mapping strategy
         strategy_class = self.AVAILABLE_STRATEGIES[strategy]
-        self.mapping_strategy: MappingStrategy = strategy_class(self.config)
+        if strategy == "la2m":
+            if clustering_config is None:
+                raise ValueError("clustering_config is required for la2m strategy")
+            cluster_manager = self._init_cluster_manager(clustering_config)
+            self.mapping_strategy = strategy_class(self.config, cluster_manager)
+        else:
+            self.mapping_strategy = strategy_class(self.config)
         
         # Training history and metadata
         self.training_history: Dict[str, Any] = {}
@@ -85,6 +97,20 @@ class VectorSpaceMapper:
         logger.info(f"VectorSpaceMapper initialized with strategy: {strategy}")
         logger.info(f"Parameter path: {self.mapping_param_path}")
         logger.info(f"Embedding path: {self.mapping_embedding_path}")
+    
+    def _init_cluster_manager(self, clustering_config: ClusteringConfig):
+        return ClusterManager(
+            dataset_name=self.dataset_name,
+            model=self.source_model,
+            reference_key=self.reference_key,
+            reference_path=self.reference_path,
+            cluster_path=self.cluster_path,
+            embedding_path=self.embedding_path,
+            strategy_name=self.config.la2m_config.cluster_method,
+            strategy_config=self.cluster_config,
+            auto_save_results=True,
+            verbose=self.config.verbose
+        )
     
     def _setup_paths(self, mapping_param_path: Union[str, Path], mapping_embedding_path: Union[str, Path], 
                      strategy: str, config: MappingConfig, force: bool) -> tuple[Path, Path]:
@@ -177,6 +203,7 @@ class VectorSpaceMapper:
         
         logger.info(f"Mapping strategy fitted successfully in {training_time:.2f} seconds")
         return self
+    
     
     def transform(self, embeddings: np.ndarray, **kwargs) -> np.ndarray:
         """Transform embeddings using the fitted mapping strategy.
@@ -373,21 +400,34 @@ class VectorSpaceMapper:
         
         # Save mapper metadata
         mapper_info = {
+            'strategy_name': self.strategy_name,
+            'dataset_name': self.dataset_name,
+            'source_model': self.source_model,
+            'target_model': self.target_model,
+            'reference_key': self.reference_key,
+            'reference_path': self.reference_path,
+            'cluster_path': self.cluster_path,
+            'embedding_path': self.embedding_path,
             'config': self.config.to_dict(),
             'training_history': self.training_history,
+            'is_fitted': self.is_fitted,
+            'cluster_config': self.cluster_config.to_dict() if self.cluster_config is not None else None,
+            'mapping_param_path': str(self.mapping_param_path),
+            'mapping_embedding_path': str(self.mapping_embedding_path),
         }
         
         import json
         with open(path / "mapper_info.json", "w") as f:
             json.dump(mapper_info, f, indent=2)
         
-        self.mapping_strategy.save(path)
+        self.mapping_strategy.save(path / "strategy")
         
         logger.info(f"Saved VectorSpaceMapper to {path}")
     
     @classmethod
     def load(cls, path: Union[str, Path], mapping_param_path: Union[str, Path] = "./output/mapping_models/", 
-             mapping_embedding_path: Union[str, Path] = "./output/mapping_embeddings/") -> 'VectorSpaceMapper':
+             mapping_embedding_path: Union[str, Path] = "./output/mapping_embeddings/",
+             reference_path: str = "", cluster_path: str = "", embedding_path: str = "") -> 'VectorSpaceMapper':
         """Load a fitted mapper from disk.
         
         Args:
@@ -414,13 +454,16 @@ class VectorSpaceMapper:
             source_model=mapper_info['source_model'],
             target_model=mapper_info['target_model'],
             reference_key=mapper_info['reference_key'],
-            mapping_param_path=mapping_param_path,
-            mapping_embedding_path=mapping_embedding_path
+            reference_path=mapper_info['reference_path'],
+            cluster_path=mapper_info['cluster_path'],
+            embedding_path=mapper_info['embedding_path'],
+            mapping_param_path=mapper_info['mapping_param_path'],
+            mapping_embedding_path=mapper_info['mapping_embedding_path'],
+            clustering_config=ClusteringConfig.from_dict(mapper_info['cluster_config']) if mapper_info['cluster_config'] is not None else None
         )
         
         # Load the mapping strategy
-        strategy_class = cls.AVAILABLE_STRATEGIES[mapper_info['strategy_name']]
-        mapper.mapping_strategy = strategy_class.load(load_path / "strategy")
+        mapper.mapping_strategy = mapper.mapping_strategy.load(load_path / "strategy")
         
         # Restore state
         mapper.training_history = mapper_info['training_history']

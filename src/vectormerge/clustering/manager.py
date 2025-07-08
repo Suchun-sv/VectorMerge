@@ -95,6 +95,52 @@ class ClusterManager:
             'final_save_path': str(self.final_save_path),
         }
     
+    def save_config(self, path: Optional[Union[str, Path]] = None) -> None:
+        """Save the clustering manager to disk."""
+        if path is None:
+            path = self.final_save_path
+        if isinstance(path, str):
+            path = Path(path)
+        if path is None:
+            raise ValueError("Path is None")
+        path.mkdir(parents=True, exist_ok=True)
+        init_config_dict = {
+            'dataset_name': self.dataset_name,
+            'model': self.model,
+            'reference_key': self.reference_key,
+            'reference_path': self.reference_path,
+            'cluster_path': str(self.cluster_path),
+            'embedding_path': self.embedding_path,
+            'strategy_name': self.strategy_name,
+            'strategy_config': self.strategy_config.to_dict(),
+            'cluster_key': str(self.cluster_key),
+            'final_save_path': str(self.final_save_path),
+            'force': self.force,
+            'auto_save_results': self.auto_save_results,
+            'verbose': self.verbose,
+        }
+        with open(Path(path) / "config.json", "w") as f:
+            json.dump(init_config_dict, f)
+    
+    @classmethod
+    def load_config(cls, path: Union[str, Path]) -> 'ClusterManager':
+        """Load the clustering manager from disk."""
+        with open(Path(path) / "config.json", "r") as f:
+            config_dict = json.load(f)
+        return cls(
+            dataset_name=config_dict['dataset_name'],
+            model=config_dict['model'],
+            reference_key=config_dict['reference_key'],
+            reference_path=config_dict['reference_path'],
+            cluster_path=config_dict['cluster_path'],
+            embedding_path=config_dict['embedding_path'],
+            strategy_name=config_dict['strategy_name'],
+            strategy_config=ClusteringConfig.from_dict(config_dict['strategy_config']),
+            force=config_dict['force'],
+            auto_save_results=config_dict['auto_save_results'],
+            verbose=config_dict['verbose'],
+        )
+
     def _create_strategy(self, config: ClusteringConfig) -> ClusteringStrategy:
         """Create a clustering strategy based on configuration."""
         if self.strategy_name not in SUPPORTED_CLUSTERING_METHODS:

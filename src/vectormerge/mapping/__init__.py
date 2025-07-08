@@ -36,6 +36,11 @@ transformed = mapper.fit_transform(
 # Core classes
 from .base import MappingStrategy, MappingConfig, MappingResult
 from .manager import VectorSpaceMapper
+SUPPORTED_MAPPING_METHODS = [
+    "procrustes",
+    "nonlinear",
+    "la2m",
+]
 
 # Mapping strategies
 from .strategies import (

@@ -7,7 +7,8 @@ clustering strategies and configurations.
 
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional, List, Tuple
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
+from dacite import from_dict
 from pathlib import Path
 import numpy as np
 import torch
@@ -160,24 +161,13 @@ class ClusteringConfig:
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert configuration to dictionary."""
-        return {
-            'clustering_method': self.clustering_method,
-            'device': self.device,
-            'verbose': self.verbose,
-            'compute_metrics': self.compute_metrics
-        }
+        return asdict(self)
     
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'ClusteringConfig':
         """Create configuration from dictionary."""
-        # Get all field names from the dataclass
-        import dataclasses
-        field_names = {field.name for field in dataclasses.fields(cls)}
-        
-        # Filter the dictionary to only include fields that exist in the dataclass
-        filtered_data = {k: v for k, v in data.items() if k in field_names}
-        
-        return cls(**filtered_data)
+        return from_dict(cls, data)
+    
 
 
 @dataclass

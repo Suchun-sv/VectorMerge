@@ -7,7 +7,8 @@ mapping strategies and clustering approaches.
 
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional, List, Tuple, Union
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
+from dacite import from_dict
 from pathlib import Path
 import numpy as np
 import torch
@@ -19,6 +20,7 @@ from vectormerge.mapping.utils.io import save_embeddings
 class LA2MConfig():
     """Configuration for LA2M mapping strategy."""
     num_clusters: int = 50
+    cluster_method: str = "la2m-cluster"
     d_prime: int = 10
     save_param: bool = False
     save_embedding: bool = False
@@ -67,7 +69,7 @@ class MappingConfig:
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
-        return {k: v for k, v in self.__dict__.items()}
+        return asdict(self)
     
     def to_string(self) -> str:
         """Convert to string."""
@@ -76,7 +78,7 @@ class MappingConfig:
     @classmethod
     def from_dict(cls, config_dict: Dict[str, Any]) -> 'MappingConfig':
         """Create from dictionary."""
-        return cls(**config_dict)
+        return from_dict(cls, config_dict)
 
 
 class MappingStrategy(ABC):

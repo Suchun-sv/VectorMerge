@@ -28,7 +28,7 @@ class LA2MStrategy(MappingStrategy):
     4. Applies appropriate local mapping based on cluster assignment
     """
     
-    def __init__(self, config: MappingConfig):
+    def __init__(self, config: MappingConfig, clustering_manager: ClusterManager):
         """Initialize the LA2M mapping strategy.
         
         Args:
@@ -37,20 +37,10 @@ class LA2MStrategy(MappingStrategy):
         super().__init__(config)
         
         # Create clustering configuration from mapping config
-        cluster_method = getattr(config, 'clustering_method', getattr(config, 'cluster_method', 'la2m-cluster'))
-        clustering_config = ClusteringConfig(
-            num_clusters=getattr(config, 'num_clusters', 50),
-            method=cluster_method,
-            min_cluster_size=getattr(config, 'min_cluster_size', 5),
-            random_state=42,
-            device=getattr(config, 'device', 'auto'),
-            verbose=getattr(config, 'verbose', False),
-            compute_metrics=False  # We'll compute metrics separately if needed
-        )
+        cluster_method = config.la2m_config.cluster_method
         
         # Initialize cluster manager (we'll set paths during fit)
-        self.cluster_manager: Optional[ClusterManager] = None
-        self.clustering_config = clustering_config
+        self.cluster_manager = clustering_manager
         self.cluster_method = cluster_method
         
         # Storage for cluster data and local mappings
@@ -74,16 +64,20 @@ class LA2MStrategy(MappingStrategy):
         
         # Create a temporary cluster manager for this fit operation
         # Since we don't have actual dataset/model info, we'll use memory-based clustering
-        temp_cluster_manager = ClusterManager(
-            strategy_name=self.cluster_method,
-            strategy_config=self.clustering_config,
-            auto_save_results=True,
-            verbose=self.config.verbose
-        )
+        # temp_cluster_manager = ClusterManager(
+        #     dataset_name=self.config.dataset_name,
+        #     model=self.config.source_model,
+        #     reference_key=self.config.reference_key,
+        #     reference_path=self.config.reference_path,
+        #     cluster_path=self.config.cluster_path,
+        #     embedding_path=self.config.embedding_path,
+        #     strategy_name=self.config.cluster_method,
+        #     strategy_config=self.config.clustering_config,
+        # )
         
         # Step 1: Cluster reference points using ClusterManager
         logger.info("Step 1: Clustering reference points...")
-        clustering_results = temp_cluster_manager.fit()
+        clustering_results = self.cluster_manager.fit()
         
         # Step 2: Learn local mappings for each cluster
         logger.info("Step 2: Learning local mappings for each cluster...")
@@ -167,7 +161,7 @@ class LA2MStrategy(MappingStrategy):
             raise
         
         # Step 4: Store cluster manager and data for later use
-        self.cluster_manager = temp_cluster_manager
+        # self.cluster_manager = temp_cluster_manager
         self.cluster_data_list = clustering_results.cluster_data_list
         self.training_time = time.time() - training_time_start
         self.formated_training_time = time.strftime("%H:%M:%S", time.gmtime(self.training_time))
@@ -300,6 +294,7 @@ class LA2MStrategy(MappingStrategy):
         super().save(path)
         
         save_path = Path(path)
+        self.cluster_manager.save_config(save_path/ "cluster_manager")
         
         # Save cluster data
         cluster_data_dict = {}
@@ -333,7 +328,7 @@ class LA2MStrategy(MappingStrategy):
         logger.info(f"Saved LA2M mapping strategy to {save_path}")
     
     @classmethod
-    def load(cls, path) -> 'LA2MStrategy':
+    def load(cls, path, clustering_manager: Optional[ClusterManager] = None) -> 'LA2MStrategy':
         """Load a fitted LA2M mapping strategy."""
         load_path = Path(path)
         
@@ -343,7 +338,9 @@ class LA2MStrategy(MappingStrategy):
             mapping_info = json.load(f)
         
         config = MappingConfig.from_dict(mapping_info['config'])
-        instance = cls(config)
+        if clustering_manager is None:
+            clustering_manager = ClusterManager.load_config(load_path / "cluster_manager")
+        instance = cls(config, clustering_manager)
         
         # Load cluster data
         with open(load_path / "cluster_data.json", "r") as f:
