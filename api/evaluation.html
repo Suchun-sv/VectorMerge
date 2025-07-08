@@ -418,8 +418,89 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="evaluation">
-<h1>Evaluation<a class="headerlink" href="#evaluation" title="Link to this heading">#</a></h1>
+  <section id="module-vectormerge.evaluation">
+<span id="evaluation"></span><h1>Evaluation<a class="headerlink" href="#module-vectormerge.evaluation" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="vectormerge.evaluation.Evaluator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.evaluation.</span></span><span class="sig-name descname"><span class="pre">Evaluator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus_emb_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corpus_emb_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_emb_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_emb_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_index2answer_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corpus_emb_1_transformed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[10,</span> <span class="pre">50,</span> <span class="pre">100,</span> <span class="pre">500,</span> <span class="pre">1000]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/evaluation/base.html#Evaluator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.evaluation.Evaluator" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.evaluation.Evaluator.merge_and_evaluate_embeddings" title="vectormerge.evaluation.Evaluator.merge_and_evaluate_embeddings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_and_evaluate_embeddings</span></code></a>(corpus_emb_1, ...)</p></td>
+<td><p>Merge embedding spaces and evaluate retrieval performance.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p><strong>evaluate</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_retrieval_list</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.evaluation.Evaluator.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../_modules/vectormerge/evaluation/base.html#Evaluator.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.evaluation.Evaluator.evaluate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.evaluation.Evaluator.get_retrieval_list">
+<span class="sig-name descname"><span class="pre">get_retrieval_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_emb_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'l2'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/vectormerge/evaluation/base.html#Evaluator.get_retrieval_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.evaluation.Evaluator.get_retrieval_list" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.evaluation.Evaluator.merge_and_evaluate_embeddings">
+<span class="sig-name descname"><span class="pre">merge_and_evaluate_embeddings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus_emb_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corpus_emb_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corpus_emb_1_transformed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_emb_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_index2answer_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../_modules/vectormerge/evaluation/base.html#Evaluator.merge_and_evaluate_embeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.evaluation.Evaluator.merge_and_evaluate_embeddings" title="Link to this definition">#</a></dt>
+<dd><p>Merge embedding spaces and evaluate retrieval performance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>corpus_emb_1</strong> – Embeddings from first model (source space)</p></li>
+<li><p><strong>corpus_emb_2</strong> – Embeddings from second model (target space)</p></li>
+<li><p><strong>corpus_emb_1_transformed</strong> – Transformed embeddings from first model</p></li>
+<li><p><strong>query_emb_2</strong> – Query embeddings in target space</p></li>
+<li><p><strong>query_index2answer_index</strong> – Dict mapping query index to list of answer indices</p></li>
+<li><p><strong>d0</strong> – Reference set indices</p></li>
+<li><p><strong>d1</strong> – Non-reference set indices for first model</p></li>
+<li><p><strong>d2</strong> – Non-reference set indices for second model</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing recall metrics for different methods</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vectormerge.evaluation.get_retrieval_list">
+<span class="sig-prename descclassname"><span class="pre">vectormerge.evaluation.</span></span><span class="sig-name descname"><span class="pre">get_retrieval_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_emb_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'l2'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/vectormerge/evaluation/base.html#get_retrieval_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.evaluation.get_retrieval_list" title="Link to this definition">#</a></dt>
+<dd><p>Get the retrieval list using FAISS for efficient similarity search.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_emb_2</strong> – Query embeddings with shape (num_queries, embedding_dim)</p></li>
+<li><p><strong>embeddings</strong> – Corpus embeddings with shape (num_docs, embedding_dim)</p></li>
+<li><p><strong>top_k</strong> – Number of top documents to retrieve</p></li>
+<li><p><strong>metric</strong> – Distance metric to use (“l2” or “cosine”)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array of retrieved document indices with shape (num_queries, top_k)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
@@ -460,6 +541,24 @@
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.evaluation.Evaluator"><code class="docutils literal notranslate"><span class="pre">Evaluator</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.evaluation.Evaluator.evaluate"><code class="docutils literal notranslate"><span class="pre">Evaluator.evaluate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.evaluation.Evaluator.get_retrieval_list"><code class="docutils literal notranslate"><span class="pre">Evaluator.get_retrieval_list()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.evaluation.Evaluator.merge_and_evaluate_embeddings"><code class="docutils literal notranslate"><span class="pre">Evaluator.merge_and_evaluate_embeddings()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.evaluation.get_retrieval_list"><code class="docutils literal notranslate"><span class="pre">get_retrieval_list()</span></code></a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
 

@@ -1,0 +1,827 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vectormerge.dataset.loader &#8212; Project name not set  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/vectormerge/dataset/loader';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">VectorMerge</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/cli.html">
+    Command-Line Interface
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/clustering.html">
+    Clustering Methods
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/dataset.html">
+    Data Handling
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/embeddings.html">
+    Embeddings
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../api/evaluation.html">
+    Evaluation
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../api/mapping.html">
+    Mapping Strategies
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../api/reference.html">
+    Reference Points
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Suchun-sv/VectorMerge" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/cli.html">
+    Command-Line Interface
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/clustering.html">
+    Clustering Methods
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/dataset.html">
+    Data Handling
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/embeddings.html">
+    Embeddings
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/evaluation.html">
+    Evaluation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/mapping.html">
+    Mapping Strategies
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../api/reference.html">
+    Reference Points
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Suchun-sv/VectorMerge" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">vectormerge.dataset.loader</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for vectormerge.dataset.loader</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Unified dataset loader for VectorMerge.</span>
+
+<span class="sd">This module provides a unified interface for loading datasets from different sources</span>
+<span class="sd">(BEIR, custom formats, etc.) in a consistent way.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">loguru</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DatasetLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.beir</span><span class="w"> </span><span class="kn">import</span> <span class="n">BEIRDatasetLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.custom</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomDatasetLoader</span>
+
+
+<div class="viewcode-block" id="UnifiedDatasetLoader">
+<a class="viewcode-back" href="../../../api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">UnifiedDatasetLoader</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Unified dataset loader that handles multiple dataset types.&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize unified dataset loader.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            data_path: Base path for datasets</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="c1"># Initialize loaders for different sources</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loaders</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;beir&quot;</span><span class="p">:</span> <span class="n">BEIRDatasetLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">),</span>
+            <span class="s2">&quot;custom&quot;</span><span class="p">:</span> <span class="n">CustomDatasetLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_path</span> <span class="o">/</span> <span class="s2">&quot;custom&quot;</span><span class="p">),</span>
+        <span class="p">}</span>
+        
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;UnifiedDatasetLoader initialized with data_path: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="UnifiedDatasetLoader.load">
+<a class="viewcode-back" href="../../../api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.load">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">split</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;beir&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dataset</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a dataset from specified source.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            dataset_name: Name of the dataset</span>
+<span class="sd">            split: Dataset split to load</span>
+<span class="sd">            source: Source type (beir, custom, etc.)</span>
+<span class="sd">            **kwargs: Additional arguments passed to the specific loader</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dataset object</span>
+<span class="sd">            </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If source is not supported</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">source</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown source: </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">. Available: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading dataset &#39;</span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">&#39; from source &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; (split: </span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="p">[</span><span class="n">source</span><span class="p">]</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">split</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully loaded dataset: </span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">get_stats</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">dataset</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to load dataset &#39;</span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">&#39; from source &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span></div>
+
+    
+<div class="viewcode-block" id="UnifiedDatasetLoader.list_available_datasets">
+<a class="viewcode-back" href="../../../api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.list_available_datasets">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">list_available_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;List available datasets by source.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            source: If specified, only return datasets from this source</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary mapping source to list of datasets</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">source</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">source</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown source: </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">. Available: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">source</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="p">[</span><span class="n">source</span><span class="p">]</span><span class="o">.</span><span class="n">list_available_datasets</span><span class="p">()}</span>
+        
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">source_name</span><span class="p">,</span> <span class="n">loader</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">datasets</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">list_available_datasets</span><span class="p">()</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">source_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">datasets</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to list datasets for source &#39;</span><span class="si">{</span><span class="n">source_name</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">source_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">return</span> <span class="n">result</span></div>
+
+    
+<div class="viewcode-block" id="UnifiedDatasetLoader.auto_detect_source">
+<a class="viewcode-back" href="../../../api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.auto_detect_source">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">auto_detect_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Auto-detect the source for a dataset.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            dataset_name: Name of the dataset</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Source name</span>
+<span class="sd">            </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If dataset is not found in any source</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">source</span><span class="p">,</span> <span class="n">loader</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">dataset_name</span> <span class="ow">in</span> <span class="n">loader</span><span class="o">.</span><span class="n">list_available_datasets</span><span class="p">():</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Auto-detected source &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; for dataset &#39;</span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">source</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error checking source &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; for dataset &#39;</span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+        
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset &#39;</span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">&#39; not found in any source&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="UnifiedDatasetLoader.get_dataset_info">
+<a class="viewcode-back" href="../../../api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.get_dataset_info">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_dataset_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get information about a dataset.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            dataset_name: Name of the dataset</span>
+<span class="sd">            source: Source to check (if None, auto-detect)</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary containing dataset information</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">source</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_detect_source</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">source</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown source: </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="n">loader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="p">[</span><span class="n">source</span><span class="p">]</span>
+        
+        <span class="c1"># Get basic info from the loader if available</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="s1">&#39;get_dataset_info&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_dataset_info</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">)</span>
+        
+        <span class="c1"># Fallback to basic info</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">dataset_name</span><span class="p">,</span>
+            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span>
+            <span class="s2">&quot;available&quot;</span><span class="p">:</span> <span class="n">loader</span><span class="o">.</span><span class="n">is_available</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">),</span>
+        <span class="p">}</span></div>
+
+    
+<div class="viewcode-block" id="UnifiedDatasetLoader.add_loader">
+<a class="viewcode-back" href="../../../api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.add_loader">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_loader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">loader</span><span class="p">:</span> <span class="n">DatasetLoader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a new dataset loader.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            source: Source name</span>
+<span class="sd">            loader: Dataset loader instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="p">[</span><span class="n">source</span><span class="p">]</span> <span class="o">=</span> <span class="n">loader</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Added new dataset loader for source: </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="UnifiedDatasetLoader.remove_loader">
+<a class="viewcode-back" href="../../../api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.remove_loader">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_loader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove a dataset loader.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            source: Source name to remove</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">source</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="p">[</span><span class="n">source</span><span class="p">]</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Removed dataset loader for source: </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No loader found for source: </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="UnifiedDatasetLoader.get_stats">
+<a class="viewcode-back" href="../../../api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.get_stats">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get statistics about all available datasets.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary containing loader statistics</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">stats</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;total_sources&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="p">),</span>
+            <span class="s2">&quot;sources&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+            <span class="s2">&quot;datasets_by_source&quot;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s2">&quot;total_datasets&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="p">}</span>
+        
+        <span class="k">for</span> <span class="n">source</span><span class="p">,</span> <span class="n">loader</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">datasets</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">list_available_datasets</span><span class="p">()</span>
+                <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;datasets_by_source&quot;</span><span class="p">][</span><span class="n">source</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span>
+                <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;total_datasets&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to get stats for source &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;datasets_by_source&quot;</span><span class="p">][</span><span class="n">source</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="k">return</span> <span class="n">stats</span></div>
+
+    
+<div class="viewcode-block" id="UnifiedDatasetLoader.validate_dataset">
+<a class="viewcode-back" href="../../../api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.validate_dataset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate a dataset without fully loading it.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            dataset_name: Name of the dataset</span>
+<span class="sd">            source: Source to check (if None, auto-detect)</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary containing validation results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">source</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_detect_source</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{</span>
+                    <span class="s2">&quot;valid&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span>
+                    <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="p">}</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">loader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="p">[</span><span class="n">source</span><span class="p">]</span>
+            <span class="n">available</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">is_available</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">)</span>
+            
+            <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;valid&quot;</span><span class="p">:</span> <span class="n">available</span><span class="p">,</span>
+                <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span>
+                <span class="s2">&quot;dataset_name&quot;</span><span class="p">:</span> <span class="n">dataset_name</span><span class="p">,</span>
+            <span class="p">}</span>
+            
+            <span class="k">if</span> <span class="n">available</span><span class="p">:</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset_info</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Dataset &#39;</span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">&#39; not available in source &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+            
+            <span class="k">return</span> <span class="n">result</span>
+            
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;valid&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span>
+                <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span>
+                <span class="s2">&quot;dataset_name&quot;</span><span class="p">:</span> <span class="n">dataset_name</span><span class="p">,</span>
+            <span class="p">}</span></div>
+</div>
+
+
+
+<span class="c1"># Global dataset loader instance</span>
+<span class="n">_global_loader</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">UnifiedDatasetLoader</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="get_dataset_loader">
+<a class="viewcode-back" href="../../../api/dataset.html#vectormerge.dataset.get_dataset_loader">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_dataset_loader</span><span class="p">(</span><span class="n">data_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UnifiedDatasetLoader</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the global dataset loader instance.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        data_path: Path to datasets (uses default if None)</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        UnifiedDatasetLoader instance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_global_loader</span>
+    
+    <span class="k">if</span> <span class="n">_global_loader</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">data_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">data_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;./data/raw/beir/&quot;</span>
+        <span class="n">_global_loader</span> <span class="o">=</span> <span class="n">UnifiedDatasetLoader</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">_global_loader</span></div>
+
+
+
+<div class="viewcode-block" id="load_dataset">
+<a class="viewcode-back" href="../../../api/dataset.html#vectormerge.dataset.load_dataset">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_dataset</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">split</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;beir&quot;</span><span class="p">,</span> 
+                <span class="n">data_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dataset</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convenience function to load a dataset.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        dataset_name: Name of the dataset</span>
+<span class="sd">        split: Dataset split to load</span>
+<span class="sd">        source: Source type (beir, custom, etc.)</span>
+<span class="sd">        data_path: Path to datasets (uses default if None)</span>
+<span class="sd">        **kwargs: Additional arguments passed to the specific loader</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Dataset object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">get_dataset_loader</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+    
+    <span class="c1"># Auto-detect source if not explicitly BEIR and dataset not found</span>
+    <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s2">&quot;beir&quot;</span> <span class="ow">and</span> <span class="n">dataset_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">loader</span><span class="o">.</span><span class="n">loaders</span><span class="p">[</span><span class="s2">&quot;beir&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">list_available_datasets</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">detected_source</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">auto_detect_source</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">detected_source</span> <span class="o">!=</span> <span class="s2">&quot;beir&quot;</span><span class="p">:</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="n">detected_source</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Auto-detected source &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; for dataset &#39;</span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">pass</span>  <span class="c1"># Keep original source</span>
+    
+    <span class="k">return</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">split</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="list_datasets">
+<a class="viewcode-back" href="../../../api/dataset.html#vectormerge.dataset.list_datasets">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_datasets</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List available datasets.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        source: If specified, only return datasets from this source</span>
+<span class="sd">        data_path: Path to datasets (uses default if None)</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary mapping source to list of datasets</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">get_dataset_loader</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">loader</span><span class="o">.</span><span class="n">list_available_datasets</span><span class="p">(</span><span class="n">source</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="validate_dataset">
+<a class="viewcode-back" href="../../../api/dataset.html#vectormerge.dataset.validate_dataset">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_dataset</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+                    <span class="n">data_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate a dataset.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        dataset_name: Name of the dataset</span>
+<span class="sd">        source: Source to check (if None, auto-detect)</span>
+<span class="sd">        data_path: Path to datasets (uses default if None)</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary containing validation results</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">get_dataset_loader</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">loader</span><span class="o">.</span><span class="n">validate_dataset</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span> </div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -418,8 +418,784 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="data-handling">
-<h1>Data Handling<a class="headerlink" href="#data-handling" title="Link to this heading">#</a></h1>
+  <section id="module-vectormerge.dataset">
+<span id="data-handling"></span><h1>Data Handling<a class="headerlink" href="#module-vectormerge.dataset" title="Link to this heading">#</a></h1>
+<p>VectorMerge Dataset Package</p>
+<p>This package provides a unified interface for loading and working with
+different types of datasets (BEIR, custom formats, etc.) in a consistent way.</p>
+<p>Main classes:
+- Dataset: Unified dataset container
+- DatasetLoader: Abstract base class for dataset loaders
+- BEIRDatasetLoader: Loader for BEIR datasets
+- CustomDatasetLoader: Loader for custom dataset formats
+- UnifiedDatasetLoader: Unified loader that handles multiple dataset types</p>
+<p>Main functions:
+- load_dataset: Convenience function to load a dataset
+- list_datasets: List available datasets
+- validate_dataset: Validate a dataset
+- get_dataset_loader: Get the global dataset loader instance</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="vectormerge.dataset.BEIRDatasetLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.dataset.</span></span><span class="sig-name descname"><span class="pre">BEIRDatasetLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/dataset/beir.html#BEIRDatasetLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.BEIRDatasetLoader" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#vectormerge.dataset.DatasetLoader" title="vectormerge.dataset.base.DatasetLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasetLoader</span></code></a></p>
+<p>Loader for BEIR (Benchmarking IR) datasets.</p>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.dataset.BEIRDatasetLoader.download_all" title="vectormerge.dataset.BEIRDatasetLoader.download_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">download_all</span></code></a>([datasets])</p></td>
+<td><p>Download multiple BEIR datasets.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.dataset.BEIRDatasetLoader.get_dataset_info" title="vectormerge.dataset.BEIRDatasetLoader.get_dataset_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dataset_info</span></code></a>(dataset_name)</p></td>
+<td><p>Get information about a specific BEIR dataset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_available</span></code>(dataset_name)</p></td>
+<td><p>Check if a dataset is available.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.dataset.BEIRDatasetLoader.list_available_datasets" title="vectormerge.dataset.BEIRDatasetLoader.list_available_datasets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_available_datasets</span></code></a>()</p></td>
+<td><p>List available BEIR datasets.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.dataset.BEIRDatasetLoader.load" title="vectormerge.dataset.BEIRDatasetLoader.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(dataset_name[, split])</p></td>
+<td><p>Load a BEIR dataset.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vectormerge.dataset.BEIRDatasetLoader.SUPPORTED_DATASETS">
+<span class="sig-name descname"><span class="pre">SUPPORTED_DATASETS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arguana':</span> <span class="pre">'test',</span> <span class="pre">'bioasq':</span> <span class="pre">'test',</span> <span class="pre">'climate-fever':</span> <span class="pre">'test',</span> <span class="pre">'cqadupstack':</span> <span class="pre">'test',</span> <span class="pre">'dbpedia-entity':</span> <span class="pre">'test',</span> <span class="pre">'fever':</span> <span class="pre">'test',</span> <span class="pre">'fiqa':</span> <span class="pre">'test',</span> <span class="pre">'hotpotqa':</span> <span class="pre">'test',</span> <span class="pre">'msmarco':</span> <span class="pre">'test',</span> <span class="pre">'nfcorpus':</span> <span class="pre">'test',</span> <span class="pre">'nq':</span> <span class="pre">'test',</span> <span class="pre">'robust04':</span> <span class="pre">'test',</span> <span class="pre">'scidocs':</span> <span class="pre">'test',</span> <span class="pre">'scifact':</span> <span class="pre">'test',</span> <span class="pre">'signal1m':</span> <span class="pre">'test',</span> <span class="pre">'touche-2020':</span> <span class="pre">'test',</span> <span class="pre">'trec-covid':</span> <span class="pre">'test',</span> <span class="pre">'webis-touche2020':</span> <span class="pre">'test'}</span></em><a class="headerlink" href="#vectormerge.dataset.BEIRDatasetLoader.SUPPORTED_DATASETS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.BEIRDatasetLoader.download_all">
+<span class="sig-name descname"><span class="pre">download_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datasets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/beir.html#BEIRDatasetLoader.download_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.BEIRDatasetLoader.download_all" title="Link to this definition">#</a></dt>
+<dd><p>Download multiple BEIR datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>datasets</strong> – List of dataset names to download. If None, downloads all.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.BEIRDatasetLoader.get_dataset_info">
+<span class="sig-name descname"><span class="pre">get_dataset_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/beir.html#BEIRDatasetLoader.get_dataset_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.BEIRDatasetLoader.get_dataset_info" title="Link to this definition">#</a></dt>
+<dd><p>Get information about a specific BEIR dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dataset_name</strong> – Name of the dataset</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing dataset information</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.BEIRDatasetLoader.list_available_datasets">
+<span class="sig-name descname"><span class="pre">list_available_datasets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/beir.html#BEIRDatasetLoader.list_available_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.BEIRDatasetLoader.list_available_datasets" title="Link to this definition">#</a></dt>
+<dd><p>List available BEIR datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of supported BEIR dataset names</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.BEIRDatasetLoader.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.dataset.Dataset" title="vectormerge.dataset.base.Dataset"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/beir.html#BEIRDatasetLoader.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.BEIRDatasetLoader.load" title="Link to this definition">#</a></dt>
+<dd><p>Load a BEIR dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_name</strong> – Name of the BEIR dataset</p></li>
+<li><p><strong>split</strong> – Dataset split to load (default: “test”)</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataset object containing corpus, queries, and qrels</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If dataset is not supported</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vectormerge.dataset.CustomDatasetLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.dataset.</span></span><span class="sig-name descname"><span class="pre">CustomDatasetLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/dataset/custom.html#CustomDatasetLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.CustomDatasetLoader" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#vectormerge.dataset.DatasetLoader" title="vectormerge.dataset.base.DatasetLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">DatasetLoader</span></code></a></p>
+<p>Loader for custom dataset formats.</p>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.dataset.CustomDatasetLoader.create_dataset_template" title="vectormerge.dataset.CustomDatasetLoader.create_dataset_template"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_dataset_template</span></code></a>(dataset_name[, ...])</p></td>
+<td><p>Create a template for a new custom dataset.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_available</span></code>(dataset_name)</p></td>
+<td><p>Check if a dataset is available.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.dataset.CustomDatasetLoader.list_available_datasets" title="vectormerge.dataset.CustomDatasetLoader.list_available_datasets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_available_datasets</span></code></a>()</p></td>
+<td><p>List available custom datasets.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.dataset.CustomDatasetLoader.load" title="vectormerge.dataset.CustomDatasetLoader.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(dataset_name[, split])</p></td>
+<td><p>Load a custom dataset.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.CustomDatasetLoader.create_dataset_template">
+<span class="sig-name descname"><span class="pre">create_dataset_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'json'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/custom.html#CustomDatasetLoader.create_dataset_template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.CustomDatasetLoader.create_dataset_template" title="Link to this definition">#</a></dt>
+<dd><p>Create a template for a new custom dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_name</strong> – Name of the new dataset</p></li>
+<li><p><strong>format_type</strong> – Format type (“json” or “tsv”)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.CustomDatasetLoader.list_available_datasets">
+<span class="sig-name descname"><span class="pre">list_available_datasets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/custom.html#CustomDatasetLoader.list_available_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.CustomDatasetLoader.list_available_datasets" title="Link to this definition">#</a></dt>
+<dd><p>List available custom datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of custom dataset names found in the data directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.CustomDatasetLoader.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.dataset.Dataset" title="vectormerge.dataset.base.Dataset"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/custom.html#CustomDatasetLoader.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.CustomDatasetLoader.load" title="Link to this definition">#</a></dt>
+<dd><p>Load a custom dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_name</strong> – Name of the dataset</p></li>
+<li><p><strong>split</strong> – Dataset split to load</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments including format specification</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataset object</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>NotImplementedError</strong> – Custom dataset loading not yet implemented</p></li>
+<li><p><strong>ValueError</strong> – If dataset format is not supported</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.dataset.</span></span><span class="sig-name descname"><span class="pre">Dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name:</span> <span class="pre">str,</span> <span class="pre">corpus:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">str]],</span> <span class="pre">queries:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">str],</span> <span class="pre">qrels:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">int]],</span> <span class="pre">split:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'test',</span> <span class="pre">source:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'unknown',</span> <span class="pre">corpus_ids2index:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">int]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">index2corpus_id:</span> <span class="pre">~typing.Dict[int,</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">metadata:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/dataset/base.html#Dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.Dataset" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Unified dataset container for VectorMerge.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference internal" href="#vectormerge.dataset.Dataset.num_qrels" title="vectormerge.dataset.Dataset.num_qrels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_qrels</span></code></a></dt><dd><p>Return number of query-document relevance pairs.</p>
+</dd>
+<dt><a class="reference internal" href="#vectormerge.dataset.Dataset.num_queries" title="vectormerge.dataset.Dataset.num_queries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_queries</span></code></a></dt><dd><p>Return number of queries.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.dataset.Dataset.batch_internal_indices_to_original_ids" title="vectormerge.dataset.Dataset.batch_internal_indices_to_original_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch_internal_indices_to_original_ids</span></code></a>(indices)</p></td>
+<td><p>Convert batch of internal indices to original document IDs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.dataset.Dataset.batch_original_ids_to_internal_indices" title="vectormerge.dataset.Dataset.batch_original_ids_to_internal_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch_original_ids_to_internal_indices</span></code></a>(doc_ids)</p></td>
+<td><p>Convert batch of original document IDs to internal indices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.dataset.Dataset.filter_corpus" title="vectormerge.dataset.Dataset.filter_corpus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_corpus</span></code></a>(doc_ids)</p></td>
+<td><p>Create a new dataset with filtered corpus.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.dataset.Dataset.get_corpus_texts" title="vectormerge.dataset.Dataset.get_corpus_texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_corpus_texts</span></code></a>([include_title])</p></td>
+<td><p>Get all corpus texts as a list.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.dataset.Dataset.get_dataset_index" title="vectormerge.dataset.Dataset.get_dataset_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dataset_index</span></code></a>()</p></td>
+<td><p>Get original document IDs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.dataset.Dataset.get_internal_index" title="vectormerge.dataset.Dataset.get_internal_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_internal_index</span></code></a>()</p></td>
+<td><p>Get internal 0-based indices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.dataset.Dataset.get_query_texts" title="vectormerge.dataset.Dataset.get_query_texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_query_texts</span></code></a>()</p></td>
+<td><p>Get all query texts as a list.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.dataset.Dataset.get_relevant_docs" title="vectormerge.dataset.Dataset.get_relevant_docs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_relevant_docs</span></code></a>(query_id)</p></td>
+<td><p>Get relevant document IDs for a query.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.dataset.Dataset.get_stats" title="vectormerge.dataset.Dataset.get_stats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_stats</span></code></a>()</p></td>
+<td><p>Get dataset statistics.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.dataset.Dataset.internal_index_to_original_id" title="vectormerge.dataset.Dataset.internal_index_to_original_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">internal_index_to_original_id</span></code></a>(index)</p></td>
+<td><p>Convert internal index to original document ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.dataset.Dataset.original_id_to_internal_index" title="vectormerge.dataset.Dataset.original_id_to_internal_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">original_id_to_internal_index</span></code></a>(doc_id)</p></td>
+<td><p>Convert original document ID to internal index.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.batch_internal_indices_to_original_ids">
+<span class="sig-name descname"><span class="pre">batch_internal_indices_to_original_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/base.html#Dataset.batch_internal_indices_to_original_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.Dataset.batch_internal_indices_to_original_ids" title="Link to this definition">#</a></dt>
+<dd><p>Convert batch of internal indices to original document IDs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>indices</strong> – Array of internal indices</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of original document IDs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.batch_original_ids_to_internal_indices">
+<span class="sig-name descname"><span class="pre">batch_original_ids_to_internal_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/base.html#Dataset.batch_original_ids_to_internal_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.Dataset.batch_original_ids_to_internal_indices" title="Link to this definition">#</a></dt>
+<dd><p>Convert batch of original document IDs to internal indices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>doc_ids</strong> – List of original document IDs</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array of internal indices</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.corpus">
+<span class="sig-name descname"><span class="pre">corpus</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#vectormerge.dataset.Dataset.corpus" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.corpus_ids2index">
+<span class="sig-name descname"><span class="pre">corpus_ids2index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#vectormerge.dataset.Dataset.corpus_ids2index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.filter_corpus">
+<span class="sig-name descname"><span class="pre">filter_corpus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.dataset.Dataset" title="vectormerge.dataset.base.Dataset"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/base.html#Dataset.filter_corpus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.Dataset.filter_corpus" title="Link to this definition">#</a></dt>
+<dd><p>Create a new dataset with filtered corpus.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>doc_ids</strong> – List of document IDs to keep</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New Dataset instance with filtered corpus</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.get_corpus_texts">
+<span class="sig-name descname"><span class="pre">get_corpus_texts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">include_title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/base.html#Dataset.get_corpus_texts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.Dataset.get_corpus_texts" title="Link to this definition">#</a></dt>
+<dd><p>Get all corpus texts as a list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>include_title</strong> – Whether to include document titles</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of text strings</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.get_dataset_index">
+<span class="sig-name descname"><span class="pre">get_dataset_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/base.html#Dataset.get_dataset_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.Dataset.get_dataset_index" title="Link to this definition">#</a></dt>
+<dd><p>Get original document IDs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of original document IDs (strings)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.get_internal_index">
+<span class="sig-name descname"><span class="pre">get_internal_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/base.html#Dataset.get_internal_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.Dataset.get_internal_index" title="Link to this definition">#</a></dt>
+<dd><p>Get internal 0-based indices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of internal indices from 0 to len(corpus)-1</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.get_query_texts">
+<span class="sig-name descname"><span class="pre">get_query_texts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/base.html#Dataset.get_query_texts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.Dataset.get_query_texts" title="Link to this definition">#</a></dt>
+<dd><p>Get all query texts as a list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of query strings</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.get_relevant_docs">
+<span class="sig-name descname"><span class="pre">get_relevant_docs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/base.html#Dataset.get_relevant_docs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.Dataset.get_relevant_docs" title="Link to this definition">#</a></dt>
+<dd><p>Get relevant document IDs for a query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>query_id</strong> – Query ID</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of relevant document IDs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.get_stats">
+<span class="sig-name descname"><span class="pre">get_stats</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/base.html#Dataset.get_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.Dataset.get_stats" title="Link to this definition">#</a></dt>
+<dd><p>Get dataset statistics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary containing dataset statistics</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.index2corpus_id">
+<span class="sig-name descname"><span class="pre">index2corpus_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#vectormerge.dataset.Dataset.index2corpus_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.internal_index_to_original_id">
+<span class="sig-name descname"><span class="pre">internal_index_to_original_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/base.html#Dataset.internal_index_to_original_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.Dataset.internal_index_to_original_id" title="Link to this definition">#</a></dt>
+<dd><p>Convert internal index to original document ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> – Internal 0-based index</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Original document ID</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>IndexError</strong> – If index out of range</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.metadata">
+<span class="sig-name descname"><span class="pre">metadata</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#vectormerge.dataset.Dataset.metadata" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#vectormerge.dataset.Dataset.name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.num_qrels">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_qrels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#vectormerge.dataset.Dataset.num_qrels" title="Link to this definition">#</a></dt>
+<dd><p>Return number of query-document relevance pairs.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.num_queries">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_queries</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#vectormerge.dataset.Dataset.num_queries" title="Link to this definition">#</a></dt>
+<dd><p>Return number of queries.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.original_id_to_internal_index">
+<span class="sig-name descname"><span class="pre">original_id_to_internal_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/base.html#Dataset.original_id_to_internal_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.Dataset.original_id_to_internal_index" title="Link to this definition">#</a></dt>
+<dd><p>Convert original document ID to internal index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>doc_id</strong> – Original document ID</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Internal 0-based index</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>KeyError</strong> – If document ID not found</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.qrels">
+<span class="sig-name descname"><span class="pre">qrels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#vectormerge.dataset.Dataset.qrels" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.queries">
+<span class="sig-name descname"><span class="pre">queries</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#vectormerge.dataset.Dataset.queries" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.source">
+<span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'unknown'</span></em><a class="headerlink" href="#vectormerge.dataset.Dataset.source" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vectormerge.dataset.Dataset.split">
+<span class="sig-name descname"><span class="pre">split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'test'</span></em><a class="headerlink" href="#vectormerge.dataset.Dataset.split" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vectormerge.dataset.DatasetLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.dataset.</span></span><span class="sig-name descname"><span class="pre">DatasetLoader</span></span><a class="reference internal" href="../_modules/vectormerge/dataset/base.html#DatasetLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.DatasetLoader" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract base class for dataset loaders.</p>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.dataset.DatasetLoader.is_available" title="vectormerge.dataset.DatasetLoader.is_available"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_available</span></code></a>(dataset_name)</p></td>
+<td><p>Check if a dataset is available.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.dataset.DatasetLoader.list_available_datasets" title="vectormerge.dataset.DatasetLoader.list_available_datasets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_available_datasets</span></code></a>()</p></td>
+<td><p>List available datasets.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.dataset.DatasetLoader.load" title="vectormerge.dataset.DatasetLoader.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(dataset_name[, split])</p></td>
+<td><p>Load a dataset.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.DatasetLoader.is_available">
+<span class="sig-name descname"><span class="pre">is_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/base.html#DatasetLoader.is_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.DatasetLoader.is_available" title="Link to this definition">#</a></dt>
+<dd><p>Check if a dataset is available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dataset_name</strong> – Name of the dataset</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if dataset is available</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.DatasetLoader.list_available_datasets">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_available_datasets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/base.html#DatasetLoader.list_available_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.DatasetLoader.list_available_datasets" title="Link to this definition">#</a></dt>
+<dd><p>List available datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of available dataset names</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.DatasetLoader.load">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.dataset.Dataset" title="vectormerge.dataset.base.Dataset"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/base.html#DatasetLoader.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.DatasetLoader.load" title="Link to this definition">#</a></dt>
+<dd><p>Load a dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_name</strong> – Name of the dataset to load</p></li>
+<li><p><strong>split</strong> – Dataset split to load</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataset object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vectormerge.dataset.EmbeddingDataset">
+<span class="sig-prename descclassname"><span class="pre">vectormerge.dataset.</span></span><span class="sig-name descname"><span class="pre">EmbeddingDataset</span></span><a class="headerlink" href="#vectormerge.dataset.EmbeddingDataset" title="Link to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="#vectormerge.dataset.Dataset" title="vectormerge.dataset.base.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vectormerge.dataset.UnifiedDatasetLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.dataset.</span></span><span class="sig-name descname"><span class="pre">UnifiedDatasetLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/dataset/loader.html#UnifiedDatasetLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.UnifiedDatasetLoader" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Unified dataset loader that handles multiple dataset types.</p>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.dataset.UnifiedDatasetLoader.add_loader" title="vectormerge.dataset.UnifiedDatasetLoader.add_loader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_loader</span></code></a>(source, loader)</p></td>
+<td><p>Add a new dataset loader.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.dataset.UnifiedDatasetLoader.auto_detect_source" title="vectormerge.dataset.UnifiedDatasetLoader.auto_detect_source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_detect_source</span></code></a>(dataset_name)</p></td>
+<td><p>Auto-detect the source for a dataset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.dataset.UnifiedDatasetLoader.get_dataset_info" title="vectormerge.dataset.UnifiedDatasetLoader.get_dataset_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dataset_info</span></code></a>(dataset_name[, source])</p></td>
+<td><p>Get information about a dataset.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.dataset.UnifiedDatasetLoader.get_stats" title="vectormerge.dataset.UnifiedDatasetLoader.get_stats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_stats</span></code></a>()</p></td>
+<td><p>Get statistics about all available datasets.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.dataset.UnifiedDatasetLoader.list_available_datasets" title="vectormerge.dataset.UnifiedDatasetLoader.list_available_datasets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_available_datasets</span></code></a>([source])</p></td>
+<td><p>List available datasets by source.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.dataset.UnifiedDatasetLoader.load" title="vectormerge.dataset.UnifiedDatasetLoader.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(dataset_name[, split, source])</p></td>
+<td><p>Load a dataset from specified source.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.dataset.UnifiedDatasetLoader.remove_loader" title="vectormerge.dataset.UnifiedDatasetLoader.remove_loader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_loader</span></code></a>(source)</p></td>
+<td><p>Remove a dataset loader.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.dataset.UnifiedDatasetLoader.validate_dataset" title="vectormerge.dataset.UnifiedDatasetLoader.validate_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_dataset</span></code></a>(dataset_name[, source])</p></td>
+<td><p>Validate a dataset without fully loading it.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.UnifiedDatasetLoader.add_loader">
+<span class="sig-name descname"><span class="pre">add_loader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loader</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.dataset.DatasetLoader" title="vectormerge.dataset.base.DatasetLoader"><span class="pre">DatasetLoader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/loader.html#UnifiedDatasetLoader.add_loader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.UnifiedDatasetLoader.add_loader" title="Link to this definition">#</a></dt>
+<dd><p>Add a new dataset loader.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> – Source name</p></li>
+<li><p><strong>loader</strong> – Dataset loader instance</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.UnifiedDatasetLoader.auto_detect_source">
+<span class="sig-name descname"><span class="pre">auto_detect_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/loader.html#UnifiedDatasetLoader.auto_detect_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.UnifiedDatasetLoader.auto_detect_source" title="Link to this definition">#</a></dt>
+<dd><p>Auto-detect the source for a dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dataset_name</strong> – Name of the dataset</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Source name</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If dataset is not found in any source</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.UnifiedDatasetLoader.get_dataset_info">
+<span class="sig-name descname"><span class="pre">get_dataset_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/loader.html#UnifiedDatasetLoader.get_dataset_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.UnifiedDatasetLoader.get_dataset_info" title="Link to this definition">#</a></dt>
+<dd><p>Get information about a dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_name</strong> – Name of the dataset</p></li>
+<li><p><strong>source</strong> – Source to check (if None, auto-detect)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing dataset information</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.UnifiedDatasetLoader.get_stats">
+<span class="sig-name descname"><span class="pre">get_stats</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/loader.html#UnifiedDatasetLoader.get_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.UnifiedDatasetLoader.get_stats" title="Link to this definition">#</a></dt>
+<dd><p>Get statistics about all available datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary containing loader statistics</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.UnifiedDatasetLoader.list_available_datasets">
+<span class="sig-name descname"><span class="pre">list_available_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/loader.html#UnifiedDatasetLoader.list_available_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.UnifiedDatasetLoader.list_available_datasets" title="Link to this definition">#</a></dt>
+<dd><p>List available datasets by source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source</strong> – If specified, only return datasets from this source</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary mapping source to list of datasets</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.UnifiedDatasetLoader.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'beir'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.dataset.Dataset" title="vectormerge.dataset.base.Dataset"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/loader.html#UnifiedDatasetLoader.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.UnifiedDatasetLoader.load" title="Link to this definition">#</a></dt>
+<dd><p>Load a dataset from specified source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_name</strong> – Name of the dataset</p></li>
+<li><p><strong>split</strong> – Dataset split to load</p></li>
+<li><p><strong>source</strong> – Source type (beir, custom, etc.)</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments passed to the specific loader</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataset object</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If source is not supported</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.UnifiedDatasetLoader.remove_loader">
+<span class="sig-name descname"><span class="pre">remove_loader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/loader.html#UnifiedDatasetLoader.remove_loader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.UnifiedDatasetLoader.remove_loader" title="Link to this definition">#</a></dt>
+<dd><p>Remove a dataset loader.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source</strong> – Source name to remove</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.dataset.UnifiedDatasetLoader.validate_dataset">
+<span class="sig-name descname"><span class="pre">validate_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/loader.html#UnifiedDatasetLoader.validate_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.UnifiedDatasetLoader.validate_dataset" title="Link to this definition">#</a></dt>
+<dd><p>Validate a dataset without fully loading it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_name</strong> – Name of the dataset</p></li>
+<li><p><strong>source</strong> – Source to check (if None, auto-detect)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing validation results</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vectormerge.dataset.get_dataset_loader">
+<span class="sig-prename descclassname"><span class="pre">vectormerge.dataset.</span></span><span class="sig-name descname"><span class="pre">get_dataset_loader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.dataset.UnifiedDatasetLoader" title="vectormerge.dataset.loader.UnifiedDatasetLoader"><span class="pre">UnifiedDatasetLoader</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/loader.html#get_dataset_loader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.get_dataset_loader" title="Link to this definition">#</a></dt>
+<dd><p>Get the global dataset loader instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data_path</strong> – Path to datasets (uses default if None)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>UnifiedDatasetLoader instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vectormerge.dataset.list_datasets">
+<span class="sig-prename descclassname"><span class="pre">vectormerge.dataset.</span></span><span class="sig-name descname"><span class="pre">list_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/loader.html#list_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.list_datasets" title="Link to this definition">#</a></dt>
+<dd><p>List available datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> – If specified, only return datasets from this source</p></li>
+<li><p><strong>data_path</strong> – Path to datasets (uses default if None)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary mapping source to list of datasets</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vectormerge.dataset.load_beir_dataset">
+<span class="sig-prename descclassname"><span class="pre">vectormerge.dataset.</span></span><span class="sig-name descname"><span class="pre">load_beir_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'./data/raw/beir/'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.dataset.Dataset" title="vectormerge.dataset.base.Dataset"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/beir.html#load_beir_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.load_beir_dataset" title="Link to this definition">#</a></dt>
+<dd><p>Convenience function to load a BEIR dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_name</strong> – Name of the BEIR dataset</p></li>
+<li><p><strong>split</strong> – Dataset split to load</p></li>
+<li><p><strong>data_path</strong> – Path to BEIR datasets</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataset object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vectormerge.dataset.load_custom_dataset">
+<span class="sig-prename descclassname"><span class="pre">vectormerge.dataset.</span></span><span class="sig-name descname"><span class="pre">load_custom_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'./data/custom/'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.dataset.Dataset" title="vectormerge.dataset.base.Dataset"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/custom.html#load_custom_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.load_custom_dataset" title="Link to this definition">#</a></dt>
+<dd><p>Convenience function to load a custom dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_name</strong> – Name of the custom dataset</p></li>
+<li><p><strong>split</strong> – Dataset split to load</p></li>
+<li><p><strong>format_type</strong> – Format of the dataset (“json” or “tsv”)</p></li>
+<li><p><strong>data_path</strong> – Path to custom datasets</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataset object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vectormerge.dataset.load_dataset">
+<span class="sig-prename descclassname"><span class="pre">vectormerge.dataset.</span></span><span class="sig-name descname"><span class="pre">load_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'beir'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.dataset.Dataset" title="vectormerge.dataset.base.Dataset"><span class="pre">Dataset</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/loader.html#load_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.load_dataset" title="Link to this definition">#</a></dt>
+<dd><p>Convenience function to load a dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_name</strong> – Name of the dataset</p></li>
+<li><p><strong>split</strong> – Dataset split to load</p></li>
+<li><p><strong>source</strong> – Source type (beir, custom, etc.)</p></li>
+<li><p><strong>data_path</strong> – Path to datasets (uses default if None)</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments passed to the specific loader</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataset object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vectormerge.dataset.validate_dataset">
+<span class="sig-prename descclassname"><span class="pre">vectormerge.dataset.</span></span><span class="sig-name descname"><span class="pre">validate_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/dataset/loader.html#validate_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.dataset.validate_dataset" title="Link to this definition">#</a></dt>
+<dd><p>Validate a dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_name</strong> – Name of the dataset</p></li>
+<li><p><strong>source</strong> – Source to check (if None, auto-detect)</p></li>
+<li><p><strong>data_path</strong> – Path to datasets (uses default if None)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing validation results</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
@@ -460,6 +1236,80 @@
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.BEIRDatasetLoader"><code class="docutils literal notranslate"><span class="pre">BEIRDatasetLoader</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.BEIRDatasetLoader.SUPPORTED_DATASETS"><code class="docutils literal notranslate"><span class="pre">BEIRDatasetLoader.SUPPORTED_DATASETS</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.BEIRDatasetLoader.download_all"><code class="docutils literal notranslate"><span class="pre">BEIRDatasetLoader.download_all()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.BEIRDatasetLoader.get_dataset_info"><code class="docutils literal notranslate"><span class="pre">BEIRDatasetLoader.get_dataset_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.BEIRDatasetLoader.list_available_datasets"><code class="docutils literal notranslate"><span class="pre">BEIRDatasetLoader.list_available_datasets()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.BEIRDatasetLoader.load"><code class="docutils literal notranslate"><span class="pre">BEIRDatasetLoader.load()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.CustomDatasetLoader"><code class="docutils literal notranslate"><span class="pre">CustomDatasetLoader</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.CustomDatasetLoader.create_dataset_template"><code class="docutils literal notranslate"><span class="pre">CustomDatasetLoader.create_dataset_template()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.CustomDatasetLoader.list_available_datasets"><code class="docutils literal notranslate"><span class="pre">CustomDatasetLoader.list_available_datasets()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.CustomDatasetLoader.load"><code class="docutils literal notranslate"><span class="pre">CustomDatasetLoader.load()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset"><code class="docutils literal notranslate"><span class="pre">Dataset</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.batch_internal_indices_to_original_ids"><code class="docutils literal notranslate"><span class="pre">Dataset.batch_internal_indices_to_original_ids()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.batch_original_ids_to_internal_indices"><code class="docutils literal notranslate"><span class="pre">Dataset.batch_original_ids_to_internal_indices()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.corpus"><code class="docutils literal notranslate"><span class="pre">Dataset.corpus</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.corpus_ids2index"><code class="docutils literal notranslate"><span class="pre">Dataset.corpus_ids2index</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.filter_corpus"><code class="docutils literal notranslate"><span class="pre">Dataset.filter_corpus()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.get_corpus_texts"><code class="docutils literal notranslate"><span class="pre">Dataset.get_corpus_texts()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.get_dataset_index"><code class="docutils literal notranslate"><span class="pre">Dataset.get_dataset_index()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.get_internal_index"><code class="docutils literal notranslate"><span class="pre">Dataset.get_internal_index()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.get_query_texts"><code class="docutils literal notranslate"><span class="pre">Dataset.get_query_texts()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.get_relevant_docs"><code class="docutils literal notranslate"><span class="pre">Dataset.get_relevant_docs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.get_stats"><code class="docutils literal notranslate"><span class="pre">Dataset.get_stats()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.index2corpus_id"><code class="docutils literal notranslate"><span class="pre">Dataset.index2corpus_id</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.internal_index_to_original_id"><code class="docutils literal notranslate"><span class="pre">Dataset.internal_index_to_original_id()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.metadata"><code class="docutils literal notranslate"><span class="pre">Dataset.metadata</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.name"><code class="docutils literal notranslate"><span class="pre">Dataset.name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.num_qrels"><code class="docutils literal notranslate"><span class="pre">Dataset.num_qrels</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.num_queries"><code class="docutils literal notranslate"><span class="pre">Dataset.num_queries</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.original_id_to_internal_index"><code class="docutils literal notranslate"><span class="pre">Dataset.original_id_to_internal_index()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.qrels"><code class="docutils literal notranslate"><span class="pre">Dataset.qrels</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.queries"><code class="docutils literal notranslate"><span class="pre">Dataset.queries</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.source"><code class="docutils literal notranslate"><span class="pre">Dataset.source</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.Dataset.split"><code class="docutils literal notranslate"><span class="pre">Dataset.split</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.DatasetLoader"><code class="docutils literal notranslate"><span class="pre">DatasetLoader</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.DatasetLoader.is_available"><code class="docutils literal notranslate"><span class="pre">DatasetLoader.is_available()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.DatasetLoader.list_available_datasets"><code class="docutils literal notranslate"><span class="pre">DatasetLoader.list_available_datasets()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.DatasetLoader.load"><code class="docutils literal notranslate"><span class="pre">DatasetLoader.load()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.EmbeddingDataset"><code class="docutils literal notranslate"><span class="pre">EmbeddingDataset</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.UnifiedDatasetLoader"><code class="docutils literal notranslate"><span class="pre">UnifiedDatasetLoader</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.UnifiedDatasetLoader.add_loader"><code class="docutils literal notranslate"><span class="pre">UnifiedDatasetLoader.add_loader()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.UnifiedDatasetLoader.auto_detect_source"><code class="docutils literal notranslate"><span class="pre">UnifiedDatasetLoader.auto_detect_source()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.UnifiedDatasetLoader.get_dataset_info"><code class="docutils literal notranslate"><span class="pre">UnifiedDatasetLoader.get_dataset_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.UnifiedDatasetLoader.get_stats"><code class="docutils literal notranslate"><span class="pre">UnifiedDatasetLoader.get_stats()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.UnifiedDatasetLoader.list_available_datasets"><code class="docutils literal notranslate"><span class="pre">UnifiedDatasetLoader.list_available_datasets()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.UnifiedDatasetLoader.load"><code class="docutils literal notranslate"><span class="pre">UnifiedDatasetLoader.load()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.UnifiedDatasetLoader.remove_loader"><code class="docutils literal notranslate"><span class="pre">UnifiedDatasetLoader.remove_loader()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.UnifiedDatasetLoader.validate_dataset"><code class="docutils literal notranslate"><span class="pre">UnifiedDatasetLoader.validate_dataset()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.get_dataset_loader"><code class="docutils literal notranslate"><span class="pre">get_dataset_loader()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.list_datasets"><code class="docutils literal notranslate"><span class="pre">list_datasets()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.load_beir_dataset"><code class="docutils literal notranslate"><span class="pre">load_beir_dataset()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.load_custom_dataset"><code class="docutils literal notranslate"><span class="pre">load_custom_dataset()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.load_dataset"><code class="docutils literal notranslate"><span class="pre">load_dataset()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.dataset.validate_dataset"><code class="docutils literal notranslate"><span class="pre">validate_dataset()</span></code></a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
 

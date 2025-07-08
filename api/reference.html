@@ -417,8 +417,73 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="reference-points">
-<h1>Reference Points<a class="headerlink" href="#reference-points" title="Link to this heading">#</a></h1>
+  <section id="module-vectormerge.reference">
+<span id="reference-points"></span><h1>Reference Points<a class="headerlink" href="#module-vectormerge.reference" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="vectormerge.reference.LA2MSplit">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.reference.</span></span><span class="sig-name descname"><span class="pre">LA2MSplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internal_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">answer_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_dup_answer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qrels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select_top_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="dataset.html#vectormerge.dataset.Dataset" title="vectormerge.dataset.base.Dataset"><span class="pre">Dataset</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/reference/la2m_split.html#LA2MSplit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.reference.LA2MSplit" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSplit</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>final_reference_path</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_overlap</span></code>(d0_index, d1_index, d2_index)</p></td>
+<td><p>Check if there is any overlap between D0, D1, and D2</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.reference.LA2MSplit.from_qrels" title="vectormerge.reference.LA2MSplit.from_qrels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_qrels</span></code></a>(dataset_name, dataset_index, ...)</p></td>
+<td><p>Create LA2MSplit instance from qrels data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_reference</span></code>(d0_index, d1_index, d2_index)</p></td>
+<td><p>Save the reference to the reference_path, the reference is a dictionary with keys &quot;d0_index&quot;, &quot;d1_index&quot;, and &quot;d2_index&quot;</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code>(**kwargs)</p></td>
+<td><p>Split the dataset into three parts: - D0: reference - D1: query - D2: test</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.reference.LA2MSplit.from_qrels">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_qrels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internal_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="dataset.html#vectormerge.dataset.Dataset" title="vectormerge.dataset.base.Dataset"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qrels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_dup_answer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select_top_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/reference/la2m_split.html#LA2MSplit.from_qrels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.reference.LA2MSplit.from_qrels" title="Link to this definition">#</a></dt>
+<dd><p>Create LA2MSplit instance from qrels data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_name</strong> – name of the dataset</p></li>
+<li><p><strong>dataset_index</strong> – indices of all documents</p></li>
+<li><p><strong>qrels</strong> – query relevance judgments {query_id: {doc_id: relevance_score}}</p></li>
+<li><p><strong>reference_ratio</strong> – ratio for reference set</p></li>
+<li><p><strong>reference_path</strong> – path to save reference data</p></li>
+<li><p><strong>remove_dup_answer</strong> – whether to remove duplicate answer documents</p></li>
+<li><p><strong>select_top_1</strong> – whether to select only the top 1 relevant answer for each query</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>LA2MSplit instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="vectormerge.reference.RandomSplit">
+<span class="sig-prename descclassname"><span class="pre">vectormerge.reference.</span></span><span class="sig-name descname"><span class="pre">RandomSplit</span></span><a class="headerlink" href="#vectormerge.reference.RandomSplit" title="Link to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSplit</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vectormerge.reference.get_reference">
+<span class="sig-prename descclassname"><span class="pre">vectormerge.reference.</span></span><span class="sig-name descname"><span class="pre">get_reference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reference_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/vectormerge/reference/base_split.html#get_reference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.reference.get_reference" title="Link to this definition">#</a></dt>
+<dd><p>Load the reference from the reference_path, the reference is a dictionary with keys “d0_index”, “d1_index”, and “d2_index”</p>
+</dd></dl>
+
 </section>
 
 
@@ -450,6 +515,23 @@
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.reference.LA2MSplit"><code class="docutils literal notranslate"><span class="pre">LA2MSplit</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.reference.LA2MSplit.from_qrels"><code class="docutils literal notranslate"><span class="pre">LA2MSplit.from_qrels()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.reference.RandomSplit"><code class="docutils literal notranslate"><span class="pre">RandomSplit</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.reference.get_reference"><code class="docutils literal notranslate"><span class="pre">get_reference()</span></code></a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
 
