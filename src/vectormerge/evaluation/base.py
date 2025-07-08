@@ -57,10 +57,10 @@ class Evaluator:
     
     def _align_dimensions(self):
         max_dim = max(self.corpus_emb_1.shape[1], self.corpus_emb_2.shape[1], self.corpus_emb_1_transformed.shape[1], self.query_emb_2.shape[1])
-        self.corpus_emb_1 = np.pad(self.corpus_emb_1, (0, max_dim - self.corpus_emb_1.shape[1]), mode="constant", constant_values=0)
-        self.corpus_emb_2 = np.pad(self.corpus_emb_2, (0, max_dim - self.corpus_emb_2.shape[1]), mode="constant", constant_values=0)
-        self.corpus_emb_1_transformed = np.pad(self.corpus_emb_1_transformed, (0, max_dim - self.corpus_emb_1_transformed.shape[1]), mode="constant", constant_values=0)
-        self.query_emb_2 = np.pad(self.query_emb_2, (0, max_dim - self.query_emb_2.shape[1]), mode="constant", constant_values=0)
+        self.corpus_emb_1 = np.pad(self.corpus_emb_1, ((0, 0), (0, max_dim - self.corpus_emb_1.shape[1])), mode="constant", constant_values=0)
+        self.corpus_emb_2 = np.pad(self.corpus_emb_2, ((0, 0), (0, max_dim - self.corpus_emb_2.shape[1])), mode="constant", constant_values=0)
+        self.corpus_emb_1_transformed = np.pad(self.corpus_emb_1_transformed, ((0, 0), (0, max_dim - self.corpus_emb_1_transformed.shape[1])), mode="constant", constant_values=0)
+        self.query_emb_2 = np.pad(self.query_emb_2, ((0, 0), (0, max_dim - self.query_emb_2.shape[1])), mode="constant", constant_values=0)
 
     def evaluate(self):
         return self.merge_and_evaluate_embeddings(self.corpus_emb_1, self.corpus_emb_2, self.corpus_emb_1_transformed, self.query_emb_2, self.query_index2answer_index, self.d0, self.d1, self.d2)

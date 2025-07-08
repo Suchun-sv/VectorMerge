@@ -12,6 +12,7 @@ from pathlib import Path
 from loguru import logger
 import time
 from tqdm import tqdm
+from sklearn.decomposition import PCA
 
 from ..base import MappingStrategy, MappingConfig
 from ...clustering import ClusterData, ClusteringConfig, ClusterManager
@@ -50,6 +51,14 @@ class LA2MStrategy(MappingStrategy):
         
         logger.info(f"LA2M mapping strategy initialized with {cluster_method} clustering")
     
+    def _init_pca_mapping(self, source_embeddings: np.ndarray, target_embeddings: np.ndarray):
+        """Initialize PCA mapping."""
+        self.src_pca = PCA(n_components=self.config.la2m_config.pca_dim)
+        self.target_pca = PCA(n_components=self.config.la2m_config.pca_dim)
+        self.src_pca.fit(source_embeddings)
+        self.target_pca.fit(target_embeddings)
+        return self.src_pca.transform(source_embeddings), self.target_pca.transform(target_embeddings)
+    
     def _fit(self, source_embeddings: np.ndarray, target_embeddings: np.ndarray,
             reference_indices: np.ndarray, **kwargs) -> None:
         """Fit the clustering-based mapping strategy.
@@ -61,19 +70,18 @@ class LA2MStrategy(MappingStrategy):
             **kwargs: Additional arguments
         """
         logger.info(f"Fitting LA2M mapping strategy with {len(reference_indices)} reference points")
+
+        ori_source_dimension = source_embeddings.shape[1]
+        ori_target_dimension = target_embeddings.shape[1]
         
-        # Create a temporary cluster manager for this fit operation
-        # Since we don't have actual dataset/model info, we'll use memory-based clustering
-        # temp_cluster_manager = ClusterManager(
-        #     dataset_name=self.config.dataset_name,
-        #     model=self.config.source_model,
-        #     reference_key=self.config.reference_key,
-        #     reference_path=self.config.reference_path,
-        #     cluster_path=self.config.cluster_path,
-        #     embedding_path=self.config.embedding_path,
-        #     strategy_name=self.config.cluster_method,
-        #     strategy_config=self.config.clustering_config,
-        # )
+        assert ori_source_dimension == ori_target_dimension, f"Source and target embeddings have different dimensions: {ori_source_dimension} and {ori_target_dimension}"
+
+        # Step 0: PCA mapping
+        if self.config.la2m_config.pca_mapping:
+            logger.info(f"Step 0: PCA mapping to {self.config.la2m_config.pca_dim} dimensions")
+            source_embeddings, target_embeddings = self._init_pca_mapping(source_embeddings, target_embeddings)
+            self.reduced_source_embeddings = source_embeddings
+            self.reduced_target_embeddings = target_embeddings
         
         # Step 1: Cluster reference points using ClusterManager
         logger.info("Step 1: Clustering reference points...")
@@ -118,11 +126,11 @@ class LA2MStrategy(MappingStrategy):
                             remaining_clusters = len(clustering_results.cluster_data_list) - cluster_id - 1
                             estimated_remaining_time = avg_time_per_cluster * remaining_clusters
                             
-                            logger.info(f"Cluster {cluster_id}: learned mapping with {len(cluster_ref_indices)} points, "
+                            logger.debug(f"Cluster {cluster_id}: learned mapping with {len(cluster_ref_indices)} points, "
                                       f"remaining {remaining_clusters} clusters, "
                                       f"estimated time remaining: {time.strftime('%H:%M:%S', time.gmtime(estimated_remaining_time))}")
                         else:
-                            logger.info(f"Cluster {cluster_id}: learned mapping with {len(cluster_ref_indices)} points")
+                            logger.debug(f"Cluster {cluster_id}: learned mapping with {len(cluster_ref_indices)} points")
                     else:
                         logger.warning(f"Failed to get valid mapping for cluster {cluster_id}")
                 
@@ -161,7 +169,6 @@ class LA2MStrategy(MappingStrategy):
             raise
         
         # Step 4: Store cluster manager and data for later use
-        # self.cluster_manager = temp_cluster_manager
         self.cluster_data_list = clustering_results.cluster_data_list
         self.training_time = time.time() - training_time_start
         self.formated_training_time = time.strftime("%H:%M:%S", time.gmtime(self.training_time))
@@ -196,14 +203,20 @@ class LA2MStrategy(MappingStrategy):
         if not self.is_fitted or self.cluster_manager is None:
             raise ValueError("Mapping must be fitted before transformation")
         
+        if self.config.la2m_config.pca_mapping:
+            embeddings = self.src_pca.transform(embeddings)
+        
         logger.info(f"Transforming {len(embeddings)} embeddings using LA2M strategy")
         
         # Use ClusterManager to predict cluster assignments
         cluster_result = self.cluster_manager.fit()
-        cluster_assignments = self.cluster_manager.predict(cluster_result, embeddings[target_indices])
+        cluster_assignments = self.cluster_manager.predict(cluster_result, embeddings[target_indices], src_embeddings=self.reduced_source_embeddings)
         
         target_dimension = self.metadata['target_dimension']
-        transformed = np.zeros((embeddings.shape[0], target_dimension))
+        if hasattr(self, 'reduced_target_embeddings'):
+            transformed = np.zeros((embeddings.shape[0], self.reduced_target_embeddings.shape[1]))
+        else:
+            transformed = np.zeros((embeddings.shape[0], target_dimension))
 
         
         for cluster_id in range(len(self.cluster_data_list)):
@@ -229,6 +242,9 @@ class LA2MStrategy(MappingStrategy):
                 
                 transformed[cluster_indices] = transformed_cluster
         
+        # revert PCA mapping
+        if self.config.la2m_config.pca_mapping:
+            transformed = self.target_pca.inverse_transform(transformed)
         return transformed
     
     def _apply_local_mapping(self, embeddings: np.ndarray, 
@@ -295,6 +311,10 @@ class LA2MStrategy(MappingStrategy):
         
         save_path = Path(path)
         self.cluster_manager.save_config(save_path/ "cluster_manager")
+
+        # Save reduced embeddings
+        np.save(save_path / "reduced_source_embeddings.npy", self.reduced_source_embeddings)
+        np.save(save_path / "reduced_target_embeddings.npy", self.reduced_target_embeddings)
         
         # Save cluster data
         cluster_data_dict = {}
@@ -325,8 +345,29 @@ class LA2MStrategy(MappingStrategy):
             for key, value in self.global_fallback_mapping.items():
                 np.save(global_path / f"{key}.npy", value)
         
+        # Save PCA mapping
+        if self.config.la2m_config.pca_mapping:
+            self.save_pca_instance(self.src_pca, save_path, "src_pca")
+            self.save_pca_instance(self.target_pca, save_path, "target_pca")
+        
         logger.info(f"Saved LA2M mapping strategy to {save_path}")
     
+    def save_pca_instance(self, pca_instance: PCA, save_path: Path, prefix: str):
+        """Save PCA instance."""
+        np.save(save_path / f"{prefix}_components.npy", pca_instance.components_)
+        np.save(save_path / f"{prefix}_mean.npy", pca_instance.mean_)
+        np.save(save_path / f"{prefix}_explained_variance.npy", pca_instance.explained_variance_)
+        np.save(save_path / f"{prefix}_explained_variance_ratio.npy", pca_instance.explained_variance_ratio_)
+    
+    def load_pca_instance(self, load_path: Path, prefix: str):
+        """Load PCA instance."""
+        pca_instance = PCA(n_components=self.config.la2m_config.pca_dim)
+        pca_instance.components_ = np.load(load_path / f"{prefix}_components.npy")
+        pca_instance.mean_ = np.load(load_path / f"{prefix}_mean.npy")
+        pca_instance.explained_variance_ = np.load(load_path / f"{prefix}_explained_variance.npy")
+        pca_instance.explained_variance_ratio_ = np.load(load_path / f"{prefix}_explained_variance_ratio.npy")
+        return pca_instance
+
     @classmethod
     def load(cls, path, clustering_manager: Optional[ClusterManager] = None) -> 'LA2MStrategy':
         """Load a fitted LA2M mapping strategy."""
@@ -341,6 +382,10 @@ class LA2MStrategy(MappingStrategy):
         if clustering_manager is None:
             clustering_manager = ClusterManager.load_config(load_path / "cluster_manager")
         instance = cls(config, clustering_manager)
+
+        # Load reduced embeddings
+        instance.reduced_source_embeddings = np.load(load_path / "reduced_source_embeddings.npy")
+        instance.reduced_target_embeddings = np.load(load_path / "reduced_target_embeddings.npy")
         
         # Load cluster data
         with open(load_path / "cluster_data.json", "r") as f:
@@ -379,6 +424,11 @@ class LA2MStrategy(MappingStrategy):
             
             if global_mapping:
                 instance.global_fallback_mapping = global_mapping
+
+        # Load PCA mapping
+        if config.la2m_config.pca_mapping:
+            instance.src_pca = instance.load_pca_instance(load_path, "src_pca")
+            instance.target_pca = instance.load_pca_instance(load_path, "target_pca")
         
         instance.is_fitted = True
         instance.metadata = mapping_info.get('metadata', {})

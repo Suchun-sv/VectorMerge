@@ -61,12 +61,14 @@ class ClusterData:
         """Check if cluster has a center."""
         return self.center_embedding is not None
     
-    def compute_center(self) -> Optional[np.ndarray]:
+    def compute_center(self, embeddings: Optional[np.ndarray] = None) -> Optional[np.ndarray]:
         """Compute cluster center from reference embeddings."""
         if self.reference_embeddings is None or len(self.reference_embeddings) == 0:
             return None
+        if embeddings is None:
+            embeddings = self.reference_embeddings
         
-        center = np.mean(self.reference_embeddings, axis=0)
+        center = np.mean(embeddings, axis=0)
         self.center_embedding = center
         return center
     
@@ -190,6 +192,19 @@ class ClusteringResult:
         """Check if cluster result has embeddings."""
         return all(cluster.reference_embeddings is not None for cluster in self.cluster_data_list)
     
+    def reload_reference_embeddings(self, embeddings: np.ndarray) -> None:
+        """Recompute cluster centers."""
+
+        for cluster in self.cluster_data_list:
+            cluster.reference_embeddings = embeddings[cluster.reference_indices]
+            cluster.compute_center()
+
+        # for cluster in self.cluster_data_list:
+        #     if cluster.center_embedding is None:
+        #         cluster.compute_center(embeddings=embeddings[cluster.reference_indices])
+        
+        self.cluster_centers = self.get_cluster_centers()
+    
     @property
     def cluster_sizes(self) -> List[int]:
         """Return sizes of all clusters."""
@@ -208,7 +223,10 @@ class ClusteringResult:
     @property
     def total_reference_points(self) -> int:
         """Return total number of reference points across all clusters."""
-        return sum(cluster.ref_size for cluster in self.cluster_data_list)
+        reference_indices = []
+        for cluster in self.cluster_data_list:
+            reference_indices.extend(cluster.reference_indices)
+        return len(set(reference_indices))
     
     @property
     def total_target_points(self) -> int:

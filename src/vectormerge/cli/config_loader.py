@@ -14,6 +14,8 @@ from ..mapping.base import MappingConfig
 from ..clustering.base import ClusteringConfig
 from ..embeddings.base import EmbeddingModelConfig
 from ruamel.yaml import YAML
+from dataclasses import asdict
+from dacite import from_dict
 from ruamel.yaml.comments import CommentedMap
 import io
 
@@ -109,7 +111,7 @@ class VectorMergeConfig(BaseConfig):
         default_config = _to_dict_recursive(self)
         yaml_dict = yaml.safe_load(yaml_str)
         default_config.update(yaml_dict)
-        return self.__class__.from_dict(default_config)
+        return from_dict(self.__class__, default_config)
 
     def to_commented_yaml(self) -> str:
         """Convert configuration to YAML string with comments."""
@@ -198,10 +200,14 @@ class ConfigLoader:
         }
         
         # Merge in order of precedence (package -> global -> project)
+        test_dict = {}
         for config_type, config_data in configs.items():
             if config_data:
-                self._cached_configs[config_type] = config_data
+                test_dict.update(config_data)
                 self._merge_config(config_data)
+        
+        self.config = from_dict(self.config.__class__, test_dict)
+        
 
     def load_yaml_config(self, config_path: Path) -> "ConfigLoader":
         """Load configuration from YAML file."""

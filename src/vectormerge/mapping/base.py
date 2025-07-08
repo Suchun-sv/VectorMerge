@@ -22,6 +22,8 @@ class LA2MConfig():
     num_clusters: int = 50
     cluster_method: str = "la2m-cluster"
     d_prime: int = 10
+    pca_mapping: bool = True
+    pca_dim: int = 14
     save_param: bool = False
     save_embedding: bool = False
 

@@ -154,7 +154,7 @@ class ClusterManager:
             return False
         return self.final_save_path.exists()
     
-    def fit(self):
+    def fit(self) -> ClusteringResult:
         """Fit the clustering strategy to the data."""
         if self.strategy is None:
             raise ValueError("Strategy not initialized")
@@ -235,15 +235,18 @@ class ClusterManager:
         
         logger.info(f"Clustering result saved to {self.final_save_path}")
     
-    def predict(self, clustering_result: ClusteringResult, embeddings: np.ndarray) -> np.ndarray:
+    def predict(self, clustering_result: ClusteringResult, target_embeddings: np.ndarray, src_embeddings: Optional[np.ndarray] = None) -> np.ndarray:
         """Predict cluster assignments for new embeddings."""
         if self.strategy is None:
             raise ValueError("Strategy not initialized")
         
         if not self.strategy.is_fitted:
             raise ValueError("Strategy not fitted. Run fit() first.")
+
+        if src_embeddings is not None:
+            clustering_result.reload_reference_embeddings(src_embeddings)
         
-        return self.strategy.predict(clustering_result, embeddings)
+        return self.strategy.predict(clustering_result, target_embeddings)
     
     def cluster_embeddings(self, embeddings: np.ndarray, 
                           reference_indices: np.ndarray) -> ClusteringResult:

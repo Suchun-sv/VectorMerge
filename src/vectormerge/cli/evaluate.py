@@ -36,7 +36,7 @@ def single_run(
     E.g. --mapping_config.la2m.num_clusters=50
     """
     extra_dict = parse_dynamic_config(ctx)
-    config_loader = ConfigLoader()
+    config_loader = ConfigLoader().load_config()
     if extra_dict:
         config_loader.update_config(extra_dict)
     
@@ -60,20 +60,21 @@ def single_run(
     save_embedding=True,
     clustering_config=config.clustering_config)
 
-    source_embeddings = get_embedding(model_name=source_model, dataset_name=dataset_name, embedding_path=config.embedding_path)
-    target_embeddings = get_embedding(model_name=target_model, dataset_name=dataset_name, embedding_path=config.embedding_path)
-    source_query_embeddings = get_embedding(model_name=source_model, dataset_name=dataset_name, embedding_path=config.embedding_path, type_="query")
-    target_query_embeddings = get_embedding(model_name=target_model, dataset_name=dataset_name, embedding_path=config.embedding_path, type_="query")
+    corpus_emb_1, corpus_emb_2 = get_embedding(dataset_name=dataset_name, model_name=source_model, embedding_path=config.embedding_path, target_model_name=target_model, type_="corpus", align=True)
+    query_emb_1, query_emb_2 = get_embedding(dataset_name=dataset_name, model_name=source_model, embedding_path=config.embedding_path, target_model_name=target_model, type_="query", align=True)
+
+    assert corpus_emb_2 is not None
+    assert query_emb_2 is not None
 
     reference_indices = get_reference(reference_key=reference_key, reference_path=config.reference_path)
 
-    transformed_embeddings = vectormerge.fit_and_transform(source_embeddings, target_embeddings, reference_indices['d0_index'])
+    transformed_embeddings = vectormerge.fit_and_transform(corpus_emb_1, corpus_emb_2, reference_indices['d0_index'])
 
     evaluator = Evaluator(
-        corpus_emb_1=source_embeddings,
-        corpus_emb_2=target_embeddings,
-        query_emb_1=source_query_embeddings,
-        query_emb_2=target_query_embeddings,
+        corpus_emb_1=corpus_emb_1,
+        corpus_emb_2=corpus_emb_2,
+        query_emb_1=query_emb_1,
+        query_emb_2=query_emb_2,
         query_index2answer_index=dataset.query_index2answer_index,
         d0=reference_indices['d0_index'],
         d1=reference_indices['d1_index'],

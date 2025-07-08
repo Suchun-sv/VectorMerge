@@ -11,6 +11,7 @@ import numpy as np
 import shutil
 
 from .embedding_generator import get_embedding_generator
+from .util import align_dimension
 from ..dataset import load_dataset, Dataset
 
 # Configure logging
@@ -148,7 +149,7 @@ def parse_args():
     
     return parser.parse_args()
 
-def get_embedding(model_name: str, dataset_name: str, embedding_path: str, type_: str = "corpus"):
+def _get_single_embedding(model_name: str, dataset_name: str, embedding_path: str, type_: str = "corpus"):
     """
     Simple function to get embeddings from a model and dataset.
     """
@@ -160,6 +161,32 @@ def get_embedding(model_name: str, dataset_name: str, embedding_path: str, type_
         raise ValueError(f"Invalid type: {type_}. Must be 'corpus' or 'query'.")
     
     return np.load(embedding_path / Path(cache_key))
+
+def get_embedding(dataset_name: str, model_name: str, embedding_path: str, target_model_name: Optional[str] = None, type_: str = "corpus", align: bool = True) -> Tuple[np.ndarray, Optional[np.ndarray]]:
+    """
+    Get embeddings from a model and dataset.
+    """
+    source_embeddings = _get_single_embedding(model_name, dataset_name, embedding_path, type_=type_)
+    if target_model_name is None:
+        return source_embeddings
+    if target_model_name is not None:
+        target_embeddings = _get_single_embedding(target_model_name, dataset_name, embedding_path, type_=type_)
+    if target_model_name is not None and align:
+        source_embeddings, target_embeddings = align_dimension(source_embeddings, target_embeddings)
+    
+    assert source_embeddings.shape[0] == target_embeddings.shape[0], f"Source and target embeddings have different sample size: {source_embeddings.shape[0]} and {target_embeddings.shape[0]}"
+
+    return source_embeddings, target_embeddings
+
+def get_source_target_embeddings(dataset_name: str, embedding_path: str, source_model_name: str, target_model_name: str, type_: str = "corpus", align: bool = True):
+    """
+    Get source and target embeddings from a model and dataset.
+    """
+    source_embeddings = _get_single_embedding(source_model_name, dataset_name, embedding_path, type_=type_)
+    target_embeddings = _get_single_embedding(target_model_name, dataset_name, embedding_path, type_=type_)
+    if align:
+        source_embeddings, target_embeddings = align_dimension(source_embeddings, target_embeddings)
+    return source_embeddings, target_embeddings
 
 
 def generate_embeddings(model_name: str, dataset_name: str, dataset_path: str, cache_dir: str, model_settings: Dict, type_: str = "corpus", force: bool = False, embedding_path: Optional[str] = None):
