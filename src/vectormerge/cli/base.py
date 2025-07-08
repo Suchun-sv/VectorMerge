@@ -29,24 +29,24 @@ console = Console()
 # Load CLI defaults
 def load_cli_defaults() -> Dict[str, Any]:
     """Load CLI default configuration."""
-    from .config_loader import VectorMergeConfig
-    config = VectorMergeConfig()
-    
+    from .config_loader import ConfigLoader
+    config_loader = ConfigLoader().load_config()
+    return config_loader.config.to_dict()
     # return config.to_dict()
-    return {
-        "data_path": config.data_path,
-        "embedding_path": config.embedding_path,
-        "reference_path": config.reference_path,
-        "mapping_path": config.mapping_path,
-        "mapping_param_path": config.mapping_param_path,
-        "mapping_embedding_path": config.mapping_embedding_path,
-        "cluster_path": config.cluster_path,
-        "dataset": "scifact",
-        "type": "mistral",
-        "verbose": False,
-        "mapping_config": config.mapping_config.to_dict(),
-        "clustering_config": config.clustering_config.to_dict(),
-    }
+    # return {
+    #     "data_path": config.data_path,
+    #     "embedding_path": config.embedding_path,
+    #     "reference_path": config.reference_path,
+    #     "mapping_path": config.mapping_path,
+    #     "mapping_param_path": config.mapping_param_path,
+    #     "mapping_embedding_path": config.mapping_embedding_path,
+    #     "cluster_path": config.cluster_path,
+    #     "dataset": "scifact",
+    #     "type": "mistral",
+    #     "verbose": False,
+    #     "mapping_config": config.mapping_config.to_dict(),
+    #     "clustering_config": config.clustering_config.to_dict(),
+    # }
 
 cli_defaults = load_cli_defaults()
 

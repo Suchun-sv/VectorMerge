@@ -47,10 +47,11 @@ def check_config():
             display_warning(f"No configuration found in {config_loader.local_config_path}, {config_loader.global_config_path}, {config_loader.package_config_path}")
             return
 
-        config = config_loader.load_yaml_config(type_map["all"])
+        # config = config_loader.load_yaml_config(type_map["all"])
+        config = config_loader.load_yaml_config(type_map["all"]).config
         rprint(f"[blue]📋 Current Configuration ({type_map['all']})[/blue]")
         rprint(f"[dim]Path: {type_map['all']}[/dim]")
-        _display_config(config, "table")
+        _display_config(config.to_dict(), "table")
 
     except Exception as e:
         display_error_and_exit(f"Error loading configuration: {e}")
@@ -65,7 +66,6 @@ def generate_default_config(
     from .config_loader import ConfigLoader
     config_loader = ConfigLoader()
 
-
     config_yaml_str = config_loader.to_commented_yaml()
     if scope == "global":
         config_path = config_loader.global_config_path
@@ -75,6 +75,8 @@ def generate_default_config(
         display_error_and_exit(f"Invalid scope: {scope}. Use 'global' or 'local'.")
 
     display_info(f"[dim]You are about to generate a default configuration file to [yellow]{config_path}[/yellow], change it through the --scope option.[/dim]")
+
+    config_path.parent.mkdir(parents=True, exist_ok=True)
 
     if not force:
         if config_path.exists():
