@@ -1,0 +1,8 @@
+[core]
+    autostage = true
+    remote = awsremote
+[cache]
+    dir = /mnt/work/work/.cache/dvc-cache/VectorMerge/
+    type = symlink
+['remote "awsremote"']
+    url = s3://dvc-local-cache/VectorMerge/

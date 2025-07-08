@@ -28,13 +28,23 @@ dependencies = [
     "dotenv>=0.9.9",
     "rich>=13.0.0",
     "pyyaml>=6.0",
+    "umap>=0.1.1",
+    "dacite>=1.9.2",
+    "matplotlib>=3.10.3",
+    "seaborn>=0.13.2",
 ]
 
 [project.scripts]
 vectormerge = "vectormerge.cli:app"
 
 [tool.uv]
-package = false
+package = true
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.uv.sources]
 jasminetool = { git = "https://github.com/Suchun-sv/JasmineTool.git", rev = "v0.2.0" }

@@ -8,11 +8,13 @@ This library provides tools for:
 - Clustering-based reference generation
 - Comprehensive evaluation metrics
 
-Author: Beining Yang
+Author: SuchunSV
 License: MIT
 """
 
 from typing import List, Dict, Any
+from .embeddings import SUPPORTED_MODELS
+from .dataset import SUPPORTED_DATASETS
 
 # Version management
 __version__ = "1.0.0"
@@ -20,85 +22,55 @@ __author__ = "Beining Yang"
 __email__ = "suchunsv@outlook.com"
 __description__ = "A modern library for embedding evaluation and vector space mapping"
 
-# Core imports
-from .core import (
-    EmbeddingEvaluator,
-    EvaluationMetrics,
-    EmbeddingDataset,
+from .dataset import (
+    load_dataset,
+    list_datasets,
+    validate_dataset,
 )
 
 from .embeddings import (
     EmbeddingGenerator,
     get_embedding_generator,
+    generate_embeddings,
+)
+
+from .clustering import (
+    ClusterManager,
+    ClusteringConfig,
+    ClusteringResult,
 )
 
 from .mapping import (
     VectorSpaceMapper,
     ProcrustesMappingStrategy,
     NonLinearMappingStrategy,
+    LA2MStrategy,
 )
-
-from .evaluation import (
-    MetricsCalculator,
-    RecallCalculator,
-    NDCGCalculator,
-)
-
-from .config import (
-    VectorMergeConfig,
-    ModelConfig,
-    EvaluationConfig,
-)
-
-# Package-level constants
-SUPPORTED_MODELS = [
-    "bert-base-uncased",
-    "roberta-base", 
-    "bge",
-    "nv-embed",
-    "openai",
-    "mistral",
-    "fast-text",
-    "word2vec",
-    "glove",
-]
-
-SUPPORTED_DATASETS = [
-    "scifact",
-    "nfcorpus", 
-    "nq",
-    "cqadupstack",
-    "arguana",
-    "scidocs",
-    "fiqa",
-]
 
 # Public API
 __all__ = [
-    # Core classes
-    "EmbeddingEvaluator",
-    "EvaluationMetrics", 
-    "EmbeddingDataset",
+    # Dataset
+    "load_dataset",
+    "list_datasets",
+    "validate_dataset",
     
-    # Embedding generation
+    # Embeddings
     "EmbeddingGenerator",
     "get_embedding_generator",
-    
+    "generate_embeddings",
+
+    # Clustering
+    "ClusterManager",
+    "ClusteringConfig",
+    "ClusteringResult",
+
     # Vector space mapping
     "VectorSpaceMapper",
     "ProcrustesMappingStrategy",
     "NonLinearMappingStrategy",
+    "LA2MStrategy",
     
-    # Evaluation
-    "MetricsCalculator",
-    "RecallCalculator", 
-    "NDCGCalculator",
-    
-    # Configuration
-    "VectorMergeConfig",
-    "ModelConfig",
-    "EvaluationConfig",
-    
+
     # Constants
     "SUPPORTED_MODELS",
     "SUPPORTED_DATASETS",
