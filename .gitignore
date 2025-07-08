@@ -210,4 +210,5 @@ __marimo__/
 models/
 output/
 wandb/
+wandb_config/
 .jasminetool/
