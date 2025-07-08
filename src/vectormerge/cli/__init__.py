@@ -16,6 +16,8 @@ from .reference import create_reference
 from .dataset import dataset_app
 from .config import config_app
 from .cluster import create_cluster_app
+from ..mapping import MappingConfig
+from ..clustering import ClusteringConfig
 
 # Initialize main CLI application
 app = typer.Typer(

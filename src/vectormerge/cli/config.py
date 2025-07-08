@@ -143,7 +143,7 @@ def edit_config(
     """Edit configuration file in default editor."""
     
     try:
-        from ..config_loader import VectorMergeConfigLoader
+        from .config_loader import VectorMergeConfigLoader
         config_loader = VectorMergeConfigLoader()
         
         if scope == "global":
@@ -182,7 +182,7 @@ def reset_config(
     """Reset configuration to defaults."""
     
     try:
-        from ..config_loader import VectorMergeConfigLoader
+        from .config_loader import VectorMergeConfigLoader
         config_loader = VectorMergeConfigLoader()
         
         if scope == "global":
@@ -303,4 +303,4 @@ def _interactive_config_creation(current_config) -> dict:
 
 
 # Add aliases for backward compatibility
-config_app.command("cfg", help="Alias for show")(show_config) 
+# config_app.command("cfg", help="Alias for show")(show_config) 

@@ -42,3 +42,16 @@ vectormerge map-embedding -m1 [model_name] -m2 [model_name] --m1--m2 [replace de
 
 # Evaluate
 ## vectormerge evaluate
+
+vectormerge evaluate 
+-d [dataset_name]
+-m1 [model_name]
+-m2 [model_name]
+--reference-key [reference_key]
+--mapping-method [mapping_method]
+--m1-m2 [replace default m1 and m2]
+--reference-path [reference_path]
+--mapping-config [mapping_config]
+--output-path [output_path]
+--force [force retrain, default is use existing mapping]
+**kwargs**

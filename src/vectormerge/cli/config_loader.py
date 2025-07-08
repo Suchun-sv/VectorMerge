@@ -10,6 +10,7 @@ import yaml
 from pathlib import Path
 from typing import Dict, Any, Optional, Union
 from dataclasses import dataclass, field
+from . import MappingConfig, ClusteringConfig
 
 @dataclass
 class VectorMergeConfig:
@@ -215,3 +216,15 @@ def reload_config():
     global _config_loader
     _config_loader = ConfigLoader()
     return _config_loader 
+
+def load_config_from_command_line(pair_str: str, pair_config: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    """Load configuration from command line arguments."""
+    if pair_config is None:
+        pair_config = {}
+    
+    # Parse the pair string into key-value pairs
+    pairs = pair_str.split(',')
+    for pair in pairs:
+        key, value = pair.split('=')
+        pair_config[key] = value
+    return pair_config

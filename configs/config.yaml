@@ -11,6 +11,13 @@ mapping_embedding_path: "./output/mapping_embeddings/"
 
 # ==================== Mapper Configuration ====================
 mapper:
+  method: "nonlinear"
+  save_param: true
+  save_embedding: true
+  device: "auto"
+  reference_key: "random_split_scifact_0.33"
+
+mapper_method:
   nonlinear:
     num_layers: 3
     hidden_dim: 512
@@ -18,16 +25,39 @@ mapper:
     batch_size: 32
     num_epochs: 100
     loss_type: "mse"
-    save_param: true
-    save_embedding: true
 
   procrustes:
-    save_transformed: true
+    with_rotation: true
+    with_scaling: true
+    approximate: false
+    q: 1500
+    use_pca: false
+    reduced_dim: 0
+    procrustes_pca_type: "none"
 
   la2m:
-    num_clusters: 50
-    cluster_method: "la2m-cluster"
+    cluster_method: "la2m-cluster" # la2m-cluster, kmeans
+    d_prime: 10
     save_transformed: true
+    with_rotation: true
+    with_scaling: true
+    approximate: false
+    q: 1500
+    use_pca: false
+    reduced_dim: 0
+    procrustes_pca_type: "none"
+
+# ==================== Cluster Configuration ====================
+cluster:
+  method: "la2m-cluster"
+  reference_key: "random_split_scifact_0.33"
+
+cluster_method:
+  la2m-cluster:
+    num_clusters: 50
+    d_prime: 10
+  kmeans:
+    num_clusters: 50
 
 # ==================== Embedding Models Configuration ====================
 embedding_models:
