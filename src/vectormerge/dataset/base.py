@@ -21,7 +21,6 @@ class Dataset:
     corpus: Dict[str, Dict[str, str]]  # doc_id -> {"title": str, "text": str}
     queries: Dict[str, str]  # query_id -> query_text
     qrels: Dict[str, Dict[str, int]]  # query_id -> {doc_id: relevance_score}
-    
     # Additional metadata
     split: str = "test"
     source: str = "unknown"  # beir, custom, etc.
@@ -34,6 +33,10 @@ class Dataset:
         if not self.corpus_ids2index:
             self.corpus_ids2index = {doc_id: i for i, doc_id in enumerate(self.corpus.keys())}
             self.index2corpus_id = {i: doc_id for doc_id, i in self.corpus_ids2index.items()}
+        
+        self.query_id2answer_ids: Dict[str, List[str]] = {query_id: [doc_id for doc_id, score in self.qrels[query_id].items() if score > 0] for query_id in self.qrels.keys()}
+        self.query_index2answer_index: Dict[int, List[int]] = {i: self.batch_original_ids_to_internal_indices(self.query_id2answer_ids[query_id]).tolist() for i, query_id in enumerate(self.qrels.keys())}
+
     
     def __len__(self) -> int:
         """Return number of documents in corpus."""

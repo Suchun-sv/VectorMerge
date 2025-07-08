@@ -218,7 +218,7 @@ class NonLinearMappingStrategy(MappingStrategy):
             # Default to MSE
             return nn.MSELoss()(predictions, targets)
     
-    def fit(self, source_embeddings: np.ndarray, target_embeddings: np.ndarray,
+    def _fit(self, source_embeddings: np.ndarray, target_embeddings: np.ndarray,
             reference_indices: np.ndarray, **kwargs) -> None:
         """Fit the non-linear mapping model.
         
@@ -340,7 +340,7 @@ class NonLinearMappingStrategy(MappingStrategy):
         logger.info(f"Non-linear mapping training completed. "
                    f"Final train loss: {training_losses[-1]:.6f}")
     
-    def transform(self, embeddings: np.ndarray, **kwargs) -> np.ndarray:
+    def _transform(self, embeddings: np.ndarray, **kwargs) -> np.ndarray:
         """Transform embeddings using the fitted non-linear model.
         
         Args:

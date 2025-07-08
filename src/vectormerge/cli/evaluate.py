@@ -10,6 +10,7 @@ from ..mapping.manager import VectorSpaceMapper
 from ..dataset import load_dataset
 from ..embeddings import get_embedding
 from ..reference import get_reference
+from ..evaluation import Evaluator, get_retrieval_list
 
 evaluate_app = typer.Typer(
     name="evaluate",
@@ -21,7 +22,7 @@ evaluate_app = typer.Typer(
 )
 def single_run(
     ctx: Context,
-    dataset: str = typer.Option(..., "--dataset", "-d", help="Dataset name, support: " + ", ".join(SUPPORTED_DATASETS)),
+    dataset_name: str = typer.Option(..., "--dataset", "-d", help="Dataset name, support: " + ", ".join(SUPPORTED_DATASETS)),
     source_model: str = typer.Option(..., "--source-model", "-s", help="Source model name, support: " + ", ".join(SUPPORTED_MODELS)),
     target_model: str = typer.Option(..., "--target-model", "-t", help="Target model name, support: " + ", ".join(SUPPORTED_MODELS)),
     reference_key: str = typer.Option(..., "--reference-key", "-rk", help="Reference key"),
@@ -41,9 +42,11 @@ def single_run(
     
     config = config_loader.config
 
+    dataset = load_dataset(dataset_name=dataset_name, data_path=config.data_path, force=force, interactive=False, verbose=verbose)
+
     vectormerge = VectorSpaceMapper(strategy=mapping_method, 
     config=config.mapping_config, 
-    dataset_name=dataset, 
+    dataset_name=dataset_name, 
     source_model=source_model, 
     target_model=target_model, 
     reference_key=reference_key,
@@ -57,14 +60,33 @@ def single_run(
     save_embedding=True,
     clustering_config=config.clustering_config)
 
-    source_embeddings = get_embedding(model_name=source_model, dataset_name=dataset, embedding_path=config.embedding_path)
-    target_embeddings = get_embedding(model_name=target_model, dataset_name=dataset, embedding_path=config.embedding_path)
+    source_embeddings = get_embedding(model_name=source_model, dataset_name=dataset_name, embedding_path=config.embedding_path)
+    target_embeddings = get_embedding(model_name=target_model, dataset_name=dataset_name, embedding_path=config.embedding_path)
+    source_query_embeddings = get_embedding(model_name=source_model, dataset_name=dataset_name, embedding_path=config.embedding_path, type_="query")
+    target_query_embeddings = get_embedding(model_name=target_model, dataset_name=dataset_name, embedding_path=config.embedding_path, type_="query")
 
     reference_indices = get_reference(reference_key=reference_key, reference_path=config.reference_path)
 
     transformed_embeddings = vectormerge.fit_and_transform(source_embeddings, target_embeddings, reference_indices['d0_index'])
-    
+
+    evaluator = Evaluator(
+        corpus_emb_1=source_embeddings,
+        corpus_emb_2=target_embeddings,
+        query_emb_1=source_query_embeddings,
+        query_emb_2=target_query_embeddings,
+        query_index2answer_index=dataset.query_index2answer_index,
+        d0=reference_indices['d0_index'],
+        d1=reference_indices['d1_index'],
+        d2=reference_indices['d2_index'],
+        corpus_emb_1_transformed=transformed_embeddings,
+        k_list=[10, 50, 100, 500, 1000]
+    )
+
     print("transformed_embeddings.shape", transformed_embeddings.shape)
+
+    recalls = evaluator.evaluate()
+    print(recalls)
+    
 
 
 
