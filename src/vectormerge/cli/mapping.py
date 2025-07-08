@@ -86,11 +86,19 @@ def procrustes_mapping(
             display_error_and_exit(error_msg)
     
     # Create configuration
-    from ..mapping.base import MappingConfig
+    from ..mapping.base import MappingConfig, ProcrustesConfig
     config = MappingConfig(
-        with_rotation=with_rotation,
-        approximate=approximate,
-        q=q,
+        procrustes_config=ProcrustesConfig(
+            with_rotation=with_rotation,
+            approximate=approximate,
+            q=q,
+            use_pca=use_pca,
+            reduced_dim=reduced_dim,
+            procrustes_pca_type=procrustes_pca_type,
+            use_norm=use_norm,
+            save_param=save_param,
+            save_embedding=save_embedding,
+        ),
         verbose=verbose
     )
 

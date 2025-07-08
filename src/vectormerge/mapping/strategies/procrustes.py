@@ -23,7 +23,8 @@ def procrustes_mapping_torch(
     target_bound: np.ndarray,
     approximate: bool = False,
     q: int = 1500,
-    with_rotation: bool = True
+    with_rotation: bool = True,
+    with_scaling: bool = True
 ) -> Tuple[np.ndarray, Optional[dict]]:
     """
     Procrustes mapping using PyTorch for GPU acceleration.
@@ -37,6 +38,7 @@ def procrustes_mapping_torch(
         approximate: Whether to use approximated SVD
         q: Number of components for approximation
         with_rotation: Whether to include rotation in the transformation
+        with_scaling: Whether to include scaling/normalization in the transformation
         
     Returns:
         Tuple of (transformed_embeddings, transformation_params)
@@ -53,6 +55,16 @@ def procrustes_mapping_torch(
     Y_mean = torch.mean(Y, dim=0)
     X_centered = X - X_mean
     Y_centered = Y - Y_mean
+    
+    # Add scaling/normalization if requested
+    if with_scaling:
+        X_norm = torch.norm(X_centered)
+        Y_norm = torch.norm(Y_centered)
+        X_centered = X_centered / X_norm
+        Y_centered = Y_centered / Y_norm
+    else:
+        X_norm = 1.0
+        Y_norm = 1.0
     
     if approximate and X_centered.shape[0] > q:
         # Use randomized SVD for large matrices
@@ -77,15 +89,31 @@ def procrustes_mapping_torch(
         # Identity rotation
         R = torch.eye(min(U.shape[0], Vt.shape[0])).to(device)
     
-    # Apply transformation: center, rotate, then translate
+    # Apply transformation: center, scale, rotate, then translate
     source_bound_centered = source_bound_tensor - X_mean
-    transformed = torch.matmul(source_bound_centered, R.T) + Y_mean
+    if with_scaling:
+        source_bound_centered = source_bound_centered / X_norm
     
-    return transformed.cpu().numpy(), {
+    transformed = torch.matmul(source_bound_centered, R.T)
+    
+    if with_scaling:
+        transformed = transformed * Y_norm
+    
+    transformed = transformed + Y_mean
+    
+    # Prepare transformation parameters
+    params = {
         'rotation_matrix': R.cpu().numpy(),
         'source_mean': X_mean.cpu().numpy(),
-        'target_mean': Y_mean.cpu().numpy()
+        'target_mean': Y_mean.cpu().numpy(),
+        'with_scaling': with_scaling
     }
+    
+    if with_scaling:
+        params['source_norm'] = X_norm.cpu().numpy()
+        params['target_norm'] = Y_norm.cpu().numpy()
+    
+    return transformed.cpu().numpy(), params
 
 
 def procrustes_no_norm_scale_with_param(

@@ -110,9 +110,10 @@ class LA2MStrategy(MappingStrategy):
                         overlap_ids=np.arange(len(cluster_ref_indices)),
                         source_bound=cluster_source_ref,
                         target_bound=cluster_target_ref,
-                        approximate=getattr(self.config, 'approximate', False),
-                        q=getattr(self.config, 'q', 1500),
-                        with_rotation=getattr(self.config, 'with_rotation', True)
+                        approximate=getattr(self.config.la2m_config, 'approximate', False),
+                        q=getattr(self.config.la2m_config, 'q', 1500),
+                        with_rotation=getattr(self.config.la2m_config, 'with_rotation', True),
+                        with_scaling=getattr(self.config.la2m_config, 'with_scaling', True)
                     )
                     
                     if local_mapping is not None and isinstance(local_mapping, dict):
@@ -152,9 +153,10 @@ class LA2MStrategy(MappingStrategy):
                 overlap_ids=np.arange(len(reference_indices)),
                 source_bound=source_ref,
                 target_bound=target_ref,
-                approximate=getattr(self.config, 'approximate', False),
-                q=getattr(self.config, 'q', 1500),
-                with_rotation=getattr(self.config, 'with_rotation', True)
+                approximate=getattr(self.config.la2m_config, 'approximate', False),
+                q=getattr(self.config.la2m_config, 'q', 1500),
+                with_rotation=getattr(self.config.la2m_config, 'with_rotation', True),
+                with_scaling=getattr(self.config.la2m_config, 'with_scaling', True)
             )
             
             if global_mapping is not None and isinstance(global_mapping, dict):
@@ -278,10 +280,18 @@ class LA2MStrategy(MappingStrategy):
             rotation_matrix = mapping_params['rotation_matrix']
             source_mean = mapping_params['source_mean']
             target_mean = mapping_params['target_mean']
+            with_scaling = mapping_params.get('with_scaling', False)
             
-            # Apply transformation: center, rotate, translate
+            # Apply transformation: center, scale (if enabled), rotate, translate
             embeddings_centered = embeddings - source_mean
-            transformed = np.dot(embeddings_centered, rotation_matrix.T) + target_mean
+            
+            if with_scaling and 'source_norm' in mapping_params and 'target_norm' in mapping_params:
+                source_norm = mapping_params['source_norm']
+                target_norm = mapping_params['target_norm']
+                embeddings_centered = embeddings_centered / source_norm
+                transformed = np.dot(embeddings_centered, rotation_matrix.T) * target_norm + target_mean
+            else:
+                transformed = np.dot(embeddings_centered, rotation_matrix.T) + target_mean
             
             return transformed
         except KeyError as e:
@@ -342,21 +352,38 @@ class LA2MStrategy(MappingStrategy):
         with open(save_path / "cluster_data.json", "w") as f:
             json.dump(cluster_data_dict, f, indent=2)
         
-        # Save local mappings
-        for cluster_id, mapping in self.local_mappings.items():
-            cluster_path = save_path / f"cluster_{cluster_id}"
-            cluster_path.mkdir(exist_ok=True)
-            
-            for key, value in mapping.items():
-                np.save(cluster_path / f"{key}.npy", value)
+        # Save local mappings using joblib for better performance
+        try:
+            import joblib
+            local_mappings_data = {
+                'mappings': self.local_mappings,
+                'num_clusters': len(self.local_mappings)
+            }
+            joblib.dump(local_mappings_data, save_path / "local_mappings.joblib")
+            logger.info(f"Saved {len(self.local_mappings)} local mappings using joblib")
+        except ImportError:
+            # Fallback to numpy if joblib not available
+            logger.warning("joblib not available, falling back to numpy for local mappings")
+            for cluster_id, mapping in self.local_mappings.items():
+                cluster_path = save_path / f"cluster_{cluster_id}"
+                cluster_path.mkdir(exist_ok=True)
+                
+                for key, value in mapping.items():
+                    np.save(cluster_path / f"{key}.npy", value)
         
         # Save global fallback mapping
         if self.global_fallback_mapping is not None:
-            global_path = save_path / "global_fallback"
-            global_path.mkdir(exist_ok=True)
-            
-            for key, value in self.global_fallback_mapping.items():
-                np.save(global_path / f"{key}.npy", value)
+            try:
+                import joblib
+                joblib.dump(self.global_fallback_mapping, save_path / "global_fallback_mapping.joblib")
+                logger.info("Saved global fallback mapping using joblib")
+            except ImportError:
+                # Fallback to numpy if joblib not available
+                global_path = save_path / "global_fallback"
+                global_path.mkdir(exist_ok=True)
+                
+                for key, value in self.global_fallback_mapping.items():
+                    np.save(global_path / f"{key}.npy", value)
         
         # Save PCA mapping
         if self.config.la2m_config.pca_mapping:
@@ -414,29 +441,71 @@ class LA2MStrategy(MappingStrategy):
             )
             instance.cluster_data_list.append(cluster_data)
         
-        # Load local mappings
-        instance.local_mappings = {}
-        for cluster_id in range(len(instance.cluster_data_list)):
-            cluster_path = load_path / f"cluster_{cluster_id}"
-            if cluster_path.exists():
-                mapping = {}
-                for npy_file in cluster_path.glob("*.npy"):
-                    key = npy_file.stem
-                    mapping[key] = np.load(npy_file)
-                
-                if mapping:
-                    instance.local_mappings[cluster_id] = mapping
+        # Load local mappings using joblib for better performance
+        try:
+            import joblib
+            local_mappings_path = load_path / "local_mappings.joblib"
+            if local_mappings_path.exists():
+                local_mappings_data = joblib.load(local_mappings_path)
+                instance.local_mappings = local_mappings_data['mappings']
+                logger.info(f"Loaded {len(instance.local_mappings)} local mappings using joblib")
+            else:
+                # Fallback to old format if joblib file doesn't exist
+                instance.local_mappings = {}
+                for cluster_id in range(len(instance.cluster_data_list)):
+                    cluster_path = load_path / f"cluster_{cluster_id}"
+                    if cluster_path.exists():
+                        mapping = {}
+                        for npy_file in cluster_path.glob("*.npy"):
+                            key = npy_file.stem
+                            mapping[key] = np.load(npy_file)
+                        
+                        if mapping:
+                            instance.local_mappings[cluster_id] = mapping
+        except ImportError:
+            # Fallback to numpy if joblib not available
+            logger.warning("joblib not available, falling back to numpy for local mappings")
+            instance.local_mappings = {}
+            for cluster_id in range(len(instance.cluster_data_list)):
+                cluster_path = load_path / f"cluster_{cluster_id}"
+                if cluster_path.exists():
+                    mapping = {}
+                    for npy_file in cluster_path.glob("*.npy"):
+                        key = npy_file.stem
+                        mapping[key] = np.load(npy_file)
+                    
+                    if mapping:
+                        instance.local_mappings[cluster_id] = mapping
         
         # Load global fallback mapping
-        global_path = load_path / "global_fallback"
-        if global_path.exists():
-            global_mapping = {}
-            for npy_file in global_path.glob("*.npy"):
-                key = npy_file.stem
-                global_mapping[key] = np.load(npy_file)
-            
-            if global_mapping:
-                instance.global_fallback_mapping = global_mapping
+        try:
+            import joblib
+            global_mapping_path = load_path / "global_fallback_mapping.joblib"
+            if global_mapping_path.exists():
+                instance.global_fallback_mapping = joblib.load(global_mapping_path)
+                logger.info("Loaded global fallback mapping using joblib")
+            else:
+                # Fallback to old format
+                global_path = load_path / "global_fallback"
+                if global_path.exists():
+                    global_mapping = {}
+                    for npy_file in global_path.glob("*.npy"):
+                        key = npy_file.stem
+                        global_mapping[key] = np.load(npy_file)
+                    
+                    if global_mapping:
+                        instance.global_fallback_mapping = global_mapping
+        except ImportError:
+            # Fallback to numpy if joblib not available
+            global_path = load_path / "global_fallback"
+            if global_path.exists():
+                global_mapping = {}
+                for npy_file in global_path.glob("*.npy"):
+                    key = npy_file.stem
+                    global_mapping[key] = np.load(npy_file)
+                
+                if global_mapping:
+                    instance.global_fallback_mapping = global_mapping
 
         # Load PCA mapping
         if config.la2m_config.pca_mapping:
