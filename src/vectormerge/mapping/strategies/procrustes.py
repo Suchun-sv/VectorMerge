@@ -110,8 +110,8 @@ def procrustes_mapping_torch(
     }
     
     if with_scaling:
-        params['source_norm'] = X_norm.cpu().numpy()
-        params['target_norm'] = Y_norm.cpu().numpy()
+        params['source_norm'] = X_norm.cpu().item()
+        params['target_norm'] = Y_norm.cpu().item()
     
     return transformed.cpu().numpy(), params
 

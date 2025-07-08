@@ -394,18 +394,19 @@ class LA2MStrategy(MappingStrategy):
     
     def save_pca_instance(self, pca_instance: PCA, save_path: Path, prefix: str):
         """Save PCA instance."""
-        np.save(save_path / f"{prefix}_components.npy", pca_instance.components_)
-        np.save(save_path / f"{prefix}_mean.npy", pca_instance.mean_)
-        np.save(save_path / f"{prefix}_explained_variance.npy", pca_instance.explained_variance_)
-        np.save(save_path / f"{prefix}_explained_variance_ratio.npy", pca_instance.explained_variance_ratio_)
+        (save_path / prefix).mkdir(exist_ok=True)
+        np.save(save_path / f"{prefix}/components.npy", pca_instance.components_)
+        np.save(save_path / f"{prefix}/mean.npy", pca_instance.mean_)
+        np.save(save_path / f"{prefix}/explained_variance.npy", pca_instance.explained_variance_)
+        np.save(save_path / f"{prefix}/explained_variance_ratio.npy", pca_instance.explained_variance_ratio_)
     
     def load_pca_instance(self, load_path: Path, prefix: str):
         """Load PCA instance."""
         pca_instance = PCA(n_components=self.config.la2m_config.pca_dim)
-        pca_instance.components_ = np.load(load_path / f"{prefix}_components.npy")
-        pca_instance.mean_ = np.load(load_path / f"{prefix}_mean.npy")
-        pca_instance.explained_variance_ = np.load(load_path / f"{prefix}_explained_variance.npy")
-        pca_instance.explained_variance_ratio_ = np.load(load_path / f"{prefix}_explained_variance_ratio.npy")
+        pca_instance.components_ = np.load(load_path / f"{prefix}/components.npy")
+        pca_instance.mean_ = np.load(load_path / f"{prefix}/mean.npy")
+        pca_instance.explained_variance_ = np.load(load_path / f"{prefix}/explained_variance.npy")
+        pca_instance.explained_variance_ratio_ = np.load(load_path / f"{prefix}/explained_variance_ratio.npy")
         return pca_instance
 
     @classmethod

@@ -29,9 +29,10 @@ mapping_config:
   la2m_config:
     num_clusters: 50
     cluster_method: la2m-cluster
-    d_prime: 10
+    d_prime: 30
     pca_mapping: true
-    pca_dim: 16
+    pca_dim: 23
+    use_norm: true
     save_param: false
     save_embedding: false
   nonlinear_config:

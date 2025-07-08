@@ -24,6 +24,7 @@ class LA2MConfig():
     d_prime: int = 10
     pca_mapping: bool = True
     pca_dim: int = 14
+    use_norm: bool = False
     save_param: bool = False
     save_embedding: bool = False
 
