@@ -25,6 +25,7 @@ def single_run(
     dataset_name: str = typer.Option(..., "--dataset", "-d", help="Dataset name, support: " + ", ".join(SUPPORTED_DATASETS)),
     source_model: str = typer.Option(..., "--source-model", "-s", help="Source model name, support: " + ", ".join(SUPPORTED_MODELS)),
     target_model: str = typer.Option(..., "--target-model", "-t", help="Target model name, support: " + ", ".join(SUPPORTED_MODELS)),
+    src_tar_model: str = typer.Option(..., "--src-tar-model", "-stm", help="Combination of source and target model, use `_` to separate the source and target model, e.g. `mistral_openai` support: " + ", ".join(SUPPORTED_MODELS)),
     reference_key: str = typer.Option(..., "--reference-key", "-rk", help="Reference key"),
     mapping_method: str = typer.Option(..., "--mapping-method", "-mm", help="Mapping method, support: " + ", ".join(SUPPORTED_MAPPING_METHODS)),
     force: bool = typer.Option(False, "--force", "-f", help="Force evaluation"),
@@ -37,6 +38,15 @@ def single_run(
     Evaluate the performance of a mapping model, you can pass extra arguments to the command to override the default values.
     E.g. --mapping_config.la2m.num_clusters=50
     """
+    if src_tar_model is not None:
+        source_model = src_tar_model.split("_")[0]
+        target_model = src_tar_model.split("_")[1]
+    
+    if source_model not in SUPPORTED_MODELS:
+        raise ValueError(f"Source model is not supported, support: " + ", ".join(SUPPORTED_MODELS))
+    if target_model not in SUPPORTED_MODELS:
+        raise ValueError(f"Target model is not supported, support: " + ", ".join(SUPPORTED_MODELS))
+
     config = handle_extra_args(ctx)
 
     set_wandb(wandb_entity=wandb_entity, wandb_project=wandb_project, config_dict=config.to_dict())
