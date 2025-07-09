@@ -91,6 +91,7 @@ class VectorMergeConfig(BaseConfig):
     # Path settings
     data_path: str = "./data/raw/beir/"
     embedding_path: str = "./data/processed/embeddings/"
+    embedding_cache_path: str = "./data/processed/embeddings/.cache/"
     reference_path: str = "./data/processed/references/"
     mapping_path: str = "./data/processed/mappings/"
     mapping_param_path: str = "./output/mapping_models/"

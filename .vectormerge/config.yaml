@@ -16,6 +16,7 @@
 # ============================ VectorMerge Config ============================
 data_path: ./data/raw/beir/
 embedding_path: ./data/processed/embeddings/
+embedding_cache_path: ./data/processed/embeddings/.cache/
 reference_path: ./data/processed/references/
 mapping_path: ./data/processed/mappings/
 mapping_param_path: ./output/mapping_models/
@@ -76,7 +77,7 @@ embedding_models:
   dataset: scifact
   type_: corpus
   mistral_config:
-    model_name: mistral-embed
+    model_name: mistral-api
     batch_size: 32
     device: cpu
     max_tokens: 8192

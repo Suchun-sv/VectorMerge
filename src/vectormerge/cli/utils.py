@@ -98,7 +98,7 @@ def select_dataset_interactively() -> str:
             raise typer.Exit(code=1)
 
 
-def validate_model_and_dataset(model: str, dataset: str) -> Tuple[bool, Optional[str]]:
+def validate_model_and_dataset(model: str, dataset: str) -> Tuple[bool, str]:
     """Validate model and dataset combination."""
     if model not in SUPPORTED_MODELS:
         return False, f"Model '{model}' not supported. Use 'vectormerge list-models' to see available models."

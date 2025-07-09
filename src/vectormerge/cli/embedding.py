@@ -4,18 +4,19 @@ Embedding generation commands for VectorMerge CLI.
 This module contains commands for generating, checking, and managing embeddings.
 """
 
-import os
 import shutil
 from pathlib import Path
-from typing import Optional, List, Tuple
+from typing import Optional, Dict, Any
 import typer
 from rich import print as rprint
 from rich.table import Table
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.text import Text
+from rich.pretty import Pretty
+from click import Context
 
-from .base import cli_defaults, console, set_seed, SUPPORTED_MODELS, SUPPORTED_DATASETS
+from .base import cli_defaults, console, set_seed, set_log_level, SUPPORTED_MODELS, SUPPORTED_DATASETS, handle_extra_args
 from .utils import (
     select_model_interactively, select_dataset_interactively,
     validate_model_and_dataset, parse_embedding_filename,
@@ -24,54 +25,38 @@ from .utils import (
 )
 
 # Initialize embedding command group
-embedding_app = typer.Typer(help="Generate and manage embeddings")
+embedding_app = typer.Typer(help="""Generate and manage embeddings
+
+Usages:
+    vectormerge embedding generate --model all --dataset all
+    vectormerge embedding generate --model mistral --dataset scifact
+    vectormerge embedding generate --model mistral --dataset scifact --type query
+""")
 
 
-@embedding_app.command("generate", help="Generate embeddings for specified models and datasets")
+@embedding_app.command("generate", help="Generate embeddings for specified models and datasets", context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
 def generate_embeddings(
-    model: Optional[str] = typer.Option(None, "--model", "-m", help="Model name or 'all' for all models"),
-    dataset: Optional[str] = typer.Option(None, "--dataset", "-d", help="Dataset name or 'all' for all datasets"),
+    ctx: Context,
+    model: Optional[str] = typer.Option(None, "--model", "-m", help="Model name or 'all' for all models, supported models: " + ", ".join(SUPPORTED_MODELS)),
+    dataset: Optional[str] = typer.Option(None, "--dataset", "-d", help="Dataset name or 'all' for all datasets, supported datasets: " + ", ".join(SUPPORTED_DATASETS)),
     data_path: Path = typer.Option(cli_defaults['data_path'], "--data-path", help="Path to raw data directory"),
     embedding_path: Path = typer.Option(cli_defaults['embedding_path'], "--embedding-path", help="Path to save embeddings"),
-    cache_dir: Path = typer.Option(Path("./cache/embeddings/"), "--cache-dir", help="Path to cache directory"),
-    type_: str = typer.Option(cli_defaults['embedding_models']['type_'], "--type", help="Type of embeddings to generate"),
-    batch_size: int = typer.Option(32, "--batch-size", help="Batch size for processing"),
+    embedding_cache_path: Path = typer.Option(cli_defaults['embedding_cache_path'], "--embedding-cache-path", help="Path to cache directory"),
+    type_: Optional[str] = typer.Option(None, "--type", help="Type of embeddings to generate, (corpus, query)"),
     force: bool = typer.Option(False, "--force", help="Force regeneration of existing embeddings"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
-    rm_cache: bool = typer.Option(False, "--rm-cache", help="Remove cache directory after generation"),
-    check: bool = typer.Option(False, "--check", help="Check embedding completeness"),
     verbose: bool = typer.Option(cli_defaults['verbose'], "--verbose", "-v", help="Verbose output"),
 ):
     """Generate embeddings for models and datasets."""
     
     # Set random seed
     set_seed()
-    
-    # Set up logging
-    if verbose:
-        import logging
-        logging.basicConfig(level=logging.DEBUG)
-        
-        # Only set VectorMerge loggers to DEBUG
-        for logger_name in ['vectormerge', 'sentence_transformers']:
-            logger = logging.getLogger(logger_name)
-            logger.setLevel(logging.DEBUG)
-        
-        # Set third-party loggers to INFO/WARNING
-        for logger_name in ['httpx', 'mistralai', 'openai', 'urllib3']:
-            logger = logging.getLogger(logger_name)
-            logger.setLevel(logging.INFO)
-    
-    # Handle check option
-    if check:
-        _check_embedding_completeness(embedding_path)
-        return
-    
-    # Handle cache removal
-    if rm_cache:
-        _clean_cache(cache_dir)
-        return
-    
+
+    # Set log level
+    set_log_level(verbose)
+
+    config = handle_extra_args(ctx)
+            
     # Interactive mode
     if interactive:
         if not model:
@@ -86,10 +71,13 @@ def generate_embeddings(
     # Handle 'all' options
     models = SUPPORTED_MODELS if model == 'all' else [model]
     datasets = SUPPORTED_DATASETS if dataset == 'all' else [dataset]
-    
+
+    assert len(models) > 0 and len(datasets) > 0, "No models or datasets selected"
+
     # Validate each model-dataset combination
     for m in models:
         for d in datasets:
+            assert m is not None and d is not None, "Model and dataset must be specified"
             is_valid, error_msg = validate_model_and_dataset(m, d)
             if not is_valid:
                 display_error_and_exit(error_msg)
@@ -106,27 +94,37 @@ def generate_embeddings(
         console=console,
     ) as progress:
         task = progress.add_task("Generating embeddings...", total=total_combinations)
+
+        if type_ is None:
+            type_list = ['corpus', 'query']
+        else:
+            type_list = [type_]
         
         for m in models:
             for d in datasets:
-                progress.update(task, description=f"Processing {m} on {d}...")
-                
-                try:
-                    generate_embeddings_fn(
-                        model=m,
-                        dataset=d,
-                        data_path=data_path,
-                        embedding_path=embedding_path,
-                        cache_dir=cache_dir,
-                        type_=type_,
-                        batch_size=batch_size,
-                        force=force
-                    )
-                    rprint(f"[green]✓[/green] Generated: {m} on {d}")
-                except Exception as e:
-                    rprint(f"[red]✗[/red] Failed: {m} on {d} - {e}")
-                
-                progress.advance(task)
+                for type_ in type_list:
+                    assert m is not None, "Model must be specified"
+                    assert d is not None, "Dataset must be specified"
+                    model_settings = config.embedding_models.load_model_settings(m)
+                    _show_model_settings(model_settings)
+                    progress.update(task, description=f"Processing {m} on {d}...")
+                    
+                    try:
+                        generate_embeddings_fn(
+                            model_name=m,
+                            dataset_name=d,
+                            dataset_path=str(data_path),
+                            cache_dir=str(embedding_cache_path),
+                            model_settings=model_settings,
+                            type_=type_,
+                            force=force,
+                            embedding_path=str(embedding_path),
+                        )
+                        rprint(f"[green]✓[/green] Generated: {m} on {d}")
+                    except Exception as e:
+                        rprint(f"[red]✗[/red] Failed: {m} on {d} - {e}")
+                    
+                    progress.advance(task)
     
     # Success message
     _show_generation_success(embedding_path, total_combinations)
@@ -203,8 +201,8 @@ def _check_embedding_completeness(embedding_path: Path) -> None:
     # Show helpful commands
     if missing_combinations:
         rprint("\n[blue]💡 To generate missing embeddings:[/blue]")
-        rprint("[cyan]vectormerge generate-embedding --model all --dataset all[/cyan]")
-        rprint("[cyan]vectormerge generate-embedding --model <model> --dataset <dataset>[/cyan]")
+        rprint("[cyan]vectormerge embedding generate --model all --dataset all[/cyan]")
+        rprint("[cyan]vectormerge embedding generate --model <model> --dataset <dataset>[/cyan]")
 
 
 def _clean_cache(cache_dir: Path) -> None:
@@ -264,11 +262,11 @@ def _show_generation_success(embedding_path: Path, total_combinations: int) -> N
     success_text.append(f"📄 Total files: {actual_files}\n\n", style="")
     success_text.append("💡 What's next?\n", style="bold yellow")
     success_text.append("  📋 Check completeness: ", style="dim")
-    success_text.append("vectormerge generate-embedding --check\n", style="cyan")
+    success_text.append("vectormerge embedding check\n", style="cyan")
     success_text.append("  🗺️ Create mappings: ", style="dim")
-    success_text.append("vectormerge map-embedding\n", style="cyan")
+    success_text.append("vectormerge map-embedding --help\n", style="cyan")
     success_text.append("  🔍 Create references: ", style="dim")
-    success_text.append("vectormerge create-reference", style="cyan")
+    success_text.append("vectormerge create-reference --help\n", style="cyan")
     
     panel = Panel(
         success_text,
@@ -280,8 +278,21 @@ def _show_generation_success(embedding_path: Path, total_combinations: int) -> N
     )
     
     console.print(panel)
+@embedding_app.command("rm-cache", help="Remove cache directory")
+def rm_cache(embedding_cache_path: Path = typer.Option(cli_defaults['embedding_cache_path'], "--embedding-cache-path", help="Path to cache directory")) -> None:
+    """Remove cache directory."""
+    _clean_cache(embedding_cache_path)
 
+@embedding_app.command("check", help="Check embedding completeness")
+def check_embedding(embedding_path: Path = typer.Option(cli_defaults['embedding_path'], "--embedding-path", help="Path to embeddings")) -> None:
+    """Check embedding completeness."""
+    _check_embedding_completeness(embedding_path)
 
-# Add aliases for backward compatibility
-# embedding_app.command("gen", help="Alias for generate")(generate_embeddings)
-# embedding_app.command("g", help="Short alias for generate")(generate_embeddings) 
+def _show_model_settings(model_settings: Dict[str, Any]) -> None:
+    """Show model settings."""
+    panel = Panel(
+        Pretty(model_settings, expand_all=True),
+        title="[bold green]📊 Model Settings[/bold green]",
+        border_style="blue"
+    )
+    rprint(panel)

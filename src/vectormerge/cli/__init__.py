@@ -14,7 +14,7 @@ from .embedding import embedding_app
 from .mapping import mapping_app
 from .reference import create_reference
 from .dataset import dataset_app
-from .config import config_app, parse_dynamic_config
+from .config import config_app
 from .evaluate import evaluate_app
 from .cluster import create_cluster_app
 
@@ -31,7 +31,7 @@ app = typer.Typer(
 
 # Add version callback
 app.callback()(lambda version: None)
-app.add_typer(embedding_app, name="generate-embedding", help="Generate and manage embeddings")
+app.add_typer(embedding_app, name="embedding")
 app.add_typer(mapping_app, name="map-embedding", help="Create and manage embedding mappings")
 app.command("create-reference", help="Create and manage reference datasets")(create_reference)
 app.add_typer(create_cluster_app, name="create-cluster", help="Create and manage clustering operations")

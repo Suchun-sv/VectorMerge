@@ -5,13 +5,12 @@ import wandb
 
 from vectormerge.cli import config_loader
 from vectormerge.cli.config_loader import ConfigLoader
-from .base import SUPPORTED_DATASETS, SUPPORTED_MODELS, SUPPORTED_MAPPING_METHODS, set_wandb
-from . import parse_dynamic_config
+from .base import SUPPORTED_DATASETS, SUPPORTED_MODELS, SUPPORTED_MAPPING_METHODS, set_wandb, handle_extra_args
 from ..mapping.manager import VectorSpaceMapper
 from ..dataset import load_dataset
 from ..embeddings import get_embedding
 from ..reference import get_reference
-from ..evaluation import Evaluator, get_retrieval_list
+from ..evaluation import Evaluator
 
 evaluate_app = typer.Typer(
     name="evaluate",
@@ -38,12 +37,7 @@ def single_run(
     Evaluate the performance of a mapping model, you can pass extra arguments to the command to override the default values.
     E.g. --mapping_config.la2m.num_clusters=50
     """
-    extra_dict = parse_dynamic_config(ctx)
-    config_loader = ConfigLoader().load_config()
-    if extra_dict:
-        config_loader.update_config(extra_dict)
-    
-    config = config_loader.config
+    config = handle_extra_args(ctx)
 
     set_wandb(wandb_entity=wandb_entity, wandb_project=wandb_project, config_dict=config.to_dict())
 
