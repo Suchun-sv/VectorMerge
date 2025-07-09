@@ -35,7 +35,7 @@ app.add_typer(embedding_app, name="generate-embedding", help="Generate and manag
 app.add_typer(mapping_app, name="map-embedding", help="Create and manage embedding mappings")
 app.command("create-reference", help="Create and manage reference datasets")(create_reference)
 app.add_typer(create_cluster_app, name="create-cluster", help="Create and manage clustering operations")
-app.add_typer(dataset_app, name="dataset", help="Download and manage datasets")
+app.add_typer(dataset_app, name="dataset")
 app.add_typer(config_app, name="config", help="Manage VectorMerge configuration")
 app.add_typer(evaluate_app, name="evaluate", help="Evaluate the performance of a mapping model.")
 # Add global options
@@ -124,61 +124,6 @@ def list_models():
     
     console.print(table)
 
-
-# @app.command("show-config", help="Show current configuration")
-# def show_config_compat(
-#     scope: str = typer.Option("all", "--scope", help="Configuration scope"),
-#     format_: str = typer.Option("table", "--format", help="Output format"),
-# ):
-#     """Show current configuration (backward compatibility)."""
-#     from .config import show_config
-#     show_config(scope=scope, format_=format_)
-
-
-# @app.command("create-config", help="Create configuration file")
-# def create_config_compat(
-#     scope: str = typer.Option("local", "--scope", help="Configuration scope"),
-#     force: bool = typer.Option(False, "--force", help="Overwrite existing"),
-#     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
-# ):
-#     """Create configuration file (backward compatibility)."""
-#     from .config import create_config
-#     create_config(scope=scope, force=force, interactive=interactive)
-
-
-# Add short aliases for frequently used commands
-# @app.command("ge", help="Short alias for generate-embedding")
-# def generate_embedding_short(
-#     ctx: typer.Context,
-# ):
-#     """Short alias for generate-embedding."""
-#     # Forward to the embedding app
-#     from .embedding import generate_embeddings
-#     # Call with remaining args
-#     generate_embeddings()
-
-
-# @app.command("me", help="Short alias for map-embedding")
-# def map_embedding_short():
-#     """Short alias for map-embedding."""
-#     rprint("[blue]🗺️ Map Embedding Commands:[/blue]")
-#     rprint("[cyan]vectormerge map-embedding procrustes[/cyan] - Procrustes analysis")
-#     rprint("[cyan]vectormerge map-embedding linear[/cyan] - Linear neural network")
-#     rprint("[cyan]vectormerge map-embedding nonlinear[/cyan] - Nonlinear neural network")
-#     rprint("[cyan]vectormerge map-embedding la2m[/cyan] - LA2M clustering strategy")
-#     rprint("\n[blue]💡 Use --help for detailed options[/blue]")
-
-
-# @app.command("cr", help="Short alias for create-reference")
-# def create_reference_short(
-#     ctx: typer.Context,
-# ):
-#     """Short alias for create-reference."""
-#     from .reference import create_reference
-#     create_reference()
-
-
-# Export main app for backward compatibility
 main_app = app
 
 # For direct module usage

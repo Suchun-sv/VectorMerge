@@ -37,9 +37,9 @@ from .loader import (
 SUPPORTED_DATASETS = [
     "scifact",
     "nfcorpus",
-    "nq",
-    "cqadupstack",
     "arguana",
+    "scidocs",
+    "fiqa",
 ]
 
 # Export main API

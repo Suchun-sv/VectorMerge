@@ -1,4 +1,5 @@
 # VectorMerge 🚀
+![logo](./images/logo.png)
 
 # Generate Embeddings
 ## vectormerge generate-embedding

@@ -35,7 +35,20 @@ class Dataset:
             self.index2corpus_id = {i: doc_id for doc_id, i in self.corpus_ids2index.items()}
         
         self.query_id2answer_ids: Dict[str, List[str]] = {query_id: [doc_id for doc_id, score in self.qrels[query_id].items() if score > 0] for query_id in self.qrels.keys()}
-        self.query_index2answer_index: Dict[int, List[int]] = {i: self.batch_original_ids_to_internal_indices(self.query_id2answer_ids[query_id]).tolist() for i, query_id in enumerate(self.qrels.keys())}
+        # self.query_index2answer_index: Dict[int, List[int]] = {i: self.batch_original_ids_to_internal_indices(self.query_id2answer_ids[query_id]).tolist() for i, query_id in enumerate(self.qrels.keys())}
+        self.query_index2answer_index = self._construct_query_index2answer_index(self.query_id2answer_ids)
+    
+    def _construct_query_index2answer_index(self, query_id2answer_ids: Dict[str, List[str]]):
+        """Construct query index to answer index mapping."""
+        query_index2answer_index = {}
+        for i, query_id in enumerate(self.qrels.keys()):
+            try:
+                query_index2answer_index[i] = self.batch_original_ids_to_internal_indices(self.query_id2answer_ids[query_id]).tolist()
+            except Exception as e:
+                logger.error(f"Error constructing query index to answer index mapping for query {query_id}: {e}, skip this query")
+                # self.query_index2answer_index[i] = []
+        return query_index2answer_index
+        
 
     
     def __len__(self) -> int:

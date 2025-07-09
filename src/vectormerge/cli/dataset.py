@@ -20,18 +20,34 @@ from .utils import (
 )
 
 # Initialize dataset command group
-dataset_app = typer.Typer(help="Download and manage datasets")
+dataset_app = typer.Typer(help="""Download and manage datasets,
+
+You can use 'vectormerge dataset list' to see available datasets or use `vectormerge dataset download -i` to select dataset interactively.
+
+You can use 'vectormerge dataset info' to show dataset information.
+
+You can use 'vectormerge dataset download --dataset all' to download all datasets.
+
+""")
 
 
 @dataset_app.command("download", help="Download datasets")
 def download_dataset(
-    dataset: Optional[str] = typer.Option(None, "--dataset", "-d", help="Dataset name or 'all' for all datasets"),
-    data_path: Path = typer.Option(cli_defaults['data_path'], "--data-path", help="Path to save datasets"),
-    force: bool = typer.Option(False, "--force", help="Force re-download"),
+    dataset: Optional[str] = typer.Option(None, "--dataset", "-d", help="Dataset name or 'all' for all datasets, supported datasets: " + ", ".join(SUPPORTED_DATASETS)),
+    data_path: Optional[Path] = typer.Option(cli_defaults.get('data_path'), "--data-path", help="Path to save datasets"),
+    force: bool = typer.Option(False, "--force", "-f", help="Force re-download"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
     verbose: bool = typer.Option(cli_defaults['verbose'], "--verbose", "-v", help="Verbose output"),
 ):
-    """Download BEIR datasets."""
+    """Download BEIR datasets.
+
+    Args:
+        dataset: Dataset name or 'all' for all datasets, you can use 'vectormerge dataset list' to see available datasets or use `vectormerge dataset download -i` to select dataset interactively.
+        data_path: Path to save datasets
+        force: Force re-download
+        interactive: Interactive mode
+        verbose: Verbose output
+    """
     
     # Interactive mode
     if interactive:
@@ -41,6 +57,11 @@ def download_dataset(
     # Validate inputs
     if not dataset:
         display_error_and_exit("Please specify dataset name (or use --interactive)")
+    assert dataset is not None
+
+    if data_path is None:
+        display_error_and_exit("Please specify data path")
+    assert data_path is not None
     
     # Handle 'all' option
     datasets = SUPPORTED_DATASETS if dataset == 'all' else [dataset]
@@ -48,7 +69,8 @@ def download_dataset(
     # Validate each dataset
     for d in datasets:
         if d not in SUPPORTED_DATASETS:
-            display_error_and_exit(f"Dataset '{d}' not supported. Use 'vectormerge list-datasets' to see available datasets.")
+            display_error_and_exit(f"Dataset '{d}' not supported. Use 'vectormerge dataset list' to see available datasets.")
+    
     
     # Create data path
     data_path.mkdir(parents=True, exist_ok=True)
@@ -88,7 +110,7 @@ def download_dataset(
                 stats = dataset_obj.get_stats()
                 
                 rprint(f"[green]✓[/green] Downloaded: {d}")
-                rprint(f"  📄 Documents: {stats['num_documents']:,}")
+                rprint(f"  📄 Docs: {stats['num_docs']:,}")
                 rprint(f"  ❓ Queries: {stats['num_queries']:,}")
                 rprint(f"  🔗 Qrels: {stats['num_qrels']:,}")
                 
@@ -112,7 +134,12 @@ def list_datasets(
     show_stats: bool = typer.Option(False, "--stats", help="Show dataset statistics"),
     data_path: Path = typer.Option(cli_defaults['data_path'], "--data-path", help="Path to data directory"),
 ):
-    """List available datasets."""
+    """List available datasets.
+
+    Args:
+        show_stats: Show dataset statistics
+        data_path: Path to data directory
+    """
     
     rprint("[blue]📋 Available BEIR Datasets:[/blue]")
     
@@ -123,8 +150,13 @@ def list_datasets(
     table.add_column("Status", style="green")
     
     if show_stats:
-        table.add_column("Documents", style="yellow", justify="right")
+        table.add_column("Souce", style="yellow", justify="right")
+        table.add_column("Split", style="yellow", justify="right")
+        table.add_column("Docs", style="yellow", justify="right")
         table.add_column("Queries", style="yellow", justify="right")
+        table.add_column("Qrels", style="yellow", justify="right")
+        table.add_column("Avg Doc Length", style="yellow", justify="right")
+        table.add_column("Avg Query Length", style="yellow", justify="right")
         table.add_column("Size", style="blue", justify="right")
     
     # Add datasets to table
@@ -148,8 +180,13 @@ def list_datasets(
                     str(i), 
                     dataset, 
                     status,
-                    f"{stats['num_documents']:,}",
+                    f"{stats['source']}",
+                    f"{stats['split']}",
+                    f"{stats['num_docs']:,}",
                     f"{stats['num_queries']:,}",
+                    f"{stats['num_qrels']:,}",
+                    f"{stats['avg_doc_length']:.0f}",
+                    f"{stats['avg_query_length']:.0f}",
                     size
                 )
             except Exception:
@@ -164,9 +201,9 @@ def list_datasets(
     
     # Show helpful commands
     rprint("\n[blue]💡 Helpful commands:[/blue]")
-    rprint("[cyan]vectormerge download-dataset --dataset <name>[/cyan] - Download specific dataset")
-    rprint("[cyan]vectormerge download-dataset --dataset all[/cyan] - Download all datasets")
-    rprint("[cyan]vectormerge list-datasets --stats[/cyan] - Show dataset statistics")
+    rprint("[cyan]vectormerge dataset download -d <name>[/cyan] - Download specific dataset")
+    rprint("[cyan]vectormerge dataset download -d all[/cyan] - Download all datasets")
+    rprint("[cyan]vectormerge dataset list --stats[/cyan] - Show dataset statistics")
 
 
 @dataset_app.command("info", help="Show dataset information")
@@ -185,14 +222,15 @@ def dataset_info(
     # Validate inputs
     if not dataset:
         display_error_and_exit("Please specify dataset name (or use --interactive)")
+    assert dataset is not None
     
     if dataset not in SUPPORTED_DATASETS:
-        display_error_and_exit(f"Dataset '{dataset}' not supported. Use 'vectormerge list-datasets' to see available datasets.")
+        display_error_and_exit(f"Dataset '{dataset}' not supported. Use 'vectormerge dataset list' to see available datasets.")
     
     # Check if dataset exists
     dataset_path = data_path / dataset
     if not dataset_path.exists():
-        display_error_and_exit(f"Dataset '{dataset}' not found. Download it first with 'vectormerge download-dataset --dataset {dataset}'")
+        display_error_and_exit(f"Dataset '{dataset}' not found. Download it first with 'vectormerge dataset download -d {dataset}'")
     
     # Load dataset and show info
     try:
@@ -222,8 +260,8 @@ def dataset_info(
         console.print(info_table)
         
         # Show sample data
-        corpus = dataset_obj.get_corpus()
-        queries = dataset_obj.get_queries()
+        corpus = dataset_obj.corpus
+        queries = dataset_obj.queries
         
         if corpus and queries:
             rprint(f"\n[blue]📄 Sample Document:[/blue]")
@@ -258,11 +296,11 @@ def _show_download_results(success_count: int, failed_datasets: List[str], data_
     success_text = Text()
     success_text.append("💡 What's next?\n\n", style="bold yellow")
     success_text.append("📊 Check datasets: ", style="dim")
-    success_text.append("vectormerge list-datasets --stats\n", style="cyan")
+    success_text.append("vectormerge dataset list --stats\n", style="cyan")
+    success_text.append("🎯 Generate embeddings: ", style="dim")
+    success_text.append("vectormerge generate-embedding\n", style="cyan")
     success_text.append("🔍 Create references: ", style="dim")
     success_text.append("vectormerge create-reference\n", style="cyan")
-    success_text.append("🎯 Generate embeddings: ", style="dim")
-    success_text.append("vectormerge generate-embedding", style="cyan")
     
     panel = Panel(
         success_text,
