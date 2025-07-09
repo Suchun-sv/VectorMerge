@@ -23,9 +23,9 @@ evaluate_app = typer.Typer(
 def single_run(
     ctx: Context,
     dataset_name: str = typer.Option(..., "--dataset", "-d", help="Dataset name, support: " + ", ".join(SUPPORTED_DATASETS)),
-    source_model: str = typer.Option(..., "--source-model", "-s", help="Source model name, support: " + ", ".join(SUPPORTED_MODELS)),
-    target_model: str = typer.Option(..., "--target-model", "-t", help="Target model name, support: " + ", ".join(SUPPORTED_MODELS)),
-    src_tar_model: str = typer.Option(..., "--src-tar-model", "-stm", help="Combination of source and target model, use `_` to separate the source and target model, e.g. `mistral_openai` support: " + ", ".join(SUPPORTED_MODELS)),
+    source_model: str = typer.Option(None, "--source-model", "-s", help="Source model name, support: " + ", ".join(SUPPORTED_MODELS)),
+    target_model: str = typer.Option(None, "--target-model", "-t", help="Target model name, support: " + ", ".join(SUPPORTED_MODELS)),
+    src_tar_model: str = typer.Option(None, "--src-tar-model", "-stm", help="Combination of source and target model, use `_` to separate the source and target model, e.g. `mistral_openai` support: " + ", ".join(SUPPORTED_MODELS)),
     reference_key: str = typer.Option(..., "--reference-key", "-rk", help="Reference key"),
     mapping_method: str = typer.Option(..., "--mapping-method", "-mm", help="Mapping method, support: " + ", ".join(SUPPORTED_MAPPING_METHODS)),
     force: bool = typer.Option(False, "--force", "-f", help="Force evaluation"),
@@ -46,6 +46,9 @@ def single_run(
         raise ValueError(f"Source model is not supported, support: " + ", ".join(SUPPORTED_MODELS))
     if target_model not in SUPPORTED_MODELS:
         raise ValueError(f"Target model is not supported, support: " + ", ".join(SUPPORTED_MODELS))
+    
+    if source_model is None or target_model is None:
+        raise ValueError("Source and target model are required")
 
     config = handle_extra_args(ctx)
 
