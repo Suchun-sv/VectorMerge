@@ -24,7 +24,7 @@ from ..clustering import SUPPORTED_CLUSTERING_METHODS
 from ..dataset import SUPPORTED_DATASETS, load_dataset, Dataset
 from ..embeddings import SUPPORTED_MODELS, get_embedding
 from ..mapping import SUPPORTED_MAPPING_METHODS
-from ..reference import get_reference
+from ..reference import get_reference, SUPPORTED_REFERENCE_STRATEGIES
 from ..mapping import VectorSpaceMapper, MappingConfig
 from loguru import logger
 

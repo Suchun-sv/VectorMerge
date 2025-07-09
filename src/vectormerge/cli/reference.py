@@ -12,11 +12,12 @@ from rich.table import Table
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.text import Text
+from click import Context
 
-from .base import cli_defaults, console, set_seed, SUPPORTED_DATASETS
+from .base import cli_defaults, console, set_seed, SUPPORTED_DATASETS, handle_extra_args
 from .utils import (
     select_dataset_interactively, validate_model_and_dataset,
-    display_error_and_exit, display_success
+    display_error_and_exit, display_success, select_reference_strategy_interactively
 )
 from ..reference import RandomSplit, LA2MSplit
 
@@ -24,8 +25,9 @@ from ..reference import RandomSplit, LA2MSplit
 reference_app = typer.Typer(help="Create and manage reference datasets")
 
 
-@reference_app.command("create", help="Create reference dataset splits")
+@reference_app.command("create", help="Create reference dataset splits", context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
 def create_reference(
+    ctx: Context,
     dataset: str = typer.Option(None, "--dataset", "-d", help="Dataset name"),
     data_path: Path = typer.Option(cli_defaults['data_path'], "--data-path", help="Path to raw data directory"),
     reference_path: Path = typer.Option(cli_defaults['reference_path'], "--reference-path", help="Path to save reference files"),
@@ -36,34 +38,12 @@ def create_reference(
     force: bool = typer.Option(False, "--force", help="Force regeneration"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
     verbose: bool = typer.Option(cli_defaults['verbose'], "--verbose", "-v", help="Verbose output"),
-    check: bool = typer.Option(False, "--check", help="Check for existing references and list them."),
 ):
     """Create reference dataset splits for mapping."""
-    
-    if check:
-        if not reference_path.exists():
-            rprint(f"[yellow]Reference path does not exist:[/yellow] {reference_path}")
-            return
-
-        rprint(f"[blue]🔍 Checking for existing references in:[/blue] {reference_path}")
-
-        reference_files = list(reference_path.glob("*.npz"))
-
-        if not reference_files:
-            rprint("[yellow]No reference files found.[/yellow]")
-            return
-
-        table = Table(title="Existing Reference Keys")
-        table.add_column("Reference Key", style="cyan")
-
-        for ref_file in reference_files:
-            table.add_row(ref_file.stem)
-
-        console.print(table)
-        return
-    
     # Set random seed
     set_seed()
+
+    config = handle_extra_args(ctx)
     
     # Interactive mode
     if interactive:
@@ -72,26 +52,7 @@ def create_reference(
         
         # Ask for strategy
         if not strategy:
-            strategy_options = ["random", "la2m"]
-            rprint("[cyan]Available split strategies:[/cyan]")
-            for i, s in enumerate(strategy_options, 1):
-                rprint(f"  {i}. {s}")
-            
-            while True:
-                try:
-                    choice = typer.prompt("Select strategy (index or name)", default="random")
-                    if choice.isdigit():
-                        idx = int(choice) - 1
-                        if 0 <= idx < len(strategy_options):
-                            strategy = strategy_options[idx]
-                            break
-                    elif choice.lower() in strategy_options:
-                        strategy = choice.lower()
-                        break
-                    else:
-                        rprint(f"[red]Invalid choice: {choice}[/red]")
-                except typer.Abort:
-                    raise typer.Exit(code=1)
+            strategy = select_reference_strategy_interactively()
     
     # Validate inputs
     if not dataset:
@@ -323,6 +284,29 @@ def _show_top10_samples(dataset_obj, result: dict) -> None:
     _create_sample_table("🧪 D1 (Test Set 1)", d1_indices, "green") 
     _create_sample_table("🧪 D2 (Test Set 2)", d2_indices, "yellow")
 
+@reference_app.command("check", help="Check for existing references and list them.")
+def check_reference(
+    reference_path: Path = typer.Option(cli_defaults['reference_path'], "--reference-path", help="Path to reference files"),
+):
+    if not reference_path.exists():
+        rprint(f"[yellow]Reference path does not exist:[/yellow] {reference_path}")
+        return
+
+    rprint(f"[blue]🔍 Checking for existing references in:[/blue] {reference_path}")
+
+    reference_files = list(reference_path.glob("*.npz"))
+
+    if not reference_files:
+        rprint("[yellow]No reference files found.[/yellow]")
+        return
+
+    table = Table(title="Existing Reference Keys")
+    table.add_column("Reference Key", style="cyan")
+
+    for ref_file in reference_files:
+        table.add_row(ref_file.stem)
+
+    console.print(table)
 
 # Add aliases for backward compatibility
 # reference_app.command("cr", help="Short alias for create")(create_reference) 

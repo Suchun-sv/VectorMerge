@@ -15,7 +15,7 @@ from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 import typer
 
-from .base import SUPPORTED_MODELS, SUPPORTED_DATASETS, console
+from .base import SUPPORTED_MODELS, SUPPORTED_DATASETS, SUPPORTED_REFERENCE_STRATEGIES, console
 
 
 def select_model_interactively() -> str:
@@ -49,6 +49,29 @@ def select_model_interactively() -> str:
                 if choice.lower() in model.lower():
                     return model
             
+            rprint(f"[red]Invalid choice: {choice}[/red]")
+        except typer.Abort:
+            raise typer.Exit(code=1)
+
+def select_reference_strategy_interactively() -> str:
+    """Interactive reference strategy selection."""
+    rprint("[cyan]Available reference strategies:[/cyan]")
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column("Index", style="dim", width=6)
+    table.add_column("Strategy", style="cyan")
+    for i, strategy in enumerate(SUPPORTED_REFERENCE_STRATEGIES, 1):
+        table.add_row(str(i), strategy)
+    console.print(table)
+    while True:
+        try:
+            choice = typer.prompt("Select reference strategy (index or name)")
+            if choice.isdigit():
+                idx = int(choice) - 1
+                if 0 <= idx < len(SUPPORTED_REFERENCE_STRATEGIES):
+                    return SUPPORTED_REFERENCE_STRATEGIES[idx]
+            for strategy in SUPPORTED_REFERENCE_STRATEGIES:
+                if choice.lower() in strategy.lower():
+                    return strategy
             rprint(f"[red]Invalid choice: {choice}[/red]")
         except typer.Abort:
             raise typer.Exit(code=1)
