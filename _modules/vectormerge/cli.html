@@ -445,7 +445,7 @@
 <span class="n">app</span><span class="o">.</span><span class="n">add_typer</span><span class="p">(</span><span class="n">mapping_app</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;map-embedding&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Create and manage embedding mappings&quot;</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s2">&quot;create-reference&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Create and manage reference datasets&quot;</span><span class="p">)(</span><span class="n">create_reference</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">add_typer</span><span class="p">(</span><span class="n">create_cluster_app</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;create-cluster&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Create and manage clustering operations&quot;</span><span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">add_typer</span><span class="p">(</span><span class="n">dataset_app</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Download and manage datasets&quot;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">add_typer</span><span class="p">(</span><span class="n">dataset_app</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;dataset&quot;</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">add_typer</span><span class="p">(</span><span class="n">config_app</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Manage VectorMerge configuration&quot;</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">add_typer</span><span class="p">(</span><span class="n">evaluate_app</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;evaluate&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Evaluate the performance of a mapping model.&quot;</span><span class="p">)</span>
 <span class="c1"># Add global options</span>
@@ -546,61 +546,6 @@
     <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div>
 
 
-
-<span class="c1"># @app.command(&quot;show-config&quot;, help=&quot;Show current configuration&quot;)</span>
-<span class="c1"># def show_config_compat(</span>
-<span class="c1">#     scope: str = typer.Option(&quot;all&quot;, &quot;--scope&quot;, help=&quot;Configuration scope&quot;),</span>
-<span class="c1">#     format_: str = typer.Option(&quot;table&quot;, &quot;--format&quot;, help=&quot;Output format&quot;),</span>
-<span class="c1"># ):</span>
-<span class="c1">#     &quot;&quot;&quot;Show current configuration (backward compatibility).&quot;&quot;&quot;</span>
-<span class="c1">#     from .config import show_config</span>
-<span class="c1">#     show_config(scope=scope, format_=format_)</span>
-
-
-<span class="c1"># @app.command(&quot;create-config&quot;, help=&quot;Create configuration file&quot;)</span>
-<span class="c1"># def create_config_compat(</span>
-<span class="c1">#     scope: str = typer.Option(&quot;local&quot;, &quot;--scope&quot;, help=&quot;Configuration scope&quot;),</span>
-<span class="c1">#     force: bool = typer.Option(False, &quot;--force&quot;, help=&quot;Overwrite existing&quot;),</span>
-<span class="c1">#     interactive: bool = typer.Option(False, &quot;--interactive&quot;, &quot;-i&quot;, help=&quot;Interactive mode&quot;),</span>
-<span class="c1"># ):</span>
-<span class="c1">#     &quot;&quot;&quot;Create configuration file (backward compatibility).&quot;&quot;&quot;</span>
-<span class="c1">#     from .config import create_config</span>
-<span class="c1">#     create_config(scope=scope, force=force, interactive=interactive)</span>
-
-
-<span class="c1"># Add short aliases for frequently used commands</span>
-<span class="c1"># @app.command(&quot;ge&quot;, help=&quot;Short alias for generate-embedding&quot;)</span>
-<span class="c1"># def generate_embedding_short(</span>
-<span class="c1">#     ctx: typer.Context,</span>
-<span class="c1"># ):</span>
-<span class="c1">#     &quot;&quot;&quot;Short alias for generate-embedding.&quot;&quot;&quot;</span>
-<span class="c1">#     # Forward to the embedding app</span>
-<span class="c1">#     from .embedding import generate_embeddings</span>
-<span class="c1">#     # Call with remaining args</span>
-<span class="c1">#     generate_embeddings()</span>
-
-
-<span class="c1"># @app.command(&quot;me&quot;, help=&quot;Short alias for map-embedding&quot;)</span>
-<span class="c1"># def map_embedding_short():</span>
-<span class="c1">#     &quot;&quot;&quot;Short alias for map-embedding.&quot;&quot;&quot;</span>
-<span class="c1">#     rprint(&quot;[blue]🗺️ Map Embedding Commands:[/blue]&quot;)</span>
-<span class="c1">#     rprint(&quot;[cyan]vectormerge map-embedding procrustes[/cyan] - Procrustes analysis&quot;)</span>
-<span class="c1">#     rprint(&quot;[cyan]vectormerge map-embedding linear[/cyan] - Linear neural network&quot;)</span>
-<span class="c1">#     rprint(&quot;[cyan]vectormerge map-embedding nonlinear[/cyan] - Nonlinear neural network&quot;)</span>
-<span class="c1">#     rprint(&quot;[cyan]vectormerge map-embedding la2m[/cyan] - LA2M clustering strategy&quot;)</span>
-<span class="c1">#     rprint(&quot;\n[blue]💡 Use --help for detailed options[/blue]&quot;)</span>
-
-
-<span class="c1"># @app.command(&quot;cr&quot;, help=&quot;Short alias for create-reference&quot;)</span>
-<span class="c1"># def create_reference_short(</span>
-<span class="c1">#     ctx: typer.Context,</span>
-<span class="c1"># ):</span>
-<span class="c1">#     &quot;&quot;&quot;Short alias for create-reference.&quot;&quot;&quot;</span>
-<span class="c1">#     from .reference import create_reference</span>
-<span class="c1">#     create_reference()</span>
-
-
-<span class="c1"># Export main app for backward compatibility</span>
 <span class="n">main_app</span> <span class="o">=</span> <span class="n">app</span>
 
 <span class="c1"># For direct module usage</span>
