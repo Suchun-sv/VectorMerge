@@ -167,7 +167,7 @@ class ClusterManager:
             # If result exists but lacks embeddings, assemble and return
             if not result.has_embeddings:
                 logger.info(f"Loading embeddings to assemble cluster result")
-                source_embeddings = get_embedding(self.model, self.dataset_name, self.embedding_path, type_="corpus")
+                source_embeddings = get_embedding(self.dataset_name, self.model, self.embedding_path, type_="corpus")
                 if source_embeddings is None:
                     raise ValueError(f"Could not load embeddings for {self.dataset_name}")
                 return self.assembles_cluster_result(source_embeddings, result)
@@ -177,7 +177,7 @@ class ClusterManager:
         
         # Load embeddings and reference indices for new clustering
         logger.info(f"Loading embeddings for {self.dataset_name}")
-        source_embeddings = get_embedding(self.model, self.dataset_name, self.embedding_path, type_="corpus")
+        source_embeddings = get_embedding(self.dataset_name, self.model, self.embedding_path, type_="corpus")
         if source_embeddings is None:
             raise ValueError(f"Could not load embeddings for {self.dataset_name}")
         

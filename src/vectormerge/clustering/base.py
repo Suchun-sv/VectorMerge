@@ -195,9 +195,9 @@ class ClusteringResult:
     def reload_reference_embeddings(self, embeddings: np.ndarray) -> None:
         """Recompute cluster centers."""
 
-        for cluster in self.cluster_data_list:
-            cluster.reference_embeddings = embeddings[cluster.reference_indices]
-            cluster.compute_center()
+        for index, cluster in enumerate(self.cluster_data_list):
+            self.cluster_data_list[index].reference_embeddings = embeddings[cluster.reference_indices]
+            self.cluster_data_list[index].compute_center()
 
         # for cluster in self.cluster_data_list:
         #     if cluster.center_embedding is None:
