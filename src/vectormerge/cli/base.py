@@ -35,10 +35,10 @@ console = Console()
 
 
 # Load CLI defaults
-def load_cli_defaults() -> Dict[str, Any]:
+def load_cli_defaults() -> VectorMergeConfig:
     """Load CLI default configuration."""
     config_loader = ConfigLoader().load_config()
-    return config_loader.config.to_dict()
+    return config_loader.config
 
 cli_defaults = load_cli_defaults()
 

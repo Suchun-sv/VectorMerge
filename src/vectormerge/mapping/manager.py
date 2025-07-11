@@ -42,7 +42,7 @@ class VectorSpaceMapper:
         "la2m": LA2MStrategy,
     }
     
-    def __init__(self, strategy, config: MappingConfig, dataset_name: str, source_model: str, target_model: str, reference_key: str, reference_path: str, cluster_path: str, embedding_path: str, mapping_param_path: Union[str, Path], mapping_embedding_path: Union[str, Path], force: bool = False, save_param: bool = False, save_embedding: bool = False, clustering_config: Optional[ClusteringConfig] = None):
+    def __init__(self, strategy_name: str, config: MappingConfig, dataset_name: str, source_model: str, target_model: str, reference_key: str, reference_path: str, cluster_path: str, embedding_path: str, mapping_param_path: Union[str, Path], mapping_embedding_path: Union[str, Path], force: bool = False, save_param: bool = False, save_embedding: bool = False, clustering_config: Optional[ClusteringConfig] = None):
         """Initialize the VectorSpaceMapper.
         
         Args:
@@ -55,11 +55,11 @@ class VectorSpaceMapper:
             mapping_embedding_path: Path to save mapping embeddings
             force: Force overwrite existing mappings
         """
-        if strategy not in self.AVAILABLE_STRATEGIES:
-            raise ValueError(f"Unknown strategy '{strategy}'. Available strategies: "
+        if strategy_name not in self.AVAILABLE_STRATEGIES:
+            raise ValueError(f"Unknown strategy '{strategy_name}'. Available strategies: "
                            f"{list(self.AVAILABLE_STRATEGIES.keys())}")
         
-        self.strategy_name = strategy
+        self.strategy_name = strategy_name
         self.config = config if config is not None else MappingConfig()
         self.force = force
         self.dataset_name = dataset_name
@@ -73,16 +73,16 @@ class VectorSpaceMapper:
         self.save_embedding = save_embedding
         self.cluster_config = clustering_config
 
-        self.hash_path = config_hash_path(dataset_name, source_model, target_model, strategy, config, reference_key)
+        self.hash_path = config_hash_path(dataset_name, source_model, target_model, strategy_name, config, reference_key)
         
         # Setup paths with strategy and config hash
         self.mapping_param_path, self.mapping_embedding_path = self._setup_paths(
-            mapping_param_path, mapping_embedding_path, strategy, self.config, force,
+            mapping_param_path, mapping_embedding_path, strategy_name, self.config, force,
         )
         
         # Initialize the mapping strategy
-        strategy_class = self.AVAILABLE_STRATEGIES[strategy]
-        if strategy == "la2m":
+        strategy_class = self.AVAILABLE_STRATEGIES[strategy_name]
+        if strategy_name == "la2m":
             if clustering_config is None:
                 raise ValueError("clustering_config is required for la2m strategy")
             cluster_manager = self._init_cluster_manager(clustering_config)
@@ -94,7 +94,7 @@ class VectorSpaceMapper:
         self.training_history: Dict[str, Any] = {}
         self.is_fitted = False
         
-        logger.info(f"VectorSpaceMapper initialized with strategy: {strategy}")
+        logger.info(f"VectorSpaceMapper initialized with strategy: {strategy_name}")
         logger.info(f"Parameter path: {self.mapping_param_path}")
         logger.info(f"Embedding path: {self.mapping_embedding_path}")
     
@@ -158,9 +158,6 @@ class VectorSpaceMapper:
             Self for method chaining
         """
         logger.info(f"Fitting {self.strategy_name} mapping strategy...")
-
-        # self.source_dimension = source_embeddings.shape[1]
-        # self.target_dimension = target_embeddings.shape[1]
         
         # Validate inputs
         self._validate_inputs(source_embeddings, target_embeddings, reference_indices)
@@ -448,7 +445,7 @@ class VectorSpaceMapper:
         # Create mapper instance
         config = MappingConfig.from_dict(mapper_info['config'])
         mapper = cls(
-            strategy=mapper_info['strategy_name'], 
+            strategy_name=mapper_info['strategy_name'], 
             config=config,
             dataset_name=mapper_info['dataset_name'],
             source_model=mapper_info['source_model'],

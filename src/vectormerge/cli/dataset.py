@@ -34,10 +34,10 @@ You can use 'vectormerge dataset download --dataset all' to download all dataset
 @dataset_app.command("download", help="Download datasets")
 def download_dataset(
     dataset: Optional[str] = typer.Option(None, "--dataset", "-d", help="Dataset name or 'all' for all datasets, supported datasets: " + ", ".join(SUPPORTED_DATASETS)),
-    data_path: Optional[Path] = typer.Option(cli_defaults.get('data_path'), "--data-path", help="Path to save datasets"),
+    data_path: Optional[Path] = typer.Option(cli_defaults.data_path, "--data-path", help="Path to save datasets"),
     force: bool = typer.Option(False, "--force", "-f", help="Force re-download"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
-    verbose: bool = typer.Option(cli_defaults['verbose'], "--verbose", "-v", help="Verbose output"),
+    verbose: bool = typer.Option(cli_defaults.verbose, "--verbose", "-v", help="Verbose output"),
 ):
     """Download BEIR datasets.
 
@@ -132,7 +132,7 @@ def download_dataset(
 @dataset_app.command("list", help="List available datasets")
 def list_datasets(
     show_stats: bool = typer.Option(False, "--stats", help="Show dataset statistics"),
-    data_path: Path = typer.Option(cli_defaults['data_path'], "--data-path", help="Path to data directory"),
+    data_path: Path = typer.Option(cli_defaults.data_path, "--data-path", help="Path to data directory"),
 ):
     """List available datasets.
 
@@ -209,7 +209,7 @@ def list_datasets(
 @dataset_app.command("info", help="Show dataset information")
 def dataset_info(
     dataset: Optional[str] = typer.Option(None, "--dataset", "-d", help="Dataset name"),
-    data_path: Path = typer.Option(cli_defaults['data_path'], "--data-path", help="Path to data directory"),
+    data_path: Path = typer.Option(cli_defaults.data_path, "--data-path", help="Path to data directory"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
 ):
     """Show detailed information about a dataset."""

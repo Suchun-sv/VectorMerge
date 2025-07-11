@@ -39,13 +39,13 @@ def generate_embeddings(
     ctx: Context,
     model: Optional[str] = typer.Option(None, "--model", "-m", help="Model name or 'all' for all models, supported models: " + ", ".join(SUPPORTED_MODELS)),
     dataset: Optional[str] = typer.Option(None, "--dataset", "-d", help="Dataset name or 'all' for all datasets, supported datasets: " + ", ".join(SUPPORTED_DATASETS)),
-    data_path: Path = typer.Option(cli_defaults['data_path'], "--data-path", help="Path to raw data directory"),
-    embedding_path: Path = typer.Option(cli_defaults['embedding_path'], "--embedding-path", help="Path to save embeddings"),
-    embedding_cache_path: Path = typer.Option(cli_defaults['embedding_cache_path'], "--embedding-cache-path", help="Path to cache directory"),
+    data_path: Path = typer.Option(cli_defaults.data_path, "--data-path", help="Path to raw data directory"),
+    embedding_path: Path = typer.Option(cli_defaults.embedding_path, "--embedding-path", help="Path to save embeddings"),
+    embedding_cache_path: Path = typer.Option(cli_defaults.embedding_cache_path, "--embedding-cache-path", help="Path to cache directory"),
     type_: Optional[str] = typer.Option(None, "--type", help="Type of embeddings to generate, (corpus, query)"),
     force: bool = typer.Option(False, "--force", help="Force regeneration of existing embeddings"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
-    verbose: bool = typer.Option(cli_defaults['verbose'], "--verbose", "-v", help="Verbose output"),
+    verbose: bool = typer.Option(cli_defaults.verbose, "--verbose", "-v", help="Verbose output"),
 ):
     """Generate embeddings for models and datasets."""
     
@@ -279,12 +279,12 @@ def _show_generation_success(embedding_path: Path, total_combinations: int) -> N
     
     console.print(panel)
 @embedding_app.command("rm-cache", help="Remove cache directory")
-def rm_cache(embedding_cache_path: Path = typer.Option(cli_defaults['embedding_cache_path'], "--embedding-cache-path", help="Path to cache directory")) -> None:
+def rm_cache(embedding_cache_path: Path = typer.Option(cli_defaults.embedding_cache_path, "--embedding-cache-path", help="Path to cache directory")) -> None:
     """Remove cache directory."""
     _clean_cache(embedding_cache_path)
 
 @embedding_app.command("check", help="Check embedding completeness")
-def check_embedding(embedding_path: Path = typer.Option(cli_defaults['embedding_path'], "--embedding-path", help="Path to embeddings")) -> None:
+def check_embedding(embedding_path: Path = typer.Option(cli_defaults.embedding_path, "--embedding-path", help="Path to embeddings")) -> None:
     """Check embedding completeness."""
     _check_embedding_completeness(embedding_path)
 

@@ -25,8 +25,6 @@ class LA2MConfig():
     pca_mapping: bool = True
     pca_dim: int = 14
     use_norm: bool = False
-    save_param: bool = False
-    save_embedding: bool = False
 
 @dataclass
 class NonLinearMappingConfig():
@@ -38,8 +36,6 @@ class NonLinearMappingConfig():
     hidden_dim: int = 512
     dropout_rate: float = 0.1
     loss_type: str = "mse"
-    save_param: bool = False
-    save_embedding: bool = False
 
 @dataclass
 class ProcrustesConfig():
@@ -52,8 +48,6 @@ class ProcrustesConfig():
     reduced_dim: int = 0
     procrustes_pca_type: str = "none"
     use_norm: bool = True
-    save_param: bool = False
-    save_embedding: bool = False
 
 
 @dataclass
@@ -64,6 +58,8 @@ class MappingConfig:
     device: str = "auto"
     batch_size: int = 32
     verbose: bool = False
+    save_param: bool = True
+    save_embedding: bool = True
 
     # Mapping strategy settings
     la2m_config: LA2MConfig = LA2MConfig()
