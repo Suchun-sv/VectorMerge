@@ -15,6 +15,7 @@ from rich.text import Text
 
 from .base import console
 from .utils import confirm_action, display_error_and_exit, display_success, display_warning, display_info
+from vectormerge.config import VectorMergeConfig, ConfigLoader
 
 # Initialize config command group
 config_app = typer.Typer(help="Manage VectorMerge configuration")
@@ -27,7 +28,6 @@ def check_config():
     _display_config_status()
 
     try:
-        from .config_loader import ConfigLoader
         config_loader = ConfigLoader()
 
         type_map = {
@@ -64,7 +64,6 @@ def generate_default_config(
     force: bool = typer.Option(False, "--force", help="Overwrite existing configuration"),
 ):
     """Create a new configuration file."""
-    from .config_loader import ConfigLoader
     config_loader = ConfigLoader()
 
     config_yaml_str = config_loader.to_commented_yaml()
@@ -100,7 +99,6 @@ def reset_config(
     """Reset configuration to defaults."""
     
     try:
-        from .config_loader import ConfigLoader
         config_loader = ConfigLoader()
         
         if scope == "global":
@@ -221,7 +219,6 @@ def _interactive_config_creation(current_config) -> dict:
 
 
 def _display_config_status():
-    from .config_loader import ConfigLoader
     config_loader = ConfigLoader()
     configs = [
         ("Local", config_loader.local_config_path),

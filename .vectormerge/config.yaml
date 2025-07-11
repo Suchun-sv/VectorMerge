@@ -28,6 +28,8 @@ mapping_config:
   device: auto
   batch_size: 32
   verbose: false
+  save_param: true
+  save_embedding: true
   la2m_config:
     num_clusters: 50
     cluster_method: la2m-cluster
@@ -35,8 +37,6 @@ mapping_config:
     pca_mapping: true
     pca_dim: 14
     use_norm: false
-    save_param: false
-    save_embedding: false
   nonlinear_config:
     num_layers: 3
     batch_size: 32
@@ -45,8 +45,6 @@ mapping_config:
     hidden_dim: 512
     dropout_rate: 0.1
     loss_type: mse
-    save_param: false
-    save_embedding: false
   procrustes_config:
     approximate: false
     q: 1500
@@ -56,11 +54,9 @@ mapping_config:
     reduced_dim: 0
     procrustes_pca_type: none
     use_norm: true
-    save_param: false
-    save_embedding: false
 # ============================ Clustering config ============================
 clustering_config:
-  clustering_method: kmeans
+  clustering_method: la2m-cluster
   device: auto
   verbose: false
   la2m_config:
@@ -77,7 +73,7 @@ embedding_models:
   dataset: scifact
   type_: corpus
   mistral_config:
-    model_name: mistral-api
+    model_name: mistral-embed
     batch_size: 32
     device: cpu
     max_tokens: 8192

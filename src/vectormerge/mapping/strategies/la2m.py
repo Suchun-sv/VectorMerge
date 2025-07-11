@@ -14,8 +14,8 @@ import time
 from tqdm import tqdm
 from sklearn.decomposition import PCA
 
+from vectormerge.clustering import ClusterData, ClusteringConfig, ClusterManager
 from ..base import MappingStrategy, MappingConfig
-from ...clustering import ClusterData, ClusteringConfig, ClusterManager
 from .procrustes import procrustes_mapping_torch
 
 class LA2MStrategy(MappingStrategy):
