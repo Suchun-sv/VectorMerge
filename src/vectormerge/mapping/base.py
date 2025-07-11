@@ -75,6 +75,18 @@ class MappingConfig:
         return str(self.__dict__)
     
     @classmethod
+    def from_update_dict(cls, update_dict: Dict[str, Any]) -> 'MappingConfig':
+        """init and update config from dictionary."""
+        config = cls()
+        config._update_config(update_dict)
+        return config
+    
+    def _update_config(self, update_dict: Dict[str, Any]) -> None:
+        """Update config from dictionary."""
+        for key, value in update_dict.items():
+            setattr(self, key, value)
+    
+    @classmethod
     def from_dict(cls, config_dict: Dict[str, Any]) -> 'MappingConfig':
         """Create from dictionary."""
         return from_dict(cls, config_dict)
