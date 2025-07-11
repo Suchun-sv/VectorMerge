@@ -36,6 +36,8 @@ transformed = mapper.fit_transform(
 # Core classes
 from .base import MappingStrategy, MappingConfig, MappingResult
 from .manager import VectorSpaceMapper
+from .wrapper import LA2MMapper
+
 SUPPORTED_MAPPING_METHODS = [
     "procrustes",
     "nonlinear",
@@ -83,7 +85,7 @@ __all__ = [
     "ProcrustesMappingStrategy",
     "NonLinearMappingStrategy", 
     "LA2MStrategy",
-    
+    "LA2MMapper",
     # Loss functions
     "cosine_similarity_loss",
     "triplet_loss",
