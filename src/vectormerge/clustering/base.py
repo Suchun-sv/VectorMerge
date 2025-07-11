@@ -327,7 +327,6 @@ class ClusteringStrategy(ABC):
         
         logger.info(f"Initialized {self.__class__.__name__} with {config.clustering_method} clustering method")
 
-    @abstractmethod
     def predict(self, clustering_result: ClusteringResult, embeddings: np.ndarray) -> np.ndarray:
         """Predict cluster assignments for new embeddings.
         
@@ -338,7 +337,8 @@ class ClusteringStrategy(ABC):
         Returns:
             Cluster assignments for each embedding
         """
-        pass
+        return self._predict(clustering_result, embeddings)
+        
 
     
     @abstractmethod

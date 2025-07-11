@@ -29,15 +29,15 @@ reference_app = typer.Typer(help="Create and manage reference datasets")
 def create_reference(
     ctx: Context,
     dataset: str = typer.Option(None, "--dataset", "-d", help="Dataset name"),
-    data_path: Path = typer.Option(cli_defaults['data_path'], "--data-path", help="Path to raw data directory"),
-    reference_path: Path = typer.Option(cli_defaults['reference_path'], "--reference-path", help="Path to save reference files"),
+    data_path: Path = typer.Option(cli_defaults.data_path, "--data-path", help="Path to raw data directory"),
+    reference_path: Path = typer.Option(cli_defaults.reference_path, "--reference-path", help="Path to save reference files"),
     strategy: str = typer.Option("random", "--strategy", help="Split strategy (random, la2m)"),
     reference_ratio: float = typer.Option(0.5, "--reference-ratio", help="Ratio of reference data (D0)"),
     remove_duplicates: bool = typer.Option(False, "--remove-duplicates", help="Remove duplicate answers"),
     select_top_1: bool = typer.Option(True, "--select-top-1/--select-all", help="Select top-1 or all relevant answers"),
     force: bool = typer.Option(False, "--force", help="Force regeneration"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
-    verbose: bool = typer.Option(cli_defaults['verbose'], "--verbose", "-v", help="Verbose output"),
+    verbose: bool = typer.Option(cli_defaults.verbose, "--verbose", "-v", help="Verbose output"),
 ):
     """Create reference dataset splits for mapping."""
     # Set random seed
@@ -286,7 +286,7 @@ def _show_top10_samples(dataset_obj, result: dict) -> None:
 
 @reference_app.command("check", help="Check for existing references and list them.")
 def check_reference(
-    reference_path: Path = typer.Option(cli_defaults['reference_path'], "--reference-path", help="Path to reference files"),
+    reference_path: Path = typer.Option(cli_defaults.reference_path, "--reference-path", help="Path to reference files"),
 ):
     if not reference_path.exists():
         rprint(f"[yellow]Reference path does not exist:[/yellow] {reference_path}")

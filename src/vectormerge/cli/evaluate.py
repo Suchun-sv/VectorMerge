@@ -56,7 +56,7 @@ def single_run(
 
     dataset = load_dataset(dataset_name=dataset_name, data_path=config.data_path, force=force, interactive=False, verbose=verbose)
 
-    vectormerge = VectorSpaceMapper(strategy=mapping_method, 
+    vectormerge = VectorSpaceMapper(strategy_name=mapping_method, 
     config=config.mapping_config, 
     dataset_name=dataset_name, 
     source_model=source_model, 

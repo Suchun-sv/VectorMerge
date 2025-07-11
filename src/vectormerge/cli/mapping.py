@@ -4,38 +4,29 @@ Embedding mapping commands for VectorMerge CLI.
 This module contains commands for creating and managing embedding mappings.
 """
 
-from pathlib import Path
-from typing import Optional, Dict, Any
 import typer
 from click import Context
-import numpy as np
-from rich import print as rprint
-from rich.progress import Progress, SpinnerColumn, TextColumn
-from rich.panel import Panel
-from rich.table import Table
 from dataclasses import replace
 
 from vectormerge.embeddings import SUPPORTED_MODELS, get_embedding
 from vectormerge.dataset import SUPPORTED_DATASETS
 from vectormerge.reference import get_reference
 from vectormerge.mapping import VectorSpaceMapper, SUPPORTED_MAPPING_METHODS
-from vectormerge.mapping.base import MappingConfig
 
-from .base import cli_defaults, set_seed, console
+from .base import cli_defaults
 from .utils import (
-    select_model_interactively, select_dataset_interactively,
-    validate_model_and_dataset, display_error_and_exit, handle_extra_args
+    display_error_and_exit, handle_extra_args
 )
 from vectormerge.config import VectorMergeConfig
 
 # Initialize mapping command group
-mapping_app = typer.Typer(help="Create and manage embedding mappings")
+map_app = typer.Typer(help="Create and manage embedding mappings")
 
 # Load configuration
-config_loader = VectorMergeConfig()
+# config_loader = VectorMergeConfig()
 
 
-mapping_app.command("map", help="Map embeddings")
+@map_app.command("map", help="Map embeddings", context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
 def map_command(
     ctx: Context,
     dataset: str = typer.Option(..., "--dataset", "-d", help="Dataset to use for mapping, support: " + ", ".join(SUPPORTED_DATASETS)),
@@ -55,6 +46,9 @@ def map_command(
     wandb_entity: str = typer.Option(None, "--wandb-entity", "-we", help="Weights and Biases"),
     wandb_project: str = typer.Option("vector-merge", "--wandb-project", "-wp", help="Weights and Biases project"),
 ):
+    if (source_model is not None and target_model is not None) and (src_tar_model is not None):
+        display_error_and_exit(f"Source model {source_model} and target model {target_model} cannot be specified at the same time, please use --src-tar-model instead")
+
     if src_tar_model is not None:
         source_model = src_tar_model.split("_")[0]
         target_model = src_tar_model.split("_")[1]

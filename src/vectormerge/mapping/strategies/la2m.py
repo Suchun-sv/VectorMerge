@@ -215,7 +215,7 @@ class LA2MStrategy(MappingStrategy):
         
         # Use ClusterManager to predict cluster assignments
         cluster_result = self.cluster_manager.fit()
-        cluster_assignments = self.cluster_manager.predict(cluster_result, embeddings[target_indices], src_embeddings=self.reduced_source_embeddings)
+        cluster_assignments = self.cluster_manager.predict(cluster_result, embeddings, target_indices)
         
         target_dimension = self.metadata['target_dimension']
         if hasattr(self, 'reduced_target_embeddings'):
@@ -319,9 +319,9 @@ class LA2MStrategy(MappingStrategy):
         }
         
         # Add cluster manager statistics if available
-        if self.cluster_manager and self.cluster_manager.last_result:
-            cluster_manager_stats = self.cluster_manager.get_cluster_statistics()
-            stats.update({'cluster_manager_stats': cluster_manager_stats})
+        # if self.cluster_manager and self.cluster_manager.last_result:
+        #     cluster_manager_stats = self.cluster_manager.get_cluster_statistics()
+        #     stats.update({'cluster_manager_stats': cluster_manager_stats})
         
         return stats
     
@@ -333,7 +333,7 @@ class LA2MStrategy(MappingStrategy):
         super().save(path)
         
         save_path = Path(path)
-        self.cluster_manager.save_config(save_path/ "cluster_manager")
+        self.cluster_manager.save(save_path=save_path/ "cluster_manager", save_embeddings=False)
 
         # Save reduced embeddings
         np.save(save_path / "reduced_source_embeddings.npy", self.reduced_source_embeddings)
@@ -421,7 +421,7 @@ class LA2MStrategy(MappingStrategy):
         
         config = MappingConfig.from_dict(mapping_info['config'])
         if clustering_manager is None:
-            clustering_manager = ClusterManager.load_config(load_path / "cluster_manager")
+            clustering_manager = ClusterManager.from_saved(load_path / "cluster_manager")
         instance = cls(config, clustering_manager)
 
         # Load reduced embeddings
