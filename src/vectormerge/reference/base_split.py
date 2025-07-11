@@ -2,6 +2,32 @@ import numpy as np
 from typing import Optional
 from pathlib import Path
 from loguru import logger
+from dataclasses import dataclass, asdict
+
+
+@dataclass
+class SplitConfig:
+    reference_method: str = "la2m"
+    reference_ratio: float = 0.5
+    reference_path: str = "./data/processed/reference/"
+    reference_key: str = "la2m_split"
+    save: bool = False
+    verbose: bool = False
+    remove_dup_answer: bool = True
+    select_top_1: bool = True
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+    
+    def update(self, **kwargs) -> 'SplitConfig':
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        return self
+
+class LA2MSplitConfig(SplitConfig):
+    remove_dup_answer: bool = False
+    select_top_1: bool = True
+
 
 def get_reference(reference_path: str, reference_key: str) -> dict:
     """
