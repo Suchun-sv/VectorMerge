@@ -421,7 +421,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">set_seed</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">version_callback</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.embedding</span><span class="w"> </span><span class="kn">import</span> <span class="n">embedding_app</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">mapping_app</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">map_app</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_reference</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataset_app</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">config_app</span>
@@ -432,7 +432,7 @@
 <span class="c1"># Initialize main CLI application</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Typer</span><span class="p">(</span>
     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;vectormerge&quot;</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;VectorMerge CLI - Advanced embedding generation and mapping tools&quot;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;VectorMerge CLI - Beyond LA2M, advanced embedding generation and mapping suite&quot;</span><span class="p">,</span>
     <span class="n">add_completion</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">rich_markup_mode</span><span class="o">=</span><span class="s2">&quot;rich&quot;</span><span class="p">,</span>
     <span class="n">no_args_is_help</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -442,7 +442,7 @@
 <span class="c1"># Add version callback</span>
 <span class="n">app</span><span class="o">.</span><span class="n">callback</span><span class="p">()(</span><span class="k">lambda</span> <span class="n">version</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">add_typer</span><span class="p">(</span><span class="n">embedding_app</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;embedding&quot;</span><span class="p">)</span>
-<span class="n">app</span><span class="o">.</span><span class="n">add_typer</span><span class="p">(</span><span class="n">mapping_app</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;map-embedding&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Create and manage embedding mappings&quot;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">add_typer</span><span class="p">(</span><span class="n">map_app</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;map-embedding&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Create and manage embedding mappings&quot;</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s2">&quot;create-reference&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Create and manage reference datasets&quot;</span><span class="p">)(</span><span class="n">create_reference</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">add_typer</span><span class="p">(</span><span class="n">create_cluster_app</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;create-cluster&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Create and manage clustering operations&quot;</span><span class="p">)</span>
 <span class="n">app</span><span class="o">.</span><span class="n">add_typer</span><span class="p">(</span><span class="n">dataset_app</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;dataset&quot;</span><span class="p">)</span>

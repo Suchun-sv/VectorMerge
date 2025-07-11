@@ -418,10 +418,16 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">get_reference</span><span class="p">(</span><span class="n">reference_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reference_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load the reference from the reference_path, the reference is a dictionary with keys &quot;d0_index&quot;, &quot;d1_index&quot;, and &quot;d2_index&quot;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        reference_path: the path to the reference</span>
+<span class="sd">        reference_key: the key of the reference</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        reference: a dictionary with keys &quot;d0_index&quot;, &quot;d1_index&quot;, and &quot;d2_index&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">reference_key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.npz&quot;</span><span class="p">):</span>
         <span class="n">reference_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">reference_key</span><span class="si">}</span><span class="s2">.npz&quot;</span>
-    <span class="c1"># Test if the reference_key is exists in the reference_path</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">reference_path</span><span class="p">)</span> <span class="o">/</span> <span class="n">reference_key</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reference key </span><span class="si">{</span><span class="n">reference_key</span><span class="si">}</span><span class="s2"> not found in </span><span class="si">{</span><span class="n">reference_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     
