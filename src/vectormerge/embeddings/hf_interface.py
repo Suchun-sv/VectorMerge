@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Optional
 import os
 import dotenv
+import shutil
 
 REPO_ENTITY = "suchun"
 REPO_NAME = "VectorMerge"  # your dataset repo name
@@ -64,5 +65,8 @@ def download_embedding(
         revision=revision,
         token=token,
     )
+    shutil.move(local_path, target_dir / Path(download_file_name))
+    if Path(local_path).parent.exists() and not os.listdir(Path(local_path).parent):
+        shutil.rmtree(Path(local_path).parent)
     print(f"✅ Downloaded: {local_path}")
     return Path(local_path)

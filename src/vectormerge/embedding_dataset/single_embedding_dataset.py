@@ -6,11 +6,11 @@ from vectormerge.embeddings import get_embedding
 class SingleEmbeddingDataset():
     """Single embedding dataset container for VectorMerge."""
     
-    def __init__(self, text_dataset_name: str, embedding_model_name: str, dataset_path: str = "./data/raw/beir/", embedding_path: str = "./data/processed/embeddings/", load_text_dataset: bool = True):
+    def __init__(self, text_dataset_name: str, embedding_model_name: str, dataset_path: str = "./data/raw/beir/", embedding_path: str = "./data/processed/embeddings/", load_text_dataset: bool = True, type_: str = "corpus"):
         self.text_dataset_name = text_dataset_name
         if load_text_dataset:
             self.text_dataset = load_dataset(text_dataset_name, split="test", dataset_path=dataset_path)
         else:
             self.text_dataset = None
         self.embedding_model_name = embedding_model_name
-        self.embedding: np.ndarray = get_embedding(text_dataset_name, embedding_model_name, embedding_path, type_="corpus", download=True)
+        self.embedding: np.ndarray = get_embedding(text_dataset_name, embedding_model_name, embedding_path, type_=type_, download=True)

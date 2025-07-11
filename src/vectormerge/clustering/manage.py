@@ -81,7 +81,7 @@ class ClusterManager:
         path.mkdir(parents=True, exist_ok=True)
         return path
 
-    def fit(self, embeddings: Optional[np.ndarray] = None, save_path: Optional[Union[str, Path]] = None, save_embeddings: bool = True) -> ClusteringResult:
+    def fit(self, embeddings: Optional[np.ndarray] = None, save_path: Optional[Union[str, Path]] = None, save_embeddings: bool = True, reference_indices: Optional[np.ndarray] = None) -> ClusteringResult:
         if not self.force:
             try:
                 return self.load()
@@ -95,8 +95,9 @@ class ClusterManager:
             else:
                 embeddings = loaded_embeddings
 
-        reference = get_reference(self.reference_path, self.reference_key)
-        reference_indices = reference["d0_index"]
+        if reference_indices is None:
+            reference = get_reference(self.reference_path, self.reference_key)
+            reference_indices = reference["d0_index"]
 
         result = self.strategy.fit(embeddings, reference_indices)
         self.last_result = result

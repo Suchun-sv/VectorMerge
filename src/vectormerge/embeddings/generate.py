@@ -161,7 +161,7 @@ def _get_single_embedding(model_name: str, dataset_name: str, embedding_path: st
     else:
         raise ValueError(f"Invalid type: {type_}. Must be 'corpus' or 'query'.")
     
-    if download:
+    if download and not Path(embedding_path / Path(cache_key)).exists():
         download_embedding(cache_key, Path(embedding_path))
     
     return np.load(embedding_path / Path(cache_key))

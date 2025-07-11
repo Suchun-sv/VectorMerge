@@ -85,7 +85,7 @@ class LA2MStrategy(MappingStrategy):
         
         # Step 1: Cluster reference points using ClusterManager
         logger.info("Step 1: Clustering reference points...")
-        clustering_results = self.cluster_manager.fit()
+        clustering_results = self.cluster_manager.fit(embeddings=source_embeddings, save_path=self.cluster_manager.final_save_path, reference_indices=reference_indices)
         
         # Step 2: Learn local mappings for each cluster
         logger.info("Step 2: Learning local mappings for each cluster...")
@@ -213,8 +213,9 @@ class LA2MStrategy(MappingStrategy):
         
         logger.info(f"Transforming {len(embeddings)} embeddings using LA2M strategy")
         
-        # Use ClusterManager to predict cluster assignments
-        cluster_result = self.cluster_manager.fit()
+        cluster_result = self.cluster_manager.last_result
+        if cluster_result is None:
+            raise ValueError("Cluster result is not found, please fit the clustering first or load the clustering result from disk")
         cluster_assignments = self.cluster_manager.predict(cluster_result, embeddings, target_indices)
         
         target_dimension = self.metadata['target_dimension']
