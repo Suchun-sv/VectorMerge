@@ -43,6 +43,7 @@ def generate_embeddings(
     embedding_path: Path = typer.Option(cli_defaults.embedding_path, "--embedding-path", help="Path to save embeddings"),
     embedding_cache_path: Path = typer.Option(cli_defaults.embedding_cache_path, "--embedding-cache-path", help="Path to cache directory"),
     type_: Optional[str] = typer.Option(None, "--type", help="Type of embeddings to generate, (corpus, query)"),
+    upload: bool = typer.Option(True, "--upload", help="Upload embeddings to Hugging Face"),
     force: bool = typer.Option(False, "--force", help="Force regeneration of existing embeddings"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
     verbose: bool = typer.Option(cli_defaults.verbose, "--verbose", "-v", help="Verbose output"),
@@ -119,6 +120,7 @@ def generate_embeddings(
                             type_=type_,
                             force=force,
                             embedding_path=str(embedding_path),
+                            upload=upload,
                         )
                         rprint(f"[green]✓[/green] Generated: {m} on {d}")
                     except Exception as e:
