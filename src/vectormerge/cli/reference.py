@@ -14,12 +14,12 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.text import Text
 from click import Context
 
-from .base import cli_defaults, console, set_seed, SUPPORTED_DATASETS, handle_extra_args
+from .base import cli_defaults, console, set_seed, SUPPORTED_DATASETS
 from .utils import (
-    select_dataset_interactively, validate_model_and_dataset,
-    display_error_and_exit, display_success, select_reference_strategy_interactively
+    select_dataset_interactively, handle_extra_args,
+    display_error_and_exit, select_reference_strategy_interactively
 )
-from ..reference import RandomSplit, LA2MSplit
+from vectormerge.reference import RandomSplit, LA2MSplit
 
 # Initialize reference command group
 reference_app = typer.Typer(help="Create and manage reference datasets")

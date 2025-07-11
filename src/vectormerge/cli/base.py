@@ -19,49 +19,24 @@ from rich.text import Text
 from rich import print as rprint
 from click import Context
 
-from .config_loader import ConfigLoader, VectorMergeConfig
-from ..clustering import SUPPORTED_CLUSTERING_METHODS
-from ..dataset import SUPPORTED_DATASETS, load_dataset, Dataset
-from ..embeddings import SUPPORTED_MODELS, get_embedding
-from ..mapping import SUPPORTED_MAPPING_METHODS
-from ..reference import get_reference, SUPPORTED_REFERENCE_STRATEGIES
-from ..mapping import VectorSpaceMapper, MappingConfig
+from vectormerge.config import ConfigLoader, VectorMergeConfig
+from vectormerge.clustering import SUPPORTED_CLUSTERING_METHODS
+from vectormerge.dataset import SUPPORTED_DATASETS, load_dataset, Dataset
+from vectormerge.embeddings import SUPPORTED_MODELS, get_embedding
+from vectormerge.mapping import SUPPORTED_MAPPING_METHODS
+from vectormerge.reference import get_reference, SUPPORTED_REFERENCE_STRATEGIES
+from vectormerge.mapping import VectorSpaceMapper, MappingConfig
 from loguru import logger
 
 # Initialize rich console
 console = Console()
 
-def assemble_args_list(args: List[str]) -> List[str]:
-    """Assemble a list of arguments from a list of strings."""
-    new_args = []
-    for index, arg in enumerate(args):
-        if arg.startswith("--") and "=" in arg:
-            new_args.append(arg)
-        elif arg.startswith("--") and index+1 < len(args) and not args[index + 1].startswith("--"):
-            new_args.append(f"{arg}={args[index + 1]}")
-    return new_args
 
-def parse_dynamic_config(ctx: Context) -> dict[str, Any]:
-    extra = ctx.args  # All unknown parameters are here
-    dynamic: dict[str, Any] = {}
-    for arg in assemble_args_list(extra):
-        if arg.startswith("--") and "=" in arg:
-            key_path, val = arg.lstrip("-").split("=", 1)
-            if val.isdigit():
-                val = int(val)
-            elif val.replace(".", "").isdigit():
-                val = float(val)
-            ptr = dynamic
-            parts = key_path.split(".")
-            for p in parts[:-1]:
-                ptr = ptr.setdefault(p, {})
-            ptr[parts[-1]] = val
-    return dynamic
+
 
 # Load CLI defaults
 def load_cli_defaults() -> Dict[str, Any]:
     """Load CLI default configuration."""
-    from .config_loader import ConfigLoader
     config_loader = ConfigLoader().load_config()
     return config_loader.config.to_dict()
 
@@ -91,14 +66,6 @@ def set_seed(seed: int = 42):
     if not globals().get('_seed_logged', False):
         rprint(f"[dim]🎲 Random seed set to {seed} for reproducibility[/dim]")
         globals()['_seed_logged'] = True
-    
-def handle_extra_args(ctx: Context) -> VectorMergeConfig:
-    """Handle extra arguments."""
-    extra_dict = parse_dynamic_config(ctx)
-    config_loader = ConfigLoader().load_config()
-    if extra_dict:
-        config_loader.update_config(extra_dict)
-    return config_loader.config
 
 def set_wandb(wandb_entity: Optional[str], wandb_project: Optional[str], config_dict: Optional[Dict[str, Any]] = None):
     """Set up Weights and Biases for logging."""

@@ -35,7 +35,7 @@ from .base import (
     ClusterData,
 )
 
-from .manager import ClusterManager, load_cluster_result, load_cluster_config
+from .manage import ClusterManager
 # from .manager import SUPPORTED_CLUSTERING_METHODS
 from .strategies import SUPPORTED_CLUSTERING_METHODS
 
@@ -66,8 +66,6 @@ __all__ = [
     "ClusterManager",
     "ClusterData",
     "SUPPORTED_CLUSTERING_METHODS",
-    "load_cluster_result",
-    "load_cluster_config",
     
     # Clustering strategies
     "KMeansClusteringStrategy",

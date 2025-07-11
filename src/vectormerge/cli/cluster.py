@@ -9,27 +9,30 @@ from pathlib import Path
 from typing import Optional, List
 import typer
 import numpy as np
+from click import Context
+
 from rich import print as rprint
 from rich.table import Table
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.text import Text
 
-from .base import cli_defaults, console, set_seed
-from .utils import (
-    select_dataset_interactively, validate_model_and_dataset,
+from vectormerge.cli.base import cli_defaults, console, set_seed
+from vectormerge.cli.utils import (
+    select_dataset_interactively,
     display_error_and_exit, display_success,
-    select_model_interactively
+    select_model_interactively, handle_extra_args
 )
-from ..clustering import ClusterManager, ClusteringConfig
-from ..embeddings import get_embedding
-from ..clustering import load_cluster_result, load_cluster_config
+from vectormerge.clustering import ClusterManager, ClusteringConfig
+from vectormerge.embeddings import get_embedding
+
 from .base import SUPPORTED_DATASETS, SUPPORTED_CLUSTERING_METHODS, SUPPORTED_MODELS
+from dataclasses import replace
 
 # Initialize create-cluster command group
 create_cluster_app = typer.Typer(help="Create and manage clustering operations")
 
-def _handle_interactive_clustering_input(dataset: str, model: str, cluster_method: str, num_clusters: int):
+def _handle_interactive_clustering_input(dataset: str, model: str, cluster_method: str):
     """Handle interactive input for clustering parameters."""
     
     # Interactive dataset selection
@@ -63,15 +66,11 @@ def _handle_interactive_clustering_input(dataset: str, model: str, cluster_metho
             except typer.Abort:
                 raise typer.Exit(code=1)
     
-    # Interactive number of clusters input
-    if num_clusters == 50:  # default value
-        num_clusters = typer.prompt("Number of clusters", default=50, type=int)
-    
-    return dataset, model, cluster_method, num_clusters
+    return dataset, model, cluster_method
 
-@create_cluster_app.callback(invoke_without_command=True)
+@create_cluster_app.callback(invoke_without_command=True, context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
 def create_cluster(
-    ctx: typer.Context,
+    ctx: Context,
     dataset: str = typer.Option(None, "--dataset", "-d", help="Dataset name, the supported datasets are: " + ", ".join(SUPPORTED_DATASETS)),
     model: str = typer.Option(None, "--model", "-m", help="Embedding model to use, the supported models are: " + ", ".join(SUPPORTED_MODELS)),
     reference_key: str = typer.Option(None, "--reference-key", "-rk", help="Reference key (use `vectormerge create-reference --check` to inspect)"),
@@ -79,11 +78,7 @@ def create_cluster(
     cluster_method: str = typer.Option("kmeans", "--cluster-method", help="Clustering method, the supported methods are: " + ", ".join(SUPPORTED_CLUSTERING_METHODS)),
     cluster_path: str = typer.Option(cli_defaults['cluster_path'], "--cluster-path", help="Path to save cluster results"),
     embedding_path: str = typer.Option(cli_defaults['embedding_path'], "--embedding-path", help="Path to embeddings"),
-    num_clusters: int = typer.Option(50, "--num-clusters", help="Number of clusters"),
-    min_cluster_size: int = typer.Option(5, "--min-cluster-size", help="Minimum cluster size"),
     compute_metrics: bool = typer.Option(True, "--compute-metrics", help="Compute quality metrics"),
-    save_visualization: bool = typer.Option(False, "--save-visualization", help="Save cluster visualization"),
-    visualization_method: str = typer.Option("tsne", "--visualization-method", help="Visualization method (tsne, pca, umap)"),
     force: bool = typer.Option(False, "--force", help="Force re-clustering"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
     verbose: bool = typer.Option(cli_defaults['verbose'], "--verbose", "-v", help="Verbose output"),
@@ -95,17 +90,26 @@ def create_cluster(
     - distribution: Show cluster size distribution
     """
     
-    # If a sub-command is being invoked, don't run the main clustering logic
-    if ctx.invoked_subcommand is not None:
-        return
-    
     # Set random seed
     set_seed()
-    
+
     # Interactive mode
     if interactive:
-        dataset, model, cluster_method, num_clusters = _handle_interactive_clustering_input(dataset, model, cluster_method, num_clusters)
-        
+        dataset, model, cluster_method = _handle_interactive_clustering_input(dataset, model, cluster_method)
+
+    config = handle_extra_args(ctx)
+
+    config = replace(config,
+        verbose=verbose,
+        cluster_path=cluster_path,
+        embedding_path=embedding_path,
+        reference_path=reference_path,
+        clustering_config=replace(config.clustering_config,
+            clustering_method=cluster_method,
+            compute_metrics=compute_metrics,
+        )
+    )
+    
     # Validate inputs
     if not dataset:
         display_error_and_exit("Please specify dataset name (or use --interactive)")
@@ -114,12 +118,6 @@ def create_cluster(
         display_error_and_exit(f"Dataset '{dataset}' not supported. Use 'vectormerge list-datasets' to see available datasets.")
 
     # Create cluster manager
-    strategy_config = ClusteringConfig(
-        num_clusters=num_clusters,
-        min_cluster_size=min_cluster_size,
-        compute_metrics=compute_metrics,
-    )
-
     cluster_manager = ClusterManager(
         dataset_name=dataset,
         model=model,
@@ -128,7 +126,7 @@ def create_cluster(
         cluster_path=cluster_path,
         embedding_path=embedding_path,
         strategy_name=cluster_method,
-        strategy_config=strategy_config,
+        strategy_config=config.clustering_config,
         force=force,
         verbose=verbose,
         auto_save_results=True
@@ -136,64 +134,14 @@ def create_cluster(
     
     rprint(f"[blue]🧮 Creating clusters for dataset: {dataset}[/blue]")
     rprint(f"[blue]Method:[/blue] {cluster_method}")
-    rprint(f"[blue]Number of clusters:[/blue] {num_clusters}")
-    
-    with Progress(
-        SpinnerColumn(),
-        TextColumn("[progress.description]{task.description}"),
-        console=console,
-    ) as progress:
-        task = progress.add_task("Clustering...", total=None)
-        
-        try:
-            # Fit cluster manager
-            progress.update(task, description="Fitting cluster manager...")
-            clustering_result = cluster_manager.fit()
-            
-            # Save visualization if requested
-            if save_visualization:
-                progress.update(task, description="Creating visualization...")
-                try:
-                    from ..clustering.utils import visualize_clusters
-                    if cluster_manager.final_save_path is None:
-                        raise ValueError("No save path specified. Clustering result not saved.")
-                    
-                    if not cluster_manager.final_save_path.parent.exists():
-                        cluster_manager.final_save_path.parent.mkdir(parents=True, exist_ok=True)
-                        
-                    viz_path = cluster_manager.final_save_path.with_suffix(".png")
-                    
-                    embeddings = get_embedding(model, dataset, str(embedding_path), type_="corpus")
-                    if embeddings is None:
-                        raise ValueError(f"Could not load embeddings for visualization")
 
-                    visualize_clusters(embeddings, clustering_result, 
-                                     method=visualization_method, save_path=viz_path)
-                    rprint(f"[green]✓[/green] Saved visualization: {viz_path}")
-                except Exception as e:
-                    rprint(f"[yellow]Warning: Could not create visualization: {e}[/yellow]")
-            
-            progress.update(task, description="Clustering completed!")
-            
-        except Exception as e:
-            rprint(f"[red]Error creating clusters:[/red] {e}")
-            import traceback
-            if verbose:
-                rprint(f"[red]Traceback:[/red] {traceback.format_exc()}")
-            raise typer.Exit(code=1)
-    
-    # Display results
-    if cluster_manager.final_save_path is not None:
-        _show_clustering_results(dataset, cluster_method, num_clusters, cluster_manager.final_save_path, clustering_result, cluster_manager)
-    
-    if verbose:
-        # Load embeddings for analysis
-        embeddings = get_embedding(model, dataset, str(embedding_path), type_="corpus")
-        if embeddings is not None:
-            analysis = cluster_manager.analyze_cluster_quality(embeddings, clustering_result)
-            _show_cluster_analysis(clustering_result, analysis, cluster_manager)
-    
-    display_success("Clustering completed successfully!")
+    loaded_embeddings = get_embedding(dataset, model, embedding_path)
+    if isinstance(loaded_embeddings, tuple):
+        embeddings = loaded_embeddings[0]
+    else:
+        embeddings = loaded_embeddings
+
+    clustering_result = cluster_manager.fit()
 
 
 def _show_clustering_results(dataset: str, method: str, num_clusters: int, output_path: Path, 

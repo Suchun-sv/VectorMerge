@@ -3,14 +3,14 @@ from typing import Any
 from click import Context
 import wandb
 
-from vectormerge.cli import config_loader
-from vectormerge.cli.config_loader import ConfigLoader
-from .base import SUPPORTED_DATASETS, SUPPORTED_MODELS, SUPPORTED_MAPPING_METHODS, set_wandb, handle_extra_args
-from ..mapping.manager import VectorSpaceMapper
-from ..dataset import load_dataset
-from ..embeddings import get_embedding
-from ..reference import get_reference
-from ..evaluation import Evaluator
+from vectormerge.cli.base import SUPPORTED_DATASETS, SUPPORTED_MODELS, SUPPORTED_MAPPING_METHODS, set_wandb
+from vectormerge.cli.utils import handle_extra_args
+
+from vectormerge.mapping import VectorSpaceMapper
+from vectormerge.dataset import load_dataset
+from vectormerge.embeddings import get_embedding
+from vectormerge.reference import get_reference
+from vectormerge.evaluation import Evaluator
 
 evaluate_app = typer.Typer(
     name="evaluate",

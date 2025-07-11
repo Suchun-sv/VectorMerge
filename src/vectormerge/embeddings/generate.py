@@ -1,4 +1,4 @@
-from typing import Dict, Tuple, Optional, List
+from typing import Dict, Tuple, Optional, Union
 import fasttext
 import os
 import logging
@@ -162,7 +162,7 @@ def _get_single_embedding(model_name: str, dataset_name: str, embedding_path: st
     
     return np.load(embedding_path / Path(cache_key))
 
-def get_embedding(dataset_name: str, model_name: str, embedding_path: str, target_model_name: Optional[str] = None, type_: str = "corpus", align: bool = True) -> Tuple[np.ndarray, Optional[np.ndarray]]:
+def get_embedding(dataset_name: str, model_name: str, embedding_path: str, target_model_name: Optional[str] = None, type_: str = "corpus", align: bool = True) -> Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]:
     """
     Get embeddings from a model and dataset.
     """

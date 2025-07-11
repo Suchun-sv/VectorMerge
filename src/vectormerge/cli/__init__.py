@@ -22,7 +22,7 @@ from .cluster import create_cluster_app
 # Initialize main CLI application
 app = typer.Typer(
     name="vectormerge",
-    help="VectorMerge CLI - Advanced embedding generation and mapping tools",
+    help="VectorMerge CLI - Beyond LA2M, advanced embedding generation and mapping suite",
     add_completion=False,
     rich_markup_mode="rich",
     no_args_is_help=True,

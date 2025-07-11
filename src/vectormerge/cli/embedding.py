@@ -16,12 +16,12 @@ from rich.text import Text
 from rich.pretty import Pretty
 from click import Context
 
-from .base import cli_defaults, console, set_seed, set_log_level, SUPPORTED_MODELS, SUPPORTED_DATASETS, handle_extra_args
+from .base import cli_defaults, console, set_seed, set_log_level, SUPPORTED_MODELS, SUPPORTED_DATASETS
 from .utils import (
     select_model_interactively, select_dataset_interactively,
     validate_model_and_dataset, parse_embedding_filename,
     get_directory_size, format_size, confirm_action,
-    display_success, display_error_and_exit
+    display_error_and_exit, handle_extra_args
 )
 
 # Initialize embedding command group

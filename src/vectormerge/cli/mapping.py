@@ -13,18 +13,19 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.panel import Panel
 from rich.table import Table
 import json
-from ..embeddings import SUPPORTED_MODELS, get_embedding
-from ..dataset import SUPPORTED_DATASETS
-from ..reference import get_reference
-from ..mapping import VectorSpaceMapper
-from ..mapping.base import MappingConfig
+
+from vectormerge.embeddings import SUPPORTED_MODELS, get_embedding
+from vectormerge.dataset import SUPPORTED_DATASETS
+from vectormerge.reference import get_reference
+from vectormerge.mapping import VectorSpaceMapper
+from vectormerge.mapping.base import MappingConfig
 
 from .base import cli_defaults, set_seed, console
 from .utils import (
     select_model_interactively, select_dataset_interactively,
     validate_model_and_dataset, display_error_and_exit
 )
-from .config_loader import VectorMergeConfig
+from vectormerge.config import VectorMergeConfig
 
 # Initialize mapping command group
 mapping_app = typer.Typer(help="Create and manage embedding mappings")

@@ -7,6 +7,7 @@ clustering strategies and configurations.
 
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional, List, Tuple
+import joblib
 from dataclasses import dataclass, field, asdict
 from dacite import from_dict
 from pathlib import Path
@@ -140,7 +141,7 @@ class ClusteringConfig:
     """Configuration for clustering operations."""
     
     # Basic clustering parameters
-    clustering_method: str = "kmeans"  # "kmeans", "la2m-cluster"
+    clustering_method: str = "la2m-cluster"  # "kmeans", "la2m-cluster"
 
     # General parameters
     device: str = "auto"
@@ -262,6 +263,27 @@ class ClusteringResult:
             self.cluster_centers = self.get_cluster_centers()
         
         return success
+    
+    def save(self, path: Path, save_embeddings: bool = False) -> None:
+        """Save the clustering result to a file."""
+        save_path = Path(path)
+        save_path.mkdir(parents=True, exist_ok=True)
+        cluster_data_list = self.cluster_data_list
+        if not save_embeddings:
+            for index, _ in enumerate(cluster_data_list):
+                cluster_data_list[index].reference_embeddings = None
+                cluster_data_list[index].linked_target_embeddings = None
+                cluster_data_list[index].center_embedding = None
+        self.cluster_data_list = cluster_data_list
+        joblib.dump(self, save_path / "cluster.pkl")
+        logger.info(f"Saved clustering result to {save_path / 'cluster.pkl'}")
+    
+    @classmethod
+    def load(cls, path: Path) -> 'ClusteringResult':
+        """Load the clustering result from a file."""
+        load_path = Path(path)
+        data = joblib.load(load_path / "cluster.pkl")
+        return data
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert result to dictionary for serialization."""

@@ -6,10 +6,16 @@ from loguru import logger
 def get_reference(reference_path: str, reference_key: str) -> dict:
     """
     Load the reference from the reference_path, the reference is a dictionary with keys "d0_index", "d1_index", and "d2_index"
+
+    Args:
+        reference_path: the path to the reference
+        reference_key: the key of the reference
+
+    Returns:
+        reference: a dictionary with keys "d0_index", "d1_index", and "d2_index"
     """
     if not reference_key.endswith(".npz"):
         reference_key = f"{reference_key}.npz"
-    # Test if the reference_key is exists in the reference_path
     if not (Path(reference_path) / reference_key).exists():
         raise FileNotFoundError(f"Reference key {reference_key} not found in {reference_path}")
     

@@ -9,10 +9,12 @@ import os
 import yaml
 from pathlib import Path
 from typing import Dict, Any, Optional, Union
+
 from dataclasses import dataclass, field
-from ..mapping.base import MappingConfig
-from ..clustering.base import ClusteringConfig
-from ..embeddings.base import EmbeddingModelConfig
+from vectormerge.mapping import MappingConfig
+from vectormerge.clustering import ClusteringConfig
+from vectormerge.embeddings import EmbeddingModelConfig
+
 from ruamel.yaml import YAML
 from dataclasses import asdict
 from dacite import from_dict
