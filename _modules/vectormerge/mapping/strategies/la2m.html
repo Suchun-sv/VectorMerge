@@ -424,8 +424,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">vectormerge.clustering</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClusterData</span><span class="p">,</span> <span class="n">ClusteringConfig</span><span class="p">,</span> <span class="n">ClusterManager</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..base</span><span class="w"> </span><span class="kn">import</span> <span class="n">MappingStrategy</span><span class="p">,</span> <span class="n">MappingConfig</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">...clustering</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClusterData</span><span class="p">,</span> <span class="n">ClusteringConfig</span><span class="p">,</span> <span class="n">ClusterManager</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.procrustes</span><span class="w"> </span><span class="kn">import</span> <span class="n">procrustes_mapping_torch</span>
 
 <div class="viewcode-block" id="LA2MStrategy">
@@ -497,7 +497,7 @@
         
         <span class="c1"># Step 1: Cluster reference points using ClusterManager</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Step 1: Clustering reference points...&quot;</span><span class="p">)</span>
-        <span class="n">clustering_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_manager</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+        <span class="n">clustering_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_manager</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">embeddings</span><span class="o">=</span><span class="n">source_embeddings</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cluster_manager</span><span class="o">.</span><span class="n">final_save_path</span><span class="p">,</span> <span class="n">reference_indices</span><span class="o">=</span><span class="n">reference_indices</span><span class="p">)</span>
         
         <span class="c1"># Step 2: Learn local mappings for each cluster</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Step 2: Learning local mappings for each cluster...&quot;</span><span class="p">)</span>
@@ -625,8 +625,9 @@
         
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Transforming </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">)</span><span class="si">}</span><span class="s2"> embeddings using LA2M strategy&quot;</span><span class="p">)</span>
         
-        <span class="c1"># Use ClusterManager to predict cluster assignments</span>
-        <span class="n">cluster_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_manager</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+        <span class="n">cluster_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_manager</span><span class="o">.</span><span class="n">last_result</span>
+        <span class="k">if</span> <span class="n">cluster_result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cluster result is not found, please fit the clustering first or load the clustering result from disk&quot;</span><span class="p">)</span>
         <span class="n">cluster_assignments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_manager</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">cluster_result</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">target_indices</span><span class="p">)</span>
         
         <span class="n">target_dimension</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;target_dimension&#39;</span><span class="p">]</span>

@@ -419,6 +419,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/embeddings.html#vectormerge.embeddings.align_dimension">align_dimension() (in module vectormerge.embeddings)</a>
+</li>
       <li><a href="api/clustering.html#vectormerge.clustering.ClusteringStrategy.assign_to_clusters">assign_to_clusters() (vectormerge.clustering.ClusteringStrategy method)</a>
 </li>
       <li><a href="api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.auto_detect_source">auto_detect_source() (vectormerge.dataset.UnifiedDatasetLoader method)</a>
@@ -593,10 +595,10 @@
         <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.fit">(vectormerge.mapping.VectorSpaceMapper method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.fit_and_transform">fit_and_transform() (vectormerge.mapping.VectorSpaceMapper method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/clustering.html#vectormerge.clustering.KMeansClusteringStrategy.fit_predict">fit_predict() (vectormerge.clustering.KMeansClusteringStrategy method)</a>
 </li>
       <li><a href="api/mapping.html#vectormerge.mapping.MappingStrategy.fit_transform">fit_transform() (vectormerge.mapping.MappingStrategy method)</a>
@@ -616,6 +618,8 @@
       <li><a href="api/reference.html#vectormerge.reference.LA2MSplit.from_qrels">from_qrels() (vectormerge.reference.LA2MSplit class method)</a>
 </li>
       <li><a href="api/clustering.html#vectormerge.clustering.ClusterManager.from_saved">from_saved() (vectormerge.clustering.ClusterManager class method)</a>
+</li>
+      <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.from_update_dict">from_update_dict() (vectormerge.mapping.MappingConfig class method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -653,10 +657,10 @@
 </li>
       <li><a href="api/embeddings.html#vectormerge.embeddings.get_embedding">get_embedding() (in module vectormerge.embeddings)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/embeddings.html#vectormerge.embeddings.get_embedding_generator">get_embedding_generator() (in module vectormerge.embeddings)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/dataset.html#vectormerge.dataset.Dataset.get_internal_index">get_internal_index() (vectormerge.dataset.Dataset method)</a>
 </li>
       <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.get_mapping_result">get_mapping_result() (vectormerge.mapping.VectorSpaceMapper method)</a>
@@ -673,6 +677,8 @@
         <li><a href="api/evaluation.html#vectormerge.evaluation.Evaluator.get_retrieval_list">(vectormerge.evaluation.Evaluator method)</a>
 </li>
       </ul></li>
+      <li><a href="api/reference.html#vectormerge.reference.get_split_config">get_split_config() (in module vectormerge.reference)</a>
+</li>
       <li><a href="api/dataset.html#vectormerge.dataset.Dataset.get_stats">get_stats() (vectormerge.dataset.Dataset method)</a>
 
       <ul>
@@ -739,7 +745,11 @@
       </ul></li>
       <li><a href="api/clustering.html#vectormerge.clustering.LA2MClusteringStrategy">LA2MClusteringStrategy (class in vectormerge.clustering)</a>
 </li>
+      <li><a href="api/mapping.html#vectormerge.mapping.LA2MMapper">LA2MMapper (class in vectormerge.mapping)</a>
+</li>
       <li><a href="api/reference.html#vectormerge.reference.LA2MSplit">LA2MSplit (class in vectormerge.reference)</a>
+</li>
+      <li><a href="api/reference.html#vectormerge.reference.LA2MSplitConfig">LA2MSplitConfig (class in vectormerge.reference)</a>
 </li>
       <li><a href="api/mapping.html#vectormerge.mapping.LA2MStrategy">LA2MStrategy (class in vectormerge.mapping)</a>
 </li>
@@ -944,16 +954,30 @@
 </li>
       <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.ref_size">ref_size (vectormerge.clustering.ClusterData property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.reference_cluster_sizes">reference_cluster_sizes (vectormerge.clustering.ClusteringResult property)</a>
 </li>
       <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.reference_embeddings">reference_embeddings (vectormerge.clustering.ClusterData attribute)</a>
 </li>
       <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.reference_indices">reference_indices (vectormerge.clustering.ClusterData attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/reference.html#vectormerge.reference.SplitConfig.reference_key">reference_key (vectormerge.reference.SplitConfig attribute)</a>
+</li>
+      <li><a href="api/reference.html#vectormerge.reference.SplitConfig.reference_method">reference_method (vectormerge.reference.SplitConfig attribute)</a>
+</li>
+      <li><a href="api/reference.html#vectormerge.reference.SplitConfig.reference_path">reference_path (vectormerge.reference.SplitConfig attribute)</a>
+</li>
+      <li><a href="api/reference.html#vectormerge.reference.SplitConfig.reference_ratio">reference_ratio (vectormerge.reference.SplitConfig attribute)</a>
+</li>
       <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.reload_reference_embeddings">reload_reference_embeddings() (vectormerge.clustering.ClusteringResult method)</a>
 </li>
+      <li><a href="api/reference.html#vectormerge.reference.LA2MSplitConfig.remove_dup_answer">remove_dup_answer (vectormerge.reference.LA2MSplitConfig attribute)</a>
+
+      <ul>
+        <li><a href="api/reference.html#vectormerge.reference.SplitConfig.remove_dup_answer">(vectormerge.reference.SplitConfig attribute)</a>
+</li>
+      </ul></li>
       <li><a href="api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.remove_loader">remove_loader() (vectormerge.dataset.UnifiedDatasetLoader method)</a>
 </li>
   </ul></td>
@@ -962,6 +986,8 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/reference.html#vectormerge.reference.SplitConfig.save">save (vectormerge.reference.SplitConfig attribute)</a>
+</li>
       <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.save">save() (vectormerge.clustering.ClusteringResult method)</a>
 
       <ul>
@@ -982,10 +1008,10 @@
         <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.save">(vectormerge.mapping.VectorSpaceMapper method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/clustering.html#vectormerge.clustering.save_cluster_data">save_cluster_data() (in module vectormerge.clustering)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.save_embedding">save_embedding (vectormerge.mapping.MappingConfig attribute)</a>
 </li>
       <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.save_embedding_to_disk">save_embedding_to_disk() (vectormerge.mapping.VectorSpaceMapper method)</a>
@@ -996,9 +1022,19 @@
 </li>
       <li><a href="api/mapping.html#vectormerge.mapping.LA2MStrategy.save_pca_instance">save_pca_instance() (vectormerge.mapping.LA2MStrategy method)</a>
 </li>
+      <li><a href="api/reference.html#vectormerge.reference.LA2MSplitConfig.select_top_1">select_top_1 (vectormerge.reference.LA2MSplitConfig attribute)</a>
+
+      <ul>
+        <li><a href="api/reference.html#vectormerge.reference.SplitConfig.select_top_1">(vectormerge.reference.SplitConfig attribute)</a>
+</li>
+      </ul></li>
       <li><a href="api/dataset.html#vectormerge.dataset.Dataset.source">source (vectormerge.dataset.Dataset attribute)</a>
 </li>
       <li><a href="api/dataset.html#vectormerge.dataset.Dataset.split">split (vectormerge.dataset.Dataset attribute)</a>
+</li>
+      <li><a href="api/reference.html#vectormerge.reference.split_dataset">split_dataset() (in module vectormerge.reference)</a>
+</li>
+      <li><a href="api/reference.html#vectormerge.reference.SplitConfig">SplitConfig (class in vectormerge.reference)</a>
 </li>
       <li><a href="api/dataset.html#vectormerge.dataset.BEIRDatasetLoader.SUPPORTED_DATASETS">SUPPORTED_DATASETS (vectormerge.dataset.BEIRDatasetLoader attribute)</a>
 </li>
@@ -1020,6 +1056,8 @@
         <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingModelConfig.to_dict">(vectormerge.embeddings.EmbeddingModelConfig method)</a>
 </li>
         <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.to_dict">(vectormerge.mapping.MappingConfig method)</a>
+</li>
+        <li><a href="api/reference.html#vectormerge.reference.SplitConfig.to_dict">(vectormerge.reference.SplitConfig method)</a>
 </li>
       </ul></li>
       <li><a href="api/clustering.html#vectormerge.clustering.ClusteringConfig.to_string">to_string() (vectormerge.clustering.ClusteringConfig method)</a>
@@ -1055,6 +1093,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader">UnifiedDatasetLoader (class in vectormerge.dataset)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/reference.html#vectormerge.reference.SplitConfig.update">update() (vectormerge.reference.SplitConfig method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1127,6 +1169,8 @@
 
       <ul>
         <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.verbose">(vectormerge.mapping.MappingConfig attribute)</a>
+</li>
+        <li><a href="api/reference.html#vectormerge.reference.SplitConfig.verbose">(vectormerge.reference.SplitConfig attribute)</a>
 </li>
       </ul></li>
       <li><a href="api/clustering.html#vectormerge.clustering.visualize_clusters">visualize_clusters() (in module vectormerge.clustering)</a>
