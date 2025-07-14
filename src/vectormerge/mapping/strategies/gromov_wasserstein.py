@@ -1,30 +1,51 @@
 """
-Gromov-Wasserstein mapping strategy for VectorMerge.
+Gromov-Wasserstein mapping strategy for VectorMerge using POT library.
 
-This module implements Gromov-Wasserstein alignment for mapping between embedding spaces.
-Based on the approach from Alvarez-Melis and Jaakkola (2018), this method compares
-the internal structure of embedding spaces rather than absolute positions.
+This module implements Gromov-Wasserstein alignment for mapping between embedding spaces
+using the Python Optimal Transport (POT) library for efficient computation with GPU/CPU support.
 """
 
 import numpy as np
-from typing import Optional, Dict, Any, Union, Tuple, cast
+import torch
+try:
+    import ot  # Python Optimal Transport library for high-performance GW computation  # type: ignore
+except ImportError:
+    raise ImportError("POT library is required. Install with: pip install pot")
+
+from typing import Optional, Union
 from pathlib import Path
 from loguru import logger
-import joblib
 import psutil
-from scipy.spatial.distance import cdist
-from scipy.optimize import minimize
-from tqdm import trange
-
 from ..base import MappingStrategy, MappingConfig
 
 
-def estimate_memory_usage(n1: int, n2: int) -> float:
+def get_device() -> torch.device:
+    """Get the best available device (CUDA if available, otherwise CPU).
+    
+    Returns:
+        torch.device: The device to use for computations
+    """
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+        gpu_name = torch.cuda.get_device_name(0)
+        gpu_memory = torch.cuda.get_device_properties(0).total_memory / (1024**3)
+        logger.info(f"Using CUDA device: {gpu_name} with {gpu_memory:.1f}GB memory")
+        
+        # Clear GPU cache
+        torch.cuda.empty_cache()
+        return device
+    else:
+        logger.info("CUDA not available, using CPU")
+        return torch.device("cpu")
+
+
+def estimate_memory_usage(n1: int, n2: int, device: torch.device) -> float:
     """Estimate memory usage for Gromov-Wasserstein computation in GB.
     
     Args:
         n1: Number of samples in source space
         n2: Number of samples in target space
+        device: Device to use for computation
         
     Returns:
         Estimated memory usage in GB
@@ -32,219 +53,87 @@ def estimate_memory_usage(n1: int, n2: int) -> float:
     # Distance matrices: n1*n1 + n2*n2
     # Transport matrix: n1*n2  
     # Cost matrix: n1*n2
-    # Temporary matrices during computation: ~3*n1*n2
-    total_elements = n1*n1 + n2*n2 + 5*n1*n2
-    bytes_per_element = 8  # float64
+    # Temporary matrices during computation: ~10*n1*n2 (conservative estimate)
+    total_elements = n1*n1 + n2*n2 + 12*n1*n2
+    bytes_per_element = 4 if device.type == "cuda" else 8  # float32 for GPU, float64 for CPU
     return total_elements * bytes_per_element / (1024**3)
 
 
-def check_memory_feasibility(n1: int, n2: int, max_memory_gb: Optional[float] = None) -> bool:
+def check_memory_feasibility(n1: int, n2: int, device: torch.device, max_memory_gb: Optional[float] = None) -> bool:
     """Check if computation is feasible given memory constraints.
     
     Args:
         n1: Number of samples in source space
         n2: Number of samples in target space
+        device: Device to use for computation
         max_memory_gb: Maximum memory to use (default: 80% of available)
         
     Returns:
         True if feasible, False otherwise
     """
     if max_memory_gb is None:
-        available_memory = psutil.virtual_memory().available / (1024**3)
-        max_memory_limit = available_memory * 0.8
+        if device.type == "cuda":
+            available_memory = torch.cuda.get_device_properties(0).total_memory / (1024**3)
+            max_memory_limit = available_memory * 0.8
+        else:
+            available_memory = psutil.virtual_memory().available / (1024**3)
+            max_memory_limit = available_memory * 0.8
     else:
         max_memory_limit = max_memory_gb
     
-    required_memory = estimate_memory_usage(n1, n2)
+    required_memory = estimate_memory_usage(n1, n2, device)
+    
+    if device.type == "cuda":
+        logger.info(f"GPU memory check: Required {required_memory:.2f}GB, Available {max_memory_limit:.2f}GB")
+    else:
+        logger.info(f"CPU memory check: Required {required_memory:.2f}GB, Available {max_memory_limit:.2f}GB")
+    
     return required_memory <= max_memory_limit
 
 
-def compute_distance_matrix(embeddings: np.ndarray, metric: str = "euclidean") -> np.ndarray:
-    """Compute pairwise distance matrix for embeddings.
+def suggest_sample_size(n1: int, n2: int, device: torch.device, max_memory_gb: Optional[float] = None) -> int:
+    """Suggest appropriate sample size for memory constraints.
     
     Args:
-        embeddings: Embedding matrix (n_samples, n_features)
-        metric: Distance metric to use
+        n1: Number of samples in source space
+        n2: Number of samples in target space
+        device: Device to use for computation
+        max_memory_gb: Maximum memory to use
         
     Returns:
-        Distance matrix (n_samples, n_samples)
+        Suggested sample size
     """
-    return cdist(embeddings, embeddings, metric=metric)  # type: ignore
-
-
-def gromov_wasserstein_loss(C1: np.ndarray, C2: np.ndarray, T: np.ndarray) -> float:
-    """Compute Gromov-Wasserstein loss using vectorized operations.
+    if max_memory_gb is None:
+        if device.type == "cuda":
+            available_memory = torch.cuda.get_device_properties(0).total_memory / (1024**3)
+            max_memory_limit = available_memory * 0.8
+        else:
+            available_memory = psutil.virtual_memory().available / (1024**3)
+            max_memory_limit = available_memory * 0.8
+    else:
+        max_memory_limit = max_memory_gb
     
-    Args:
-        C1: Distance matrix of source space
-        C2: Distance matrix of target space
-        T: Transport plan
-        
-    Returns:
-        Gromov-Wasserstein loss value
-    """
-    # Vectorized computation: sum_{i,j,k,l} (C1[i,j] - C2[k,l])^2 * T[i,k] * T[j,l]
-    # This can be computed as: tr(C1^T @ T @ C2 @ T^T) - 2*tr(C1^T @ T @ C2^T @ T^T) + tr(C1 @ T @ C1 @ T^T)
+    # Binary search for optimal sample size
+    low, high = 50, min(n1, n2)
+    best_size = 50
     
-    # More efficient approach using einsum
-    loss = np.einsum('ij,kl,ik,jl->', C1**2, np.ones_like(C2), T, T)
-    loss += np.einsum('ij,kl,ik,jl->', np.ones_like(C1), C2**2, T, T)
-    loss -= 2 * np.einsum('ij,kl,ik,jl->', C1, C2, T, T)
+    while low <= high:
+        mid = (low + high) // 2
+        if check_memory_feasibility(mid, mid, device, max_memory_gb):
+            best_size = mid
+            low = mid + 1
+        else:
+            high = mid - 1
     
-    return float(loss)
-
-
-def gromov_wasserstein_gradient(C1: np.ndarray, C2: np.ndarray, T: np.ndarray) -> np.ndarray:
-    """Compute gradient of Gromov-Wasserstein loss with respect to T.
-    
-    Args:
-        C1: Distance matrix of source space
-        C2: Distance matrix of target space
-        T: Transport plan
-        
-    Returns:
-        Gradient matrix
-    """
-    n, m = T.shape
-    gradient = np.zeros((n, m))
-    
-    for i in range(n):
-        for k in range(m):
-            grad_ik = 0.0
-            for j in range(n):
-                for l in range(m):
-                    grad_ik += 2 * (C1[i, j] - C2[k, l]) * T[j, l]
-            gradient[i, k] = grad_ik
-    
-    return gradient
-
-
-def sinkhorn_stabilized(K: np.ndarray, u: np.ndarray, v: np.ndarray, 
-                       reg: float, numItermax: int = 1000, tau: float = 1e3,
-                       stopThr: float = 1e-9) -> Tuple[np.ndarray, np.ndarray]:
-    """
-    Stabilized Sinkhorn algorithm for entropic regularized optimal transport.
-    
-    Args:
-        K: Cost matrix
-        u: Source distribution
-        v: Target distribution
-        reg: Regularization parameter
-        numItermax: Maximum number of iterations
-        tau: Threshold for numerical stability
-        stopThr: Stopping threshold
-        
-    Returns:
-        Tuple of (dual variables u, dual variables v)
-    """
-    n, m = K.shape
-    
-    # Initialize dual variables
-    alpha = np.zeros(n)
-    beta = np.zeros(m)
-    
-    for i in range(numItermax):
-        # Update alpha
-        alpha_prev = alpha.copy()
-        K_alpha = np.exp((beta[None, :] - K) / reg)
-        alpha = reg * np.log(u) - reg * np.log(np.sum(K_alpha, axis=1))
-        
-        # Update beta
-        K_beta = np.exp((alpha[:, None] - K) / reg)
-        beta = reg * np.log(v) - reg * np.log(np.sum(K_beta, axis=0))
-        
-        # Check for numerical stability
-        if np.max(np.abs(alpha)) > tau or np.max(np.abs(beta)) > tau:
-            alpha = alpha - np.max(alpha)
-            beta = beta - np.max(beta)
-        
-        # Check convergence
-        if np.linalg.norm(alpha - alpha_prev) < stopThr:
-            break
-    
-    return alpha, beta
-
-
-def gromov_wasserstein_solver(C1: np.ndarray, C2: np.ndarray, p: np.ndarray, q: np.ndarray,
-                             loss_fun: str = "square_loss", epsilon: float = 0.1,
-                             max_iter: int = 1000, tol: float = 1e-9,
-                             verbose: bool = False, log: bool = False) -> np.ndarray:
-    """
-    Solve Gromov-Wasserstein problem with entropic regularization using vectorized operations.
-    
-    Args:
-        C1: Distance matrix of source space
-        C2: Distance matrix of target space
-        p: Source distribution
-        q: Target distribution
-        loss_fun: Loss function type
-        epsilon: Entropic regularization parameter
-        max_iter: Maximum number of iterations
-        tol: Tolerance for convergence
-        verbose: Whether to print progress
-        log: Whether to log intermediate results
-        
-    Returns:
-        Optimal transport plan
-    """
-    n, m = C1.shape[0], C2.shape[0]
-    
-    # Check memory feasibility
-    if not check_memory_feasibility(n, m):
-        required_memory = estimate_memory_usage(n, m)
-        available_memory = psutil.virtual_memory().available / (1024**3)
-        logger.error(f"Memory insufficient! Required: {required_memory:.2f}GB, Available: {available_memory:.2f}GB")
-        logger.error("Please sample your data to reduce the problem size.")
-        raise MemoryError("Insufficient memory for Gromov-Wasserstein computation")
-    
-    logger.info(f"Starting Gromov-Wasserstein solver with problem size {n}x{m}")
-    
-    # Initialize transport plan
-    T = np.outer(p, q)
-    
-    # Precompute squared distance matrices
-    C1_sq = C1 ** 2
-    C2_sq = C2 ** 2
-    
-    progress_bar = trange(max_iter, desc="GW iterations") if verbose else range(max_iter)
-    
-    for iter_count in progress_bar:
-        T_prev = T.copy()
-        
-        # Vectorized computation of cost matrix
-        # cost_matrix[i,k] = sum_j sum_l (C1_sq[i,j] + C2_sq[k,l] - 2*C1[i,j]*C2[k,l]) * T[j,l]
-        
-        # Efficient matrix operations
-        cost_matrix = np.einsum('ij,jl->il', C1_sq, T)  # C1_sq @ T
-        cost_matrix += np.einsum('ik,kl->il', T, C2_sq)  # T @ C2_sq
-        cost_matrix -= 2 * np.einsum('ij,kl,jl->ik', C1, C2, T)  # 2 * C1 @ (T * C2)
-        
-        # Solve regularized optimal transport problem
-        K = np.exp(-cost_matrix / epsilon)
-        alpha, beta = sinkhorn_stabilized(K, p, q, epsilon)
-        
-        # Update transport plan
-        T = np.diag(np.exp(alpha / epsilon)) @ K @ np.diag(np.exp(beta / epsilon))
-        
-        # Check convergence
-        diff = np.linalg.norm(T - T_prev)
-        if diff < tol:
-            if verbose:
-                logger.info(f"Gromov-Wasserstein converged after {iter_count + 1} iterations")
-            break
-            
-        if verbose and hasattr(progress_bar, 'set_postfix'):
-            cast(Any, progress_bar).set_postfix({'diff': f'{diff:.2e}'})
-    
-    return T
+    return max(50, best_size)  # Minimum 50 samples
 
 
 class GromovWassersteinMappingStrategy(MappingStrategy):
-    """Gromov-Wasserstein mapping strategy.
+    """GPU/CPU compatible Gromov-Wasserstein alignment strategy using POT implementation.
     
-    This strategy uses the Gromov-Wasserstein distance to find correspondences
-    between embedding spaces by comparing their internal structure rather than
-    absolute positions.
+    This strategy uses the Gromov-Wasserstein distance to find correspondences between
+    embedding spaces by comparing their internal structure rather than absolute positions.
+    Uses the POT library for efficient computation with automatic GPU/CPU selection.
     """
     
     def __init__(self, config: MappingConfig):
@@ -254,77 +143,163 @@ class GromovWassersteinMappingStrategy(MappingStrategy):
             config: Mapping configuration containing GW parameters
         """
         super().__init__(config)
-        self.transport_plan: Optional[np.ndarray] = None
-        self.source_embeddings: Optional[np.ndarray] = None
-        self.target_embeddings: Optional[np.ndarray] = None
-        self.source_indices: Optional[np.ndarray] = None
+        
+        # Automatic device selection with logging
+        self.device = get_device()
+        self.dtype = torch.float32 if self.device.type == "cuda" else torch.float64
+        
+        # Initialize state variables
+        self.transport_plan: Optional[torch.Tensor] = None
+        self.source_embeddings: Optional[torch.Tensor] = None
+        self.target_embeddings: Optional[torch.Tensor] = None
+        self.source_indices: Optional[torch.Tensor] = None
+        
+        # Configuration options
+        self.max_reference_points = getattr(config, 'max_reference_points', 1000)
+        self.auto_sample = getattr(config, 'auto_sample', True)
+        self.max_memory_gb = getattr(config, 'max_memory_gb', None)
+        
+        logger.info(f"Using dtype: {self.dtype}")
+        logger.info(f"Max reference points: {self.max_reference_points}")
+        logger.info(f"Auto sampling enabled: {self.auto_sample}")
         
     def _fit(self, source_embeddings: np.ndarray, target_embeddings: np.ndarray,
              reference_indices: np.ndarray, **kwargs) -> None:
         """Fit Gromov-Wasserstein mapping using reference embeddings.
         
         Args:
-            source_embeddings: Source embedding space
-            target_embeddings: Target embedding space
+            source_embeddings: Source embedding space (n_samples, n_features)
+            target_embeddings: Target embedding space (n_samples, n_features)
             reference_indices: Indices of reference points for alignment
             **kwargs: Additional arguments
         """
         logger.info(f"Fitting Gromov-Wasserstein mapping with {len(reference_indices)} reference points")
         
+        # Load and prepare data - convert to tensors and move to device
+        src = torch.from_numpy(source_embeddings).to(self.device, dtype=self.dtype)
+        tgt = torch.from_numpy(target_embeddings).to(self.device, dtype=self.dtype)
+        ref_idx = torch.from_numpy(reference_indices).to(self.device, dtype=torch.long)
+        
         # Extract reference embeddings
-        X_ref = source_embeddings[reference_indices]
-        Y_ref = target_embeddings[reference_indices]
-        
-        # Store for later use in transform
-        self.source_embeddings = source_embeddings
-        self.target_embeddings = target_embeddings
-        self.source_indices = reference_indices
-        
-        # Compute distance matrices
-        logger.info("Computing distance matrices...")
-        C1 = compute_distance_matrix(X_ref)
-        C2 = compute_distance_matrix(Y_ref)
-        
-        # Uniform distributions
+        X_ref = src[ref_idx]
+        Y_ref = tgt[ref_idx]
         n_ref = len(reference_indices)
-        p = np.ones(n_ref) / n_ref
-        q = np.ones(n_ref) / n_ref
         
-        # Solve Gromov-Wasserstein problem
+        # Apply max_reference_points limit
+        if n_ref > self.max_reference_points:
+            logger.warning(f"Reference points ({n_ref}) exceed max limit ({self.max_reference_points})")
+            logger.warning(f"Sampling to {self.max_reference_points} points")
+            
+            sample_indices = torch.randperm(n_ref, device=self.device)[:self.max_reference_points]
+            X_ref = X_ref[sample_indices]
+            Y_ref = Y_ref[sample_indices]
+            ref_idx = ref_idx[sample_indices]
+            n_ref = self.max_reference_points
+        
+        # Check memory feasibility and auto-sample if needed
+        max_memory_gb = kwargs.get('max_memory_gb', self.max_memory_gb)
+        if self.auto_sample and not check_memory_feasibility(n_ref, n_ref, self.device, max_memory_gb):
+            suggested_size = suggest_sample_size(n_ref, n_ref, self.device, max_memory_gb)
+            logger.warning(f"Memory insufficient for {n_ref} reference points!")
+            logger.warning(f"Auto-sampling to {suggested_size} points to fit memory constraints")
+            
+            # Random sampling of reference points
+            sample_indices = torch.randperm(n_ref, device=self.device)[:suggested_size]
+            X_ref = X_ref[sample_indices]
+            Y_ref = Y_ref[sample_indices]
+            ref_idx = ref_idx[sample_indices]
+            n_ref = suggested_size
+            
+            logger.info(f"Using {n_ref} sampled reference points for fitting")
+        elif not check_memory_feasibility(n_ref, n_ref, self.device, max_memory_gb):
+            # Auto-sampling disabled but memory insufficient
+            required_memory = estimate_memory_usage(n_ref, n_ref, self.device)
+            if self.device.type == "cuda":
+                available_memory = torch.cuda.get_device_properties(0).total_memory / (1024**3)
+            else:
+                available_memory = psutil.virtual_memory().available / (1024**3)
+            
+            logger.error(f"Memory insufficient! Required: {required_memory:.2f}GB, Available: {available_memory:.2f}GB")
+            logger.error(f"Consider enabling auto_sample=True or reducing max_reference_points (current: {self.max_reference_points})")
+            raise MemoryError(f"Insufficient memory for {n_ref} reference points. Enable auto_sample or reduce data size.")
+
+        # Convert back to numpy for POT computation
+        X_ref_np = X_ref.cpu().numpy()
+        Y_ref_np = Y_ref.cpu().numpy()
+        
+        logger.info(f"Reference embeddings shape: {X_ref_np.shape}, {Y_ref_np.shape}")
+        
+        # Store full embeddings for later use in transform
+        self.source_embeddings = src
+        self.target_embeddings = tgt
+        self.source_indices = ref_idx
+ 
+        # Set up uniform distributions for source and target
+        p = np.full(n_ref, 1 / n_ref, dtype=np.float64)
+        q = np.full(n_ref, 1 / n_ref, dtype=np.float64)
+ 
+        # Compute distance matrices using POT
+        logger.info("Computing distance matrices...")
+        C1 = ot.dist(X_ref_np, X_ref_np, metric='euclidean')
+        C2 = ot.dist(Y_ref_np, Y_ref_np, metric='euclidean')
+        
+        # Use entropic Gromov-Wasserstein to compute transport plan
         logger.info("Solving Gromov-Wasserstein problem...")
-        self.transport_plan = gromov_wasserstein_solver(
+        eps = getattr(self.config.gromov_wasserstein_config, 'epsilon', 0.1)
+        max_iter = getattr(self.config.gromov_wasserstein_config, 'max_iter', 1000)
+        tol = getattr(self.config.gromov_wasserstein_config, 'tol', 1e-9)
+        verbose = getattr(self.config.gromov_wasserstein_config, 'verbose', False)
+        
+        logger.info(f"GW parameters: epsilon={eps}, max_iter={max_iter}, tol={tol}")
+        
+        T = ot.gromov.entropic_gromov_wasserstein(
             C1, C2, p, q,
-            loss_fun=self.config.gromov_wasserstein_config.loss_fun,
-            epsilon=self.config.gromov_wasserstein_config.epsilon,
-            max_iter=self.config.gromov_wasserstein_config.max_iter,
-            tol=self.config.gromov_wasserstein_config.tol,
-            verbose=self.config.gromov_wasserstein_config.verbose,
-            log=self.config.gromov_wasserstein_config.log
+            loss_fun='square_loss',
+            epsilon=eps,
+            solver='PGD',
+            max_iter=max_iter,
+            tol=tol,
+            verbose=verbose
         )
+ 
+        # Convert transport plan to tensor and move to device
+        self.transport_plan = torch.from_numpy(T).to(self.device, dtype=self.dtype)
         
         # Store metadata
         self.metadata = {
-            'loss_fun': self.config.gromov_wasserstein_config.loss_fun,
-            'epsilon': self.config.gromov_wasserstein_config.epsilon,
-            'max_iter': self.config.gromov_wasserstein_config.max_iter,
-            'tol': self.config.gromov_wasserstein_config.tol,
-            'reference_size': len(reference_indices),
+            'loss_fun': 'square_loss',
+            'epsilon': eps,
+            'max_iter': max_iter,
+            'tol': tol,
+            'original_reference_size': len(reference_indices),
+            'used_reference_size': n_ref,
+            'was_sampled': len(reference_indices) != n_ref,
             'source_dimension': X_ref.shape[1],
             'target_dimension': Y_ref.shape[1],
-            'transport_plan_shape': self.transport_plan.shape
+            'transport_plan_shape': self.transport_plan.shape,
+            'device': str(self.device),
+            'dtype': str(self.dtype),
+            'max_reference_points': self.max_reference_points,
+            'auto_sample': self.auto_sample
         }
         
         logger.info("Gromov-Wasserstein mapping fitting completed")
+        logger.info(f"Transport plan shape: {self.transport_plan.shape}")
+        
+        # Clean up GPU memory if using CUDA
+        if self.device.type == "cuda":
+            torch.cuda.empty_cache()
+            logger.info("GPU memory cache cleared")
     
     def _transform(self, embeddings: np.ndarray, **kwargs) -> np.ndarray:
         """Transform embeddings using fitted Gromov-Wasserstein mapping.
         
         Args:
-            embeddings: Embeddings to transform
+            embeddings: Embeddings to transform (n_samples, n_features)
             **kwargs: Additional arguments
             
         Returns:
-            Transformed embeddings
+            Transformed embeddings (n_samples, target_features)
         """
         if not self.is_fitted:
             raise ValueError("Gromov-Wasserstein mapping must be fitted before transformation")
@@ -335,34 +310,31 @@ class GromovWassersteinMappingStrategy(MappingStrategy):
         if self.source_indices is None or self.source_embeddings is None or self.target_embeddings is None:
             raise ValueError("Reference embeddings not available")
         
-        # For embeddings not in the reference set, we use the transport plan
-        # to find the best matching target embeddings
-        n_embeddings = embeddings.shape[0]
-        n_ref = len(self.source_indices)
+        # Convert input embeddings to tensor and move to device
+        E = torch.from_numpy(embeddings).to(self.device, dtype=self.dtype)
         
         # Get reference embeddings
-        source_ref = self.source_embeddings[self.source_indices]
-        target_ref = self.target_embeddings[self.source_indices]
+        src_ref = self.source_embeddings[self.source_indices]
+        tgt_ref = self.target_embeddings[self.source_indices]
         
-        # Transform each embedding
-        transformed = np.zeros((n_embeddings, target_ref.shape[1]))
+        logger.info(f"Transforming {E.shape[0]} embeddings using transport plan")
         
-        for i in range(n_embeddings):
-            # Find distances from current embedding to reference embeddings
-            distances = cdist([embeddings[i]], source_ref)[0]
-            
-            # Use softmax to get weights based on distances
-            weights = np.exp(-distances / np.mean(distances))
-            weights = weights / np.sum(weights)
-            
-            # Compute barycenter using transport plan
-            barycenter_weights = weights @ self.transport_plan
-            barycenter_weights = barycenter_weights / np.sum(barycenter_weights)
-            
-            # Transform embedding as weighted sum of target references
-            transformed[i] = barycenter_weights @ target_ref
+        # Batch computation: distance + softmax + transform
+        D = torch.cdist(E, src_ref)  # (batch_size, n_ref)
+        sigma = D.mean(dim=1, keepdim=True)  # adaptive temperature
+        W = torch.softmax(-D / sigma, dim=1)  # weights based on distance
+ 
+        # Apply transport plan and transform
+        B = W @ self.transport_plan  # barycentric coordinates
+        transformed = B @ tgt_ref  # final transformation
         
-        return transformed
+        result = transformed.cpu().numpy()
+        
+        # Clean up GPU memory if using CUDA
+        if self.device.type == "cuda":
+            torch.cuda.empty_cache()
+        
+        return result
     
     def save(self, path: Union[str, Path]) -> None:
         """Save Gromov-Wasserstein mapping parameters.
@@ -370,20 +342,25 @@ class GromovWassersteinMappingStrategy(MappingStrategy):
         Args:
             path: Path to save the mapping parameters
         """
+        if self.transport_plan is None or self.source_embeddings is None or \
+           self.target_embeddings is None or self.source_indices is None:
+            raise ValueError("Cannot save unfitted mapping. Call fit() first.")
+        
         path = Path(path)
         path.mkdir(parents=True, exist_ok=True)
         
-        # Save transport plan and other parameters
-        params = {
-            'transport_plan': self.transport_plan,
-            'source_embeddings': self.source_embeddings,
-            'target_embeddings': self.target_embeddings,
-            'source_indices': self.source_indices,
-            'is_fitted': self.is_fitted,
-            'metadata': self.metadata
-        }
+        # Save all necessary tensors
+        torch.save({
+            "transport_plan": self.transport_plan.cpu(),
+            "source_embeddings": self.source_embeddings.cpu(),
+            "target_embeddings": self.target_embeddings.cpu(),
+            "source_indices": self.source_indices.cpu(),
+            "metadata": self.metadata,
+            "max_reference_points": self.max_reference_points,
+            "auto_sample": self.auto_sample,
+            "max_memory_gb": self.max_memory_gb
+        }, path / "gw_pot_mapping.pt")
         
-        joblib.dump(params, path / "gromov_wasserstein_params.pkl")
         logger.info(f"Gromov-Wasserstein mapping saved to {path}")
     
     @classmethod
@@ -397,24 +374,39 @@ class GromovWassersteinMappingStrategy(MappingStrategy):
             Loaded Gromov-Wasserstein mapping strategy
         """
         path = Path(path)
+        mapping_file = path / "gw_pot_mapping.pt"
         
-        # Load parameters
-        params = joblib.load(path / "gromov_wasserstein_params.pkl")
+        if not mapping_file.exists():
+            raise FileNotFoundError(f"Mapping file not found: {mapping_file}")
         
-        # Create instance with default config (will be overridden by loaded params)
-        from ..base import MappingConfig
-        instance = cls(MappingConfig())
+        # Load the saved tensors
+        data = torch.load(mapping_file)
         
-        # Restore state
-        instance.transport_plan = params['transport_plan']
-        instance.source_embeddings = params['source_embeddings']
-        instance.target_embeddings = params['target_embeddings']
-        instance.source_indices = params['source_indices']
-        instance.is_fitted = params['is_fitted']
-        instance.metadata = params['metadata']
+        # Create new instance with default config
+        inst = cls(MappingConfig())
+        
+        # Restore device and dtype
+        inst.device = get_device()
+        dt = torch.float32 if inst.device.type == "cuda" else torch.float64
+        
+        # Restore all tensors to the current device
+        inst.transport_plan = data["transport_plan"].to(inst.device, dtype=dt)
+        inst.source_embeddings = data["source_embeddings"].to(inst.device, dtype=dt)
+        inst.target_embeddings = data["target_embeddings"].to(inst.device, dtype=dt)
+        inst.source_indices = data["source_indices"].to(inst.device)
+        inst.is_fitted = True
+        
+        # Restore metadata and configuration
+        inst.metadata = data.get("metadata", {})
+        inst.max_reference_points = data.get("max_reference_points", 1000)
+        inst.auto_sample = data.get("auto_sample", True)
+        inst.max_memory_gb = data.get("max_memory_gb", None)
         
         logger.info(f"Gromov-Wasserstein mapping loaded from {path}")
-        return instance
+        if inst.transport_plan is not None:
+            logger.info(f"Transport plan shape: {inst.transport_plan.shape}")
+        
+        return inst
     
     def check_fit(self, path: Union[str, Path]) -> bool:
         """Check if Gromov-Wasserstein mapping is fitted and saved.
@@ -426,4 +418,4 @@ class GromovWassersteinMappingStrategy(MappingStrategy):
             True if mapping is fitted and saved, False otherwise
         """
         path = Path(path)
-        return (path / "gromov_wasserstein_params.pkl").exists() 
+        return (path / "gw_pot_mapping.pt").exists() 

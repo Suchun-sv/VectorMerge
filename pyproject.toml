@@ -28,6 +28,7 @@ dependencies = [
     "rich>=13.0.0",
     "pyyaml>=6.0",
     "umap>=0.1.1",
+    "pot>=0.9.0",
     "dacite>=1.9.2",
     "matplotlib>=3.10.3",
     "seaborn>=0.13.2",
