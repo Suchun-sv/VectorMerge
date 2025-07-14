@@ -49,6 +49,28 @@ class ProcrustesConfig():
     procrustes_pca_type: str = "none"
     use_norm: bool = True
 
+@dataclass
+class CCAConfig():
+    """Configuration for CCA mapping strategy."""
+    n_components: int = 10
+    scale: bool = True
+    max_iter: int = 500
+    tol: float = 1e-6
+    copy: bool = True
+
+@dataclass
+class GromovWassersteinConfig():
+    """Configuration for Gromov-Wasserstein mapping strategy."""
+    loss_fun: str = "square_loss"
+    max_iter: int = 1000
+    tol: float = 1e-9
+    verbose: bool = False
+    log: bool = False
+    armijo: bool = False
+    epsilon: float = 0.1
+    symmetric: bool = True
+    G0: str = "uniform"  # Initial coupling matrix: 'uniform' or 'random'
+
 
 @dataclass
 class MappingConfig:
@@ -65,6 +87,8 @@ class MappingConfig:
     la2m_config: LA2MConfig = LA2MConfig()
     nonlinear_config: NonLinearMappingConfig = NonLinearMappingConfig()
     procrustes_config: ProcrustesConfig = ProcrustesConfig()
+    cca_config: CCAConfig = CCAConfig()
+    gromov_wasserstein_config: GromovWassersteinConfig = GromovWassersteinConfig()
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""

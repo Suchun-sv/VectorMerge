@@ -42,13 +42,17 @@ SUPPORTED_MAPPING_METHODS = [
     "procrustes",
     "nonlinear",
     "la2m",
+    "cca",
+    "gromov_wasserstein",
 ]
 
 # Mapping strategies
 from .strategies import (
     ProcrustesMappingStrategy,
     NonLinearMappingStrategy,
-    LA2MStrategy
+    LA2MStrategy,
+    CCAMappingStrategy,
+    GromovWassersteinMappingStrategy
 )
 
 # Loss functions
@@ -85,6 +89,8 @@ __all__ = [
     "ProcrustesMappingStrategy",
     "NonLinearMappingStrategy", 
     "LA2MStrategy",
+    "CCAMappingStrategy",
+    "GromovWassersteinMappingStrategy",
     "LA2MMapper",
     # Loss functions
     "cosine_similarity_loss",

@@ -17,7 +17,7 @@ from vectormerge.embeddings import EmbeddingModelConfig
 
 from ruamel.yaml import YAML
 from dataclasses import asdict
-from dacite import from_dict
+from dacite import from_dict, Config as DaciteConfig    
 from ruamel.yaml.comments import CommentedMap
 import io
 
@@ -213,7 +213,17 @@ class ConfigLoader:
                 test_dict.update(config_data)
                 self._merge_config(config_data)
         
-        self.config = from_dict(self.config.__class__, test_dict)
+        self.config = from_dict(
+    data_class=self.config.__class__,
+    data=test_dict,
+    config=DaciteConfig(
+        type_hooks={
+            float: float,
+            int: int,
+            bool: lambda x: str(x).lower() in {"true", "1", "yes"}
+        }
+    )
+)
         
 
     def load_yaml_config(self, config_path: Path) -> "ConfigLoader":

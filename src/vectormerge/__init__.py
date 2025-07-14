@@ -45,6 +45,8 @@ from .mapping import (
     ProcrustesMappingStrategy,
     NonLinearMappingStrategy,
     LA2MStrategy,
+    CCAMappingStrategy,
+    GromovWassersteinMappingStrategy,
 )
 
 # Public API
@@ -69,6 +71,8 @@ __all__ = [
     "ProcrustesMappingStrategy",
     "NonLinearMappingStrategy",
     "LA2MStrategy",
+    "CCAMappingStrategy",
+    "GromovWassersteinMappingStrategy",
     
 
     # Constants

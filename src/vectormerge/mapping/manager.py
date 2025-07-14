@@ -18,7 +18,9 @@ from ..clustering import ClusteringConfig, ClusterManager
 from .strategies import (
     ProcrustesMappingStrategy,
     NonLinearMappingStrategy,
-    LA2MStrategy
+    LA2MStrategy,
+    CCAMappingStrategy,
+    GromovWassersteinMappingStrategy
 )
 
 
@@ -40,6 +42,8 @@ class VectorSpaceMapper:
         "procrustes": ProcrustesMappingStrategy,
         "nonlinear": NonLinearMappingStrategy,
         "la2m": LA2MStrategy,
+        "cca": CCAMappingStrategy,
+        "gromov_wasserstein": GromovWassersteinMappingStrategy,
     }
     
     def __init__(self, strategy_name: str, config: MappingConfig, dataset_name: str, source_model: str, target_model: str, reference_key: str, reference_path: str, cluster_path: str, embedding_path: str, mapping_param_path: Union[str, Path], mapping_embedding_path: Union[str, Path], force: bool = False, save_param: bool = False, save_embedding: bool = False, clustering_config: Optional[ClusteringConfig] = None):
@@ -557,7 +561,9 @@ class VectorSpaceMapper:
         descriptions = {
             "procrustes": "Procrustes analysis - orthogonal transformation using SVD",
             "nonlinear": "Non-linear neural network - deep network with non-linear activations",
-            "la2m": "Clustering-based mapping - learns local mappings for each cluster"
+            "la2m": "Clustering-based mapping - learns local mappings for each cluster",
+            "cca": "Canonical Correlation Analysis - finds linear transformations that maximize correlation",
+            "gromov_wasserstein": "Gromov-Wasserstein alignment - compares internal structure of embedding spaces"
         }
         
         return descriptions.get(strategy, "Unknown strategy")

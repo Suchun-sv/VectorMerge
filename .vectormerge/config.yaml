@@ -54,6 +54,22 @@ mapping_config:
     reduced_dim: 0
     procrustes_pca_type: none
     use_norm: true
+  cca_config:
+    n_components: 10
+    scale: true
+    max_iter: 500
+    tol: 1e-06
+    copy: true
+  gromov_wasserstein_config:
+    loss_fun: square_loss
+    max_iter: 100
+    tol: 1e-09
+    verbose: false
+    log: false
+    armijo: false
+    epsilon: 0.1
+    symmetric: true
+    G0: uniform
 # ============================ Clustering config ============================
 clustering_config:
   clustering_method: la2m-cluster
