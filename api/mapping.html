@@ -527,10 +527,10 @@ correlation between source and target embedding spaces.</p>
 <dt class="sig sig-object py" id="vectormerge.mapping.GromovWassersteinMappingStrategy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">GromovWassersteinMappingStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.mapping.MappingConfig" title="vectormerge.mapping.base.MappingConfig"><span class="pre">MappingConfig</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/gromov_wasserstein.html#GromovWassersteinMappingStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.GromovWassersteinMappingStrategy" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#vectormerge.mapping.MappingStrategy" title="vectormerge.mapping.base.MappingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">MappingStrategy</span></code></a></p>
-<p>Gromov-Wasserstein mapping strategy.</p>
-<p>This strategy uses the Gromov-Wasserstein distance to find correspondences
-between embedding spaces by comparing their internal structure rather than
-absolute positions.</p>
+<p>GPU/CPU compatible Gromov-Wasserstein alignment strategy using POT implementation.</p>
+<p>This strategy uses the Gromov-Wasserstein distance to find correspondences between
+embedding spaces by comparing their internal structure rather than absolute positions.
+Uses the POT library for efficient computation with automatic GPU/CPU selection.</p>
 <p class="rubric">Methods</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
