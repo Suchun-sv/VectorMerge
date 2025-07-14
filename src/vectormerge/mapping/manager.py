@@ -25,7 +25,10 @@ from .strategies import (
 
 
 def config_hash_path(dataset_name, source_model, target_model, strategy, config, reference_key):
-    hash_target_str = config.to_string() + reference_key
+    if reference_key is None:
+        hash_target_str = config.to_string()
+    else:
+        hash_target_str = config.to_string() + reference_key
     config_hash = hashlib.md5(hash_target_str.encode()).hexdigest()
     return f"{strategy}_{dataset_name}_{source_model}_{target_model}_{config_hash}"
 

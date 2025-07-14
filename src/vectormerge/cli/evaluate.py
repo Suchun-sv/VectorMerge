@@ -9,8 +9,9 @@ from vectormerge.cli.utils import handle_extra_args
 from vectormerge.mapping import VectorSpaceMapper
 from vectormerge.dataset import load_dataset
 from vectormerge.embeddings import get_embedding
-from vectormerge.reference import get_reference
+from vectormerge.reference import get_reference, split_dataset, SUPPORTED_REFERENCE_STRATEGIES
 from vectormerge.evaluation import Evaluator
+from vectormerge.embedding_dataset import EmbeddingDataset
 
 evaluate_app = typer.Typer(
     name="evaluate",
@@ -26,7 +27,8 @@ def single_run(
     source_model: str = typer.Option(None, "--source-model", "-s", help="Source model name, support: " + ", ".join(SUPPORTED_MODELS)),
     target_model: str = typer.Option(None, "--target-model", "-t", help="Target model name, support: " + ", ".join(SUPPORTED_MODELS)),
     src_tar_model: str = typer.Option(None, "--src-tar-model", "-stm", help="Combination of source and target model, use `_` to separate the source and target model, e.g. `mistral_openai` support: " + ", ".join(SUPPORTED_MODELS)),
-    reference_key: str = typer.Option(..., "--reference-key", "-rk", help="Reference key"),
+    reference_key: str = typer.Option(None, "--reference-key", "-rk", help="Reference key, if not provided, the dataset will be split into D0, D1, D2 based on the reference method"),
+    reference_method: str = typer.Option("la2m", "--reference-method", "-rm", help="Reference method, support: " + ", ".join(SUPPORTED_REFERENCE_STRATEGIES)),
     mapping_method: str = typer.Option(..., "--mapping-method", "-mm", help="Mapping method, support: " + ", ".join(SUPPORTED_MAPPING_METHODS)),
     force: bool = typer.Option(False, "--force", "-f", help="Force evaluation"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
@@ -78,9 +80,14 @@ def single_run(
     assert corpus_emb_2 is not None
     assert query_emb_2 is not None
 
-    reference_indices = get_reference(reference_key=reference_key, reference_path=config.reference_path)
+    if reference_key is not None:
+        reference_indices = get_reference(reference_key=reference_key, reference_path=config.reference_path)
+        d0_index = reference_indices['d0_index']
+    else:
+        embedding_dataset = EmbeddingDataset(text_dataset_name=dataset_name, source_embedding_model_name=source_model, target_embedding_model_name=target_model, align_dimension=True, dataset_path=config.data_path, embedding_path=config.embedding_path, reference_method=reference_method, reference_config={})
+        d0_index, d1_index, d2_index = embedding_dataset.d0_index, embedding_dataset.d1_index, embedding_dataset.d2_index
 
-    transformed_embeddings = vectormerge.fit_and_transform(corpus_emb_1, corpus_emb_2, reference_indices['d0_index'])
+    transformed_embeddings = vectormerge.fit_and_transform(corpus_emb_1, corpus_emb_2, d0_index)
 
     evaluator = Evaluator(
         corpus_emb_1=corpus_emb_1,
@@ -88,9 +95,9 @@ def single_run(
         query_emb_1=query_emb_1,
         query_emb_2=query_emb_2,
         query_index2answer_index=dataset.query_index2answer_index,
-        d0=reference_indices['d0_index'],
-        d1=reference_indices['d1_index'],
-        d2=reference_indices['d2_index'],
+        d0=d0_index,
+        d1=d1_index,
+        d2=d2_index,
         corpus_emb_1_transformed=transformed_embeddings,
         k_list=[10, 50, 100, 500, 1000]
     )

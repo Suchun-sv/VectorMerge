@@ -28,11 +28,11 @@ reference_app = typer.Typer(help="Create and manage reference datasets")
 @reference_app.command("create", help="Create reference dataset splits", context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
 def create_reference(
     ctx: Context,
-    dataset: str = typer.Option(None, "--dataset", "-d", help="Dataset name"),
+    dataset: str = typer.Option(None, "--dataset", "-d", help="Dataset name, supported datasets: " + ", ".join(SUPPORTED_DATASETS)),
     data_path: Path = typer.Option(cli_defaults.data_path, "--data-path", help="Path to raw data directory"),
     reference_path: Path = typer.Option(cli_defaults.reference_path, "--reference-path", help="Path to save reference files"),
     strategy: str = typer.Option("random", "--strategy", help="Split strategy (random, la2m)"),
-    reference_ratio: float = typer.Option(0.5, "--reference-ratio", help="Ratio of reference data (D0)"),
+    reference_ratio: float = typer.Option(0.33, "--reference-ratio", help="Ratio of reference data (D0)"),
     remove_duplicates: bool = typer.Option(False, "--remove-duplicates", help="Remove duplicate answers"),
     select_top_1: bool = typer.Option(True, "--select-top-1/--select-all", help="Select top-1 or all relevant answers"),
     force: bool = typer.Option(False, "--force", help="Force regeneration"),
