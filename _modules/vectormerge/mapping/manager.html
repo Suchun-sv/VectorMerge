@@ -428,7 +428,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.strategies</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">ProcrustesMappingStrategy</span><span class="p">,</span>
     <span class="n">NonLinearMappingStrategy</span><span class="p">,</span>
-    <span class="n">LA2MStrategy</span>
+    <span class="n">LA2MStrategy</span><span class="p">,</span>
+    <span class="n">CCAMappingStrategy</span><span class="p">,</span>
+    <span class="n">GromovWassersteinMappingStrategy</span>
 <span class="p">)</span>
 
 
@@ -452,6 +454,8 @@
         <span class="s2">&quot;procrustes&quot;</span><span class="p">:</span> <span class="n">ProcrustesMappingStrategy</span><span class="p">,</span>
         <span class="s2">&quot;nonlinear&quot;</span><span class="p">:</span> <span class="n">NonLinearMappingStrategy</span><span class="p">,</span>
         <span class="s2">&quot;la2m&quot;</span><span class="p">:</span> <span class="n">LA2MStrategy</span><span class="p">,</span>
+        <span class="s2">&quot;cca&quot;</span><span class="p">:</span> <span class="n">CCAMappingStrategy</span><span class="p">,</span>
+        <span class="s2">&quot;gromov_wasserstein&quot;</span><span class="p">:</span> <span class="n">GromovWassersteinMappingStrategy</span><span class="p">,</span>
     <span class="p">}</span>
     
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">MappingConfig</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">source_model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reference_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reference_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cluster_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">embedding_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mapping_param_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span> <span class="n">mapping_embedding_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">save_param</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">save_embedding</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">clustering_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClusteringConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -1010,7 +1014,9 @@
         <span class="n">descriptions</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;procrustes&quot;</span><span class="p">:</span> <span class="s2">&quot;Procrustes analysis - orthogonal transformation using SVD&quot;</span><span class="p">,</span>
             <span class="s2">&quot;nonlinear&quot;</span><span class="p">:</span> <span class="s2">&quot;Non-linear neural network - deep network with non-linear activations&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;la2m&quot;</span><span class="p">:</span> <span class="s2">&quot;Clustering-based mapping - learns local mappings for each cluster&quot;</span>
+            <span class="s2">&quot;la2m&quot;</span><span class="p">:</span> <span class="s2">&quot;Clustering-based mapping - learns local mappings for each cluster&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cca&quot;</span><span class="p">:</span> <span class="s2">&quot;Canonical Correlation Analysis - finds linear transformations that maximize correlation&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;gromov_wasserstein&quot;</span><span class="p">:</span> <span class="s2">&quot;Gromov-Wasserstein alignment - compares internal structure of embedding spaces&quot;</span>
         <span class="p">}</span>
         
         <span class="k">return</span> <span class="n">descriptions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">strategy</span><span class="p">,</span> <span class="s2">&quot;Unknown strategy&quot;</span><span class="p">)</span></div>

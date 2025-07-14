@@ -459,6 +459,28 @@
     <span class="n">procrustes_pca_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
     <span class="n">use_norm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CCAConfig</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for CCA mapping strategy.&quot;&quot;&quot;</span>
+    <span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">scale</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span>
+    <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span>
+    <span class="n">copy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GromovWassersteinConfig</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for Gromov-Wasserstein mapping strategy.&quot;&quot;&quot;</span>
+    <span class="n">loss_fun</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;square_loss&quot;</span>
+    <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">log</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">armijo</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span>
+    <span class="n">symmetric</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">G0</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;uniform&quot;</span>  <span class="c1"># Initial coupling matrix: &#39;uniform&#39; or &#39;random&#39;</span>
+
 
 <div class="viewcode-block" id="MappingConfig">
 <a class="viewcode-back" href="../../../api/mapping.html#vectormerge.mapping.MappingConfig">[docs]</a>
@@ -477,6 +499,8 @@
     <span class="n">la2m_config</span><span class="p">:</span> <span class="n">LA2MConfig</span> <span class="o">=</span> <span class="n">LA2MConfig</span><span class="p">()</span>
     <span class="n">nonlinear_config</span><span class="p">:</span> <span class="n">NonLinearMappingConfig</span> <span class="o">=</span> <span class="n">NonLinearMappingConfig</span><span class="p">()</span>
     <span class="n">procrustes_config</span><span class="p">:</span> <span class="n">ProcrustesConfig</span> <span class="o">=</span> <span class="n">ProcrustesConfig</span><span class="p">()</span>
+    <span class="n">cca_config</span><span class="p">:</span> <span class="n">CCAConfig</span> <span class="o">=</span> <span class="n">CCAConfig</span><span class="p">()</span>
+    <span class="n">gromov_wasserstein_config</span><span class="p">:</span> <span class="n">GromovWassersteinConfig</span> <span class="o">=</span> <span class="n">GromovWassersteinConfig</span><span class="p">()</span>
     
 <div class="viewcode-block" id="MappingConfig.to_dict">
 <a class="viewcode-back" href="../../../api/mapping.html#vectormerge.mapping.MappingConfig.to_dict">[docs]</a>

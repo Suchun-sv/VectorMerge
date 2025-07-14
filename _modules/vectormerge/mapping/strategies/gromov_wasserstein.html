@@ -1,0 +1,915 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vectormerge.mapping.strategies.gromov_wasserstein &#8212; Project name not set  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/vectormerge/mapping/strategies/gromov_wasserstein';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">VectorMerge</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/cli.html">
+    Command-Line Interface
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/clustering.html">
+    Clustering Methods
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/dataset.html">
+    Data Handling
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/embeddings.html">
+    Embeddings
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../api/evaluation.html">
+    Evaluation
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../api/mapping.html">
+    Mapping Strategies
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../api/reference.html">
+    Reference Points
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Suchun-sv/VectorMerge" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/cli.html">
+    Command-Line Interface
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/clustering.html">
+    Clustering Methods
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/dataset.html">
+    Data Handling
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/embeddings.html">
+    Embeddings
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/evaluation.html">
+    Evaluation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/mapping.html">
+    Mapping Strategies
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api/reference.html">
+    Reference Points
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Suchun-sv/VectorMerge" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">vectormerge.mapping.strategies.gromov_wasserstein</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for vectormerge.mapping.strategies.gromov_wasserstein</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Gromov-Wasserstein mapping strategy for VectorMerge.</span>
+
+<span class="sd">This module implements Gromov-Wasserstein alignment for mapping between embedding spaces.</span>
+<span class="sd">Based on the approach from Alvarez-Melis and Jaakkola (2018), this method compares</span>
+<span class="sd">the internal structure of embedding spaces rather than absolute positions.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">cast</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">loguru</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">joblib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">psutil</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">cdist</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">trange</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..base</span><span class="w"> </span><span class="kn">import</span> <span class="n">MappingStrategy</span><span class="p">,</span> <span class="n">MappingConfig</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">estimate_memory_usage</span><span class="p">(</span><span class="n">n1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n2</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimate memory usage for Gromov-Wasserstein computation in GB.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        n1: Number of samples in source space</span>
+<span class="sd">        n2: Number of samples in target space</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Estimated memory usage in GB</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Distance matrices: n1*n1 + n2*n2</span>
+    <span class="c1"># Transport matrix: n1*n2  </span>
+    <span class="c1"># Cost matrix: n1*n2</span>
+    <span class="c1"># Temporary matrices during computation: ~3*n1*n2</span>
+    <span class="n">total_elements</span> <span class="o">=</span> <span class="n">n1</span><span class="o">*</span><span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="o">*</span><span class="n">n2</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="n">n1</span><span class="o">*</span><span class="n">n2</span>
+    <span class="n">bytes_per_element</span> <span class="o">=</span> <span class="mi">8</span>  <span class="c1"># float64</span>
+    <span class="k">return</span> <span class="n">total_elements</span> <span class="o">*</span> <span class="n">bytes_per_element</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">check_memory_feasibility</span><span class="p">(</span><span class="n">n1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">max_memory_gb</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if computation is feasible given memory constraints.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        n1: Number of samples in source space</span>
+<span class="sd">        n2: Number of samples in target space</span>
+<span class="sd">        max_memory_gb: Maximum memory to use (default: 80% of available)</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        True if feasible, False otherwise</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">max_memory_gb</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">available_memory</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">available</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">max_memory_limit</span> <span class="o">=</span> <span class="n">available_memory</span> <span class="o">*</span> <span class="mf">0.8</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">max_memory_limit</span> <span class="o">=</span> <span class="n">max_memory_gb</span>
+    
+    <span class="n">required_memory</span> <span class="o">=</span> <span class="n">estimate_memory_usage</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">required_memory</span> <span class="o">&lt;=</span> <span class="n">max_memory_limit</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_distance_matrix</span><span class="p">(</span><span class="n">embeddings</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">metric</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;euclidean&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute pairwise distance matrix for embeddings.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        embeddings: Embedding matrix (n_samples, n_features)</span>
+<span class="sd">        metric: Distance metric to use</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Distance matrix (n_samples, n_samples)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">cdist</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">gromov_wasserstein_loss</span><span class="p">(</span><span class="n">C1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">C2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">T</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute Gromov-Wasserstein loss using vectorized operations.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        C1: Distance matrix of source space</span>
+<span class="sd">        C2: Distance matrix of target space</span>
+<span class="sd">        T: Transport plan</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Gromov-Wasserstein loss value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Vectorized computation: sum_{i,j,k,l} (C1[i,j] - C2[k,l])^2 * T[i,k] * T[j,l]</span>
+    <span class="c1"># This can be computed as: tr(C1^T @ T @ C2 @ T^T) - 2*tr(C1^T @ T @ C2^T @ T^T) + tr(C1 @ T @ C1 @ T^T)</span>
+    
+    <span class="c1"># More efficient approach using einsum</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,kl,ik,jl-&gt;&#39;</span><span class="p">,</span> <span class="n">C1</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">C2</span><span class="p">),</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,kl,ik,jl-&gt;&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">C1</span><span class="p">),</span> <span class="n">C2</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">-=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,kl,ik,jl-&gt;&#39;</span><span class="p">,</span> <span class="n">C1</span><span class="p">,</span> <span class="n">C2</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">gromov_wasserstein_gradient</span><span class="p">(</span><span class="n">C1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">C2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">T</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute gradient of Gromov-Wasserstein loss with respect to T.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        C1: Distance matrix of source space</span>
+<span class="sd">        C2: Distance matrix of target space</span>
+<span class="sd">        T: Transport plan</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Gradient matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">gradient</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="n">grad_ik</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+                    <span class="n">grad_ik</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">C1</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">C2</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">])</span> <span class="o">*</span> <span class="n">T</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span>
+            <span class="n">gradient</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">grad_ik</span>
+    
+    <span class="k">return</span> <span class="n">gradient</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">sinkhorn_stabilized</span><span class="p">(</span><span class="n">K</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+                       <span class="n">reg</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">numItermax</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">tau</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e3</span><span class="p">,</span>
+                       <span class="n">stopThr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Stabilized Sinkhorn algorithm for entropic regularized optimal transport.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        K: Cost matrix</span>
+<span class="sd">        u: Source distribution</span>
+<span class="sd">        v: Target distribution</span>
+<span class="sd">        reg: Regularization parameter</span>
+<span class="sd">        numItermax: Maximum number of iterations</span>
+<span class="sd">        tau: Threshold for numerical stability</span>
+<span class="sd">        stopThr: Stopping threshold</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple of (dual variables u, dual variables v)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">shape</span>
+    
+    <span class="c1"># Initialize dual variables</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numItermax</span><span class="p">):</span>
+        <span class="c1"># Update alpha</span>
+        <span class="n">alpha_prev</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">K_alpha</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">beta</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">K</span><span class="p">)</span> <span class="o">/</span> <span class="n">reg</span><span class="p">)</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">reg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="o">-</span> <span class="n">reg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">K_alpha</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        
+        <span class="c1"># Update beta</span>
+        <span class="n">K_beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">alpha</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">K</span><span class="p">)</span> <span class="o">/</span> <span class="n">reg</span><span class="p">)</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">reg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">-</span> <span class="n">reg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">K_beta</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        
+        <span class="c1"># Check for numerical stability</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">alpha</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">tau</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">beta</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">tau</span><span class="p">:</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+            <span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
+        
+        <span class="c1"># Check convergence</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">alpha</span> <span class="o">-</span> <span class="n">alpha_prev</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">stopThr</span><span class="p">:</span>
+            <span class="k">break</span>
+    
+    <span class="k">return</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">gromov_wasserstein_solver</span><span class="p">(</span><span class="n">C1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">C2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                             <span class="n">loss_fun</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;square_loss&quot;</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+                             <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">,</span>
+                             <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solve Gromov-Wasserstein problem with entropic regularization using vectorized operations.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        C1: Distance matrix of source space</span>
+<span class="sd">        C2: Distance matrix of target space</span>
+<span class="sd">        p: Source distribution</span>
+<span class="sd">        q: Target distribution</span>
+<span class="sd">        loss_fun: Loss function type</span>
+<span class="sd">        epsilon: Entropic regularization parameter</span>
+<span class="sd">        max_iter: Maximum number of iterations</span>
+<span class="sd">        tol: Tolerance for convergence</span>
+<span class="sd">        verbose: Whether to print progress</span>
+<span class="sd">        log: Whether to log intermediate results</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Optimal transport plan</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">C1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">C2</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="c1"># Check memory feasibility</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">check_memory_feasibility</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+        <span class="n">required_memory</span> <span class="o">=</span> <span class="n">estimate_memory_usage</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+        <span class="n">available_memory</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">available</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Memory insufficient! Required: </span><span class="si">{</span><span class="n">required_memory</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">GB, Available: </span><span class="si">{</span><span class="n">available_memory</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">GB&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Please sample your data to reduce the problem size.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">MemoryError</span><span class="p">(</span><span class="s2">&quot;Insufficient memory for Gromov-Wasserstein computation&quot;</span><span class="p">)</span>
+    
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting Gromov-Wasserstein solver with problem size </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Initialize transport plan</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+    
+    <span class="c1"># Precompute squared distance matrices</span>
+    <span class="n">C1_sq</span> <span class="o">=</span> <span class="n">C1</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">C2_sq</span> <span class="o">=</span> <span class="n">C2</span> <span class="o">**</span> <span class="mi">2</span>
+    
+    <span class="n">progress_bar</span> <span class="o">=</span> <span class="n">trange</span><span class="p">(</span><span class="n">max_iter</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;GW iterations&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">iter_count</span> <span class="ow">in</span> <span class="n">progress_bar</span><span class="p">:</span>
+        <span class="n">T_prev</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        
+        <span class="c1"># Vectorized computation of cost matrix</span>
+        <span class="c1"># cost_matrix[i,k] = sum_j sum_l (C1_sq[i,j] + C2_sq[k,l] - 2*C1[i,j]*C2[k,l]) * T[j,l]</span>
+        
+        <span class="c1"># Efficient matrix operations</span>
+        <span class="n">cost_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,jl-&gt;il&#39;</span><span class="p">,</span> <span class="n">C1_sq</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>  <span class="c1"># C1_sq @ T</span>
+        <span class="n">cost_matrix</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ik,kl-&gt;il&#39;</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">C2_sq</span><span class="p">)</span>  <span class="c1"># T @ C2_sq</span>
+        <span class="n">cost_matrix</span> <span class="o">-=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,kl,jl-&gt;ik&#39;</span><span class="p">,</span> <span class="n">C1</span><span class="p">,</span> <span class="n">C2</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>  <span class="c1"># 2 * C1 @ (T * C2)</span>
+        
+        <span class="c1"># Solve regularized optimal transport problem</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">cost_matrix</span> <span class="o">/</span> <span class="n">epsilon</span><span class="p">)</span>
+        <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="n">sinkhorn_stabilized</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+        
+        <span class="c1"># Update transport plan</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">alpha</span> <span class="o">/</span> <span class="n">epsilon</span><span class="p">))</span> <span class="o">@</span> <span class="n">K</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">beta</span> <span class="o">/</span> <span class="n">epsilon</span><span class="p">))</span>
+        
+        <span class="c1"># Check convergence</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">T</span> <span class="o">-</span> <span class="n">T_prev</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">diff</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Gromov-Wasserstein converged after </span><span class="si">{</span><span class="n">iter_count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> iterations&quot;</span><span class="p">)</span>
+            <span class="k">break</span>
+            
+        <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">progress_bar</span><span class="p">,</span> <span class="s1">&#39;set_postfix&#39;</span><span class="p">):</span>
+            <span class="n">cast</span><span class="p">(</span><span class="n">Any</span><span class="p">,</span> <span class="n">progress_bar</span><span class="p">)</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s1">&#39;diff&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">diff</span><span class="si">:</span><span class="s1">.2e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">})</span>
+    
+    <span class="k">return</span> <span class="n">T</span>
+
+
+<div class="viewcode-block" id="GromovWassersteinMappingStrategy">
+<a class="viewcode-back" href="../../../../api/mapping.html#vectormerge.mapping.GromovWassersteinMappingStrategy">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GromovWassersteinMappingStrategy</span><span class="p">(</span><span class="n">MappingStrategy</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gromov-Wasserstein mapping strategy.</span>
+<span class="sd">    </span>
+<span class="sd">    This strategy uses the Gromov-Wasserstein distance to find correspondences</span>
+<span class="sd">    between embedding spaces by comparing their internal structure rather than</span>
+<span class="sd">    absolute positions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">MappingConfig</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize Gromov-Wasserstein mapping strategy.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            config: Mapping configuration containing GW parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transport_plan</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_embeddings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_embeddings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_indices</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="nf">_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_embeddings</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">target_embeddings</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+             <span class="n">reference_indices</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit Gromov-Wasserstein mapping using reference embeddings.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            source_embeddings: Source embedding space</span>
+<span class="sd">            target_embeddings: Target embedding space</span>
+<span class="sd">            reference_indices: Indices of reference points for alignment</span>
+<span class="sd">            **kwargs: Additional arguments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fitting Gromov-Wasserstein mapping with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">reference_indices</span><span class="p">)</span><span class="si">}</span><span class="s2"> reference points&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Extract reference embeddings</span>
+        <span class="n">X_ref</span> <span class="o">=</span> <span class="n">source_embeddings</span><span class="p">[</span><span class="n">reference_indices</span><span class="p">]</span>
+        <span class="n">Y_ref</span> <span class="o">=</span> <span class="n">target_embeddings</span><span class="p">[</span><span class="n">reference_indices</span><span class="p">]</span>
+        
+        <span class="c1"># Store for later use in transform</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_embeddings</span> <span class="o">=</span> <span class="n">source_embeddings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_embeddings</span> <span class="o">=</span> <span class="n">target_embeddings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_indices</span> <span class="o">=</span> <span class="n">reference_indices</span>
+        
+        <span class="c1"># Compute distance matrices</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Computing distance matrices...&quot;</span><span class="p">)</span>
+        <span class="n">C1</span> <span class="o">=</span> <span class="n">compute_distance_matrix</span><span class="p">(</span><span class="n">X_ref</span><span class="p">)</span>
+        <span class="n">C2</span> <span class="o">=</span> <span class="n">compute_distance_matrix</span><span class="p">(</span><span class="n">Y_ref</span><span class="p">)</span>
+        
+        <span class="c1"># Uniform distributions</span>
+        <span class="n">n_ref</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">reference_indices</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_ref</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_ref</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_ref</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_ref</span>
+        
+        <span class="c1"># Solve Gromov-Wasserstein problem</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Solving Gromov-Wasserstein problem...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transport_plan</span> <span class="o">=</span> <span class="n">gromov_wasserstein_solver</span><span class="p">(</span>
+            <span class="n">C1</span><span class="p">,</span> <span class="n">C2</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span>
+            <span class="n">loss_fun</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">gromov_wasserstein_config</span><span class="o">.</span><span class="n">loss_fun</span><span class="p">,</span>
+            <span class="n">epsilon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">gromov_wasserstein_config</span><span class="o">.</span><span class="n">epsilon</span><span class="p">,</span>
+            <span class="n">max_iter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">gromov_wasserstein_config</span><span class="o">.</span><span class="n">max_iter</span><span class="p">,</span>
+            <span class="n">tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">gromov_wasserstein_config</span><span class="o">.</span><span class="n">tol</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">gromov_wasserstein_config</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">log</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">gromov_wasserstein_config</span><span class="o">.</span><span class="n">log</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># Store metadata</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;loss_fun&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">gromov_wasserstein_config</span><span class="o">.</span><span class="n">loss_fun</span><span class="p">,</span>
+            <span class="s1">&#39;epsilon&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">gromov_wasserstein_config</span><span class="o">.</span><span class="n">epsilon</span><span class="p">,</span>
+            <span class="s1">&#39;max_iter&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">gromov_wasserstein_config</span><span class="o">.</span><span class="n">max_iter</span><span class="p">,</span>
+            <span class="s1">&#39;tol&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">gromov_wasserstein_config</span><span class="o">.</span><span class="n">tol</span><span class="p">,</span>
+            <span class="s1">&#39;reference_size&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">reference_indices</span><span class="p">),</span>
+            <span class="s1">&#39;source_dimension&#39;</span><span class="p">:</span> <span class="n">X_ref</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="s1">&#39;target_dimension&#39;</span><span class="p">:</span> <span class="n">Y_ref</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="s1">&#39;transport_plan_shape&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">transport_plan</span><span class="o">.</span><span class="n">shape</span>
+        <span class="p">}</span>
+        
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Gromov-Wasserstein mapping fitting completed&quot;</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform embeddings using fitted Gromov-Wasserstein mapping.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            embeddings: Embeddings to transform</span>
+<span class="sd">            **kwargs: Additional arguments</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Transformed embeddings</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Gromov-Wasserstein mapping must be fitted before transformation&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transport_plan</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Transport plan not computed&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_indices</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_embeddings</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_embeddings</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Reference embeddings not available&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># For embeddings not in the reference set, we use the transport plan</span>
+        <span class="c1"># to find the best matching target embeddings</span>
+        <span class="n">n_embeddings</span> <span class="o">=</span> <span class="n">embeddings</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">n_ref</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_indices</span><span class="p">)</span>
+        
+        <span class="c1"># Get reference embeddings</span>
+        <span class="n">source_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_embeddings</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">source_indices</span><span class="p">]</span>
+        <span class="n">target_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_embeddings</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">source_indices</span><span class="p">]</span>
+        
+        <span class="c1"># Transform each embedding</span>
+        <span class="n">transformed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_embeddings</span><span class="p">,</span> <span class="n">target_ref</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_embeddings</span><span class="p">):</span>
+            <span class="c1"># Find distances from current embedding to reference embeddings</span>
+            <span class="n">distances</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">([</span><span class="n">embeddings</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">source_ref</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            
+            <span class="c1"># Use softmax to get weights based on distances</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">distances</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">distances</span><span class="p">))</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+            
+            <span class="c1"># Compute barycenter using transport plan</span>
+            <span class="n">barycenter_weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">transport_plan</span>
+            <span class="n">barycenter_weights</span> <span class="o">=</span> <span class="n">barycenter_weights</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">barycenter_weights</span><span class="p">)</span>
+            
+            <span class="c1"># Transform embedding as weighted sum of target references</span>
+            <span class="n">transformed</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">barycenter_weights</span> <span class="o">@</span> <span class="n">target_ref</span>
+        
+        <span class="k">return</span> <span class="n">transformed</span>
+    
+<div class="viewcode-block" id="GromovWassersteinMappingStrategy.save">
+<a class="viewcode-back" href="../../../../api/mapping.html#vectormerge.mapping.GromovWassersteinMappingStrategy.save">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save Gromov-Wasserstein mapping parameters.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            path: Path to save the mapping parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="c1"># Save transport plan and other parameters</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;transport_plan&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">transport_plan</span><span class="p">,</span>
+            <span class="s1">&#39;source_embeddings&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_embeddings</span><span class="p">,</span>
+            <span class="s1">&#39;target_embeddings&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_embeddings</span><span class="p">,</span>
+            <span class="s1">&#39;source_indices&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_indices</span><span class="p">,</span>
+            <span class="s1">&#39;is_fitted&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted</span><span class="p">,</span>
+            <span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span>
+        <span class="p">}</span>
+        
+        <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;gromov_wasserstein_params.pkl&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Gromov-Wasserstein mapping saved to </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="GromovWassersteinMappingStrategy.load">
+<a class="viewcode-back" href="../../../../api/mapping.html#vectormerge.mapping.GromovWassersteinMappingStrategy.load">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s1">&#39;GromovWassersteinMappingStrategy&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load Gromov-Wasserstein mapping parameters.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            path: Path to load the mapping parameters from</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Loaded Gromov-Wasserstein mapping strategy</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        
+        <span class="c1"># Load parameters</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;gromov_wasserstein_params.pkl&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Create instance with default config (will be overridden by loaded params)</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..base</span><span class="w"> </span><span class="kn">import</span> <span class="n">MappingConfig</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">MappingConfig</span><span class="p">())</span>
+        
+        <span class="c1"># Restore state</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">transport_plan</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;transport_plan&#39;</span><span class="p">]</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">source_embeddings</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;source_embeddings&#39;</span><span class="p">]</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">target_embeddings</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;target_embeddings&#39;</span><span class="p">]</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">source_indices</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;source_indices&#39;</span><span class="p">]</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">is_fitted</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;is_fitted&#39;</span><span class="p">]</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span>
+        
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Gromov-Wasserstein mapping loaded from </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">instance</span></div>
+
+    
+<div class="viewcode-block" id="GromovWassersteinMappingStrategy.check_fit">
+<a class="viewcode-back" href="../../../../api/mapping.html#vectormerge.mapping.GromovWassersteinMappingStrategy.check_fit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if Gromov-Wasserstein mapping is fitted and saved.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            path: Path to check for saved mapping</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            True if mapping is fitted and saved, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;gromov_wasserstein_params.pkl&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> </div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
