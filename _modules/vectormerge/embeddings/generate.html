@@ -634,7 +634,13 @@
         <span class="n">final_embedding_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     
     <span class="c1"># Generate final output filename</span>
-    <span class="n">final_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">type_</span><span class="si">}</span><span class="s2">_embeddings_</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">.npy&quot;</span>
+    <span class="k">if</span> <span class="n">type_</span> <span class="o">==</span> <span class="s2">&quot;corpus&quot;</span><span class="p">:</span>
+        <span class="n">final_filename</span> <span class="o">=</span> <span class="n">CORPUS_KEY_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset_name</span><span class="o">=</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">type_</span> <span class="o">==</span> <span class="s2">&quot;query&quot;</span><span class="p">:</span>
+        <span class="n">final_filename</span> <span class="o">=</span> <span class="n">QUERY_KEY_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset_name</span><span class="o">=</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid type: </span><span class="si">{</span><span class="n">type_</span><span class="si">}</span><span class="s2">. Must be &#39;corpus&#39; or &#39;query&#39;.&quot;</span><span class="p">)</span>
+    
     <span class="n">final_path</span> <span class="o">=</span> <span class="n">final_embedding_path</span> <span class="o">/</span> <span class="n">final_filename</span>
     
     <span class="c1"># Check if final embedding already exists</span>
@@ -643,6 +649,15 @@
         <span class="k">if</span> <span class="n">upload</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Uploading embeddings to Hugging Face: </span><span class="si">{</span><span class="n">final_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">upload_embedding</span><span class="p">(</span><span class="n">final_path</span><span class="p">,</span> <span class="n">final_path</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">final_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">force</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Embeddings do not exist at </span><span class="si">{</span><span class="n">final_path</span><span class="si">}</span><span class="s2">. Use --force to regenerate. Now try download from Hugging Face.&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">final_path</span> <span class="o">=</span> <span class="n">download_embedding</span><span class="p">(</span><span class="n">final_filename</span><span class="p">,</span> <span class="n">final_embedding_path</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to download embeddings from Hugging Face: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">e</span>
         <span class="k">return</span>
     
     <span class="c1"># Load dataset using unified loader</span>
