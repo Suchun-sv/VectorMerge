@@ -7,7 +7,8 @@ SUPPORTED_MODELS = [
     "nv-embed",
     "openai",
     "glove",
-    "fast-text"
+    "fast-text",
+    "gte"
 ]
 
 __all__ = ["EmbeddingGenerator", "get_embedding_generator", "generate_embeddings", "SUPPORTED_MODELS", "get_embedding", "EmbeddingModelConfig", "align_dimension"]
