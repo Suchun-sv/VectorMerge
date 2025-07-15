@@ -1,5 +1,6 @@
 from .strategies.la2m import LA2MStrategy
-from .base import MappingConfig, LA2MConfig
+from .base import MappingConfig, LA2MConfig, ProcrustesConfig
+from vectormerge.mapping.strategies import ProcrustesMappingStrategy
 from vectormerge.clustering import ClusterManager
 from vectormerge.clustering.base import ClusteringConfig, LA2MClusteringConfig, KMeansConfig
 
@@ -68,3 +69,56 @@ class LA2MMapper(LA2MStrategy):
         super().__init__(config=config, clustering_manager=clustering_manager)
 
 
+class ProcrustesMapper(ProcrustesMappingStrategy):
+    def __init__(self, 
+            approximate: bool = False,
+            q: int = 1500,
+            with_rotation: bool = True,
+            with_scaling: bool = True,
+            use_pca: bool = False,
+            reduced_dim: int = 0,
+            procrustes_pca_type: str = "none",
+            use_norm: bool = True,
+            device: str = "auto",
+            batch_size: int = 32,
+            verbose: bool = False,
+            save_param: bool = False, 
+            save_embedding: bool = False):
+        """
+        Procrustes mapping with configurable parameters.
+        
+        Args:
+            approximate: bool, whether to use approximated SVD
+            q: int, number of components for approximation
+            with_rotation: bool, whether to include rotation in the transformation
+            with_scaling: bool, whether to include scaling/normalization
+            use_pca: bool, whether to use PCA for dimensionality reduction
+            reduced_dim: int, target dimensionality for PCA (if use_pca=True)
+            procrustes_pca_type: str, type of PCA to use ("none", "inner", "outer")
+            use_norm: bool, whether to use normalization
+            device: str, device to use ("auto", "cpu", "cuda")
+            batch_size: int, batch size for processing
+            verbose: bool, whether to print verbose logs
+            save_param: bool, whether to save parameters
+            save_embedding: bool, whether to save embeddings
+        """
+        
+        config = MappingConfig(
+            device=device,
+            batch_size=batch_size,
+            verbose=verbose,
+            save_param=save_param,
+            save_embedding=save_embedding,
+            procrustes_config=ProcrustesConfig(
+                approximate=approximate,
+                q=q,
+                with_rotation=with_rotation,
+                with_scaling=with_scaling,
+                use_pca=use_pca,
+                reduced_dim=reduced_dim,
+                procrustes_pca_type=procrustes_pca_type,
+                use_norm=use_norm,
+            )
+        )
+        
+        super().__init__(config=config)

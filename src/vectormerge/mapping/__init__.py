@@ -36,7 +36,7 @@ transformed = mapper.fit_transform(
 # Core classes
 from .base import MappingStrategy, MappingConfig, MappingResult
 from .manager import VectorSpaceMapper
-from .wrapper import LA2MMapper
+from .wrapper import LA2MMapper, ProcrustesMapper
 
 SUPPORTED_MAPPING_METHODS = [
     "procrustes",
@@ -92,6 +92,7 @@ __all__ = [
     "CCAMappingStrategy",
     "GromovWassersteinMappingStrategy",
     "LA2MMapper",
+    "ProcrustesMapper",
     # Loss functions
     "cosine_similarity_loss",
     "triplet_loss",
