@@ -219,7 +219,13 @@ def generate_embeddings(model_name: str, dataset_name: str, dataset_path: str, c
         final_embedding_path.mkdir(parents=True, exist_ok=True)
     
     # Generate final output filename
-    final_filename = f"{type_}_embeddings_{model_name}_{dataset_name}.npy"
+    if type_ == "corpus":
+        final_filename = CORPUS_KEY_TEMPLATE.format(dataset_name=dataset_name, model_name=model_name)
+    elif type_ == "query":
+        final_filename = QUERY_KEY_TEMPLATE.format(dataset_name=dataset_name, model_name=model_name)
+    else:
+        raise ValueError(f"Invalid type: {type_}. Must be 'corpus' or 'query'.")
+    
     final_path = final_embedding_path / final_filename
     
     # Check if final embedding already exists
@@ -228,6 +234,15 @@ def generate_embeddings(model_name: str, dataset_name: str, dataset_path: str, c
         if upload:
             logger.info(f"Uploading embeddings to Hugging Face: {final_path}")
             upload_embedding(final_path, final_path.name)
+        return
+    
+    if not final_path.exists() and not force:
+        logger.info(f"Embeddings do not exist at {final_path}. Use --force to regenerate. Now try download from Hugging Face.")
+        try:
+            final_path = download_embedding(final_filename, final_embedding_path)
+        except Exception as e:
+            logger.error(f"Failed to download embeddings from Hugging Face: {e}")
+            raise e
         return
     
     # Load dataset using unified loader
