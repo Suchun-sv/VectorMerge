@@ -424,10 +424,10 @@ class GTEEmbeddingGenerator(EmbeddingGenerator):
         self.model.max_seq_length = self.max_tokens
 
     def _generate_batch_embeddings(self, texts: List[str], batch_size: int) -> np.ndarray:
-        return self.model.encode_corpus(texts, batch_size=batch_size, convert_to_numpy=True)
+        return self.model.encode_document(texts, batch_size=batch_size, convert_to_numpy=True)
     
     def _generate_query_embeddings(self, texts: List[str], batch_size: int) -> np.ndarray:
-        return self.model.encode_queries(texts, batch_size=batch_size, convert_to_numpy=True)
+        return self.model.encode_query(texts, batch_size=batch_size, convert_to_numpy=True)
 
 class GloVeEmbeddingGenerator(EmbeddingGenerator):
     def __init__(self, cache_dir: str, dataset_name: str, model_settings: dict, force: bool = False):
