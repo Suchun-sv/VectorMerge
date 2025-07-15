@@ -409,7 +409,8 @@
                   
   <h1>Source code for vectormerge.mapping.wrapper</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">.strategies.la2m</span><span class="w"> </span><span class="kn">import</span> <span class="n">LA2MStrategy</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">MappingConfig</span><span class="p">,</span> <span class="n">LA2MConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">MappingConfig</span><span class="p">,</span> <span class="n">LA2MConfig</span><span class="p">,</span> <span class="n">ProcrustesConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">vectormerge.mapping.strategies</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProcrustesMappingStrategy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">vectormerge.clustering</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClusterManager</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">vectormerge.clustering.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClusteringConfig</span><span class="p">,</span> <span class="n">LA2MClusteringConfig</span><span class="p">,</span> <span class="n">KMeansConfig</span>
 
@@ -480,6 +481,62 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">clustering_manager</span><span class="o">=</span><span class="n">clustering_manager</span><span class="p">)</span></div>
 
 
+
+<div class="viewcode-block" id="ProcrustesMapper">
+<a class="viewcode-back" href="../../../api/mapping.html#vectormerge.mapping.ProcrustesMapper">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProcrustesMapper</span><span class="p">(</span><span class="n">ProcrustesMappingStrategy</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+            <span class="n">approximate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">q</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1500</span><span class="p">,</span>
+            <span class="n">with_rotation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">with_scaling</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">use_pca</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">reduced_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">procrustes_pca_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
+            <span class="n">use_norm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">device</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">save_param</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+            <span class="n">save_embedding</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Procrustes mapping with configurable parameters.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            approximate: bool, whether to use approximated SVD</span>
+<span class="sd">            q: int, number of components for approximation</span>
+<span class="sd">            with_rotation: bool, whether to include rotation in the transformation</span>
+<span class="sd">            with_scaling: bool, whether to include scaling/normalization</span>
+<span class="sd">            use_pca: bool, whether to use PCA for dimensionality reduction</span>
+<span class="sd">            reduced_dim: int, target dimensionality for PCA (if use_pca=True)</span>
+<span class="sd">            procrustes_pca_type: str, type of PCA to use (&quot;none&quot;, &quot;inner&quot;, &quot;outer&quot;)</span>
+<span class="sd">            use_norm: bool, whether to use normalization</span>
+<span class="sd">            device: str, device to use (&quot;auto&quot;, &quot;cpu&quot;, &quot;cuda&quot;)</span>
+<span class="sd">            batch_size: int, batch size for processing</span>
+<span class="sd">            verbose: bool, whether to print verbose logs</span>
+<span class="sd">            save_param: bool, whether to save parameters</span>
+<span class="sd">            save_embedding: bool, whether to save embeddings</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">config</span> <span class="o">=</span> <span class="n">MappingConfig</span><span class="p">(</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">save_param</span><span class="o">=</span><span class="n">save_param</span><span class="p">,</span>
+            <span class="n">save_embedding</span><span class="o">=</span><span class="n">save_embedding</span><span class="p">,</span>
+            <span class="n">procrustes_config</span><span class="o">=</span><span class="n">ProcrustesConfig</span><span class="p">(</span>
+                <span class="n">approximate</span><span class="o">=</span><span class="n">approximate</span><span class="p">,</span>
+                <span class="n">q</span><span class="o">=</span><span class="n">q</span><span class="p">,</span>
+                <span class="n">with_rotation</span><span class="o">=</span><span class="n">with_rotation</span><span class="p">,</span>
+                <span class="n">with_scaling</span><span class="o">=</span><span class="n">with_scaling</span><span class="p">,</span>
+                <span class="n">use_pca</span><span class="o">=</span><span class="n">use_pca</span><span class="p">,</span>
+                <span class="n">reduced_dim</span><span class="o">=</span><span class="n">reduced_dim</span><span class="p">,</span>
+                <span class="n">procrustes_pca_type</span><span class="o">=</span><span class="n">procrustes_pca_type</span><span class="p">,</span>
+                <span class="n">use_norm</span><span class="o">=</span><span class="n">use_norm</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span></div>
 
 </pre></div>
 
