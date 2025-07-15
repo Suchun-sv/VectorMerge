@@ -44,7 +44,7 @@ vectormerge = "vectormerge.cli:app"
 package = true
 
 [tool.uv.sources]
-jasminetool = { git = "ssh://git@github.com/Suchun-sv/JasmineTool.git", rev = "main" }
+jasminetool = { git = "ssh://git@github.com/Suchun-sv/JasmineTool.git", branch = "main" }
 
 [tool.setuptools]
 package-dir = {"" = "src"}
