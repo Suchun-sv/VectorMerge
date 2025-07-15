@@ -153,7 +153,7 @@ def parse_embedding_filename(filename: str) -> Optional[Tuple[str, str, str]]:
     Parse embedding filename to extract model, dataset, and type.
     
     Args:
-        filename: Embedding filename (e.g., "model_dataset_corpus.npy")
+        filename: Embedding filename (e.g., "corpus_embeddings_gte_fiqa.npy")
         
     Returns:
         Tuple of (model, dataset, type) or None if parsing fails
@@ -171,15 +171,16 @@ def parse_embedding_filename(filename: str) -> Optional[Tuple[str, str, str]]:
         return None
     
     # Last part is type (corpus/query)
-    type_ = parts[-1]
+    type_ = parts[0]
     if type_ not in ['corpus', 'query']:
         return None
     
     # Second to last is dataset
-    dataset = parts[-2]
+    dataset = parts[-1]
     
     # Everything before that is model (may contain underscores)
-    model = '_'.join(parts[:-2])
+    # model = '_'.join(parts[:-2])
+    model = parts[2]
     
     return model, dataset, type_
 
