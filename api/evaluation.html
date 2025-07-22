@@ -427,6 +427,12 @@
 <p class="rubric">Methods</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.evaluation.Evaluator.evaluate" title="vectormerge.evaluation.Evaluator.evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">evaluate</span></code></a>()</p></td>
+<td><p>Main evaluation method that computes all metrics.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.evaluation.Evaluator.get_rank_of_answer" title="vectormerge.evaluation.Evaluator.get_rank_of_answer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_rank_of_answer</span></code></a>(query_emb, ...[, metric])</p></td>
+<td><p>Get the rank of the first answer document for a given query.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.evaluation.Evaluator.merge_and_evaluate_embeddings" title="vectormerge.evaluation.Evaluator.merge_and_evaluate_embeddings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_and_evaluate_embeddings</span></code></a>(corpus_emb_1, ...)</p></td>
 <td><p>Merge embedding spaces and evaluate retrieval performance.</p></td>
 </tr>
@@ -435,10 +441,7 @@
 </div>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
-<tr class="row-odd"><td><p><strong>evaluate</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><strong>get_retrieval_list</strong></p></td>
+<tr class="row-odd"><td><p><strong>get_retrieval_list</strong></p></td>
 <td></td>
 </tr>
 </tbody>
@@ -447,7 +450,30 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="vectormerge.evaluation.Evaluator.evaluate">
 <span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../_modules/vectormerge/evaluation/base.html#Evaluator.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.evaluation.Evaluator.evaluate" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Main evaluation method that computes all metrics.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectormerge.evaluation.Evaluator.get_rank_of_answer">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_rank_of_answer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_emb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">answer_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corpus_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'l2'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/vectormerge/evaluation/base.html#Evaluator.get_rank_of_answer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.evaluation.Evaluator.get_rank_of_answer" title="Link to this definition">#</a></dt>
+<dd><p>Get the rank of the first answer document for a given query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query_emb</strong> – Query embedding (1, embedding_dim)</p></li>
+<li><p><strong>answer_indices</strong> – List of answer document indices</p></li>
+<li><p><strong>corpus_embeddings</strong> – Corpus embeddings (num_docs, embedding_dim)</p></li>
+<li><p><strong>metric</strong> – Distance metric to use (“l2” or “cosine”)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Rank of the first answer document (1-indexed)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="vectormerge.evaluation.Evaluator.get_retrieval_list">
@@ -552,6 +578,7 @@
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.evaluation.Evaluator"><code class="docutils literal notranslate"><span class="pre">Evaluator</span></code></a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.evaluation.Evaluator.evaluate"><code class="docutils literal notranslate"><span class="pre">Evaluator.evaluate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.evaluation.Evaluator.get_rank_of_answer"><code class="docutils literal notranslate"><span class="pre">Evaluator.get_rank_of_answer()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.evaluation.Evaluator.get_retrieval_list"><code class="docutils literal notranslate"><span class="pre">Evaluator.get_retrieval_list()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.evaluation.Evaluator.merge_and_evaluate_embeddings"><code class="docutils literal notranslate"><span class="pre">Evaluator.merge_and_evaluate_embeddings()</span></code></a></li>
 </ul>

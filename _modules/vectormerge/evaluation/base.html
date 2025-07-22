@@ -410,7 +410,7 @@
   <h1>Source code for vectormerge.evaluation.base</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">loguru</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">faiss</span>
 
@@ -454,6 +454,9 @@
 
 
 
+
+
+
 <div class="viewcode-block" id="Evaluator">
 <a class="viewcode-back" href="../../../api/evaluation.html#vectormerge.evaluation.Evaluator">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Evaluator</span><span class="p">:</span>
@@ -470,6 +473,51 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">k_list</span> <span class="o">=</span> <span class="n">k_list</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_align_dimensions</span><span class="p">()</span>
     
+<div class="viewcode-block" id="Evaluator.get_rank_of_answer">
+<a class="viewcode-back" href="../../../api/evaluation.html#vectormerge.evaluation.Evaluator.get_rank_of_answer">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_rank_of_answer</span><span class="p">(</span><span class="n">query_emb</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">answer_indices</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> 
+                          <span class="n">corpus_embeddings</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">metric</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;l2&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the rank of the first answer document for a given query.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            query_emb: Query embedding (1, embedding_dim)</span>
+<span class="sd">            answer_indices: List of answer document indices</span>
+<span class="sd">            corpus_embeddings: Corpus embeddings (num_docs, embedding_dim)</span>
+<span class="sd">            metric: Distance metric to use (&quot;l2&quot; or &quot;cosine&quot;)</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Rank of the first answer document (1-indexed)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">answer_indices</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">corpus_embeddings</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># Return a large rank if no answers</span>
+        
+        <span class="c1"># Compute distances/similarities between query and all documents</span>
+        <span class="k">if</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;l2&quot;</span><span class="p">:</span>
+            <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">corpus_embeddings</span> <span class="o">-</span> <span class="n">query_emb</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="c1"># Sort by distance (ascending)</span>
+            <span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;cosine&quot;</span><span class="p">:</span>
+            <span class="c1"># Normalize embeddings for cosine similarity</span>
+            <span class="n">query_norm</span> <span class="o">=</span> <span class="n">query_emb</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">query_emb</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
+            <span class="n">corpus_norms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">corpus_embeddings</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">corpus_normalized</span> <span class="o">=</span> <span class="n">corpus_embeddings</span> <span class="o">/</span> <span class="p">(</span><span class="n">corpus_norms</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
+            
+            <span class="n">similarities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">corpus_normalized</span><span class="p">,</span> <span class="n">query_norm</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="c1"># Sort by similarity (descending)</span>
+            <span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">similarities</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported metric: </span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Find the rank of the first answer document</span>
+        <span class="k">for</span> <span class="n">rank</span><span class="p">,</span> <span class="n">doc_idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sorted_indices</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">doc_idx</span> <span class="ow">in</span> <span class="n">answer_indices</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">rank</span>
+        
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">corpus_embeddings</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># Return a large rank if no answers found</span></div>
+
+    
     <span class="k">def</span><span class="w"> </span><span class="nf">_align_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">max_dim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_2</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_1_transformed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_emb_2</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_1</span><span class="p">,</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_dim</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">,</span> <span class="n">constant_values</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -480,8 +528,182 @@
 <div class="viewcode-block" id="Evaluator.evaluate">
 <a class="viewcode-back" href="../../../api/evaluation.html#vectormerge.evaluation.Evaluator.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge_and_evaluate_embeddings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_1_transformed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_emb_2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_index2answer_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d2</span><span class="p">)</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Main evaluation method that computes all metrics.&quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+        
+        <span class="c1"># Get basic recall metrics</span>
+        <span class="n">recall_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge_and_evaluate_embeddings</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_1_transformed</span><span class="p">,</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">query_emb_2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_index2answer_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d2</span>
+        <span class="p">)</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">recall_results</span><span class="p">)</span>
+        
+        <span class="c1"># Get standard Recall@k metrics</span>
+        <span class="n">standard_recall_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_recall_at_k</span><span class="p">()</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">standard_recall_results</span><span class="p">)</span>
+        
+        <span class="c1"># Get additional evaluation metrics</span>
+        <span class="n">d1_recall_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_retrieval_D1</span><span class="p">()</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">d1_recall_results</span><span class="p">)</span>
+        
+        <span class="n">relative_ndcg_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_relative_ndcg</span><span class="p">()</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">relative_ndcg_results</span><span class="p">)</span>
+        
+        <span class="n">beta_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_beta</span><span class="p">()</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">beta_results</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">results</span></div>
 
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_evaluate_retrieval_D1</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate Recall@k[D1] - recall considering only queries where the top answer is in D1.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict containing Recall@k[D1] scores for different k values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Computing Recall@k[D1] metrics...&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Create integrated database using transformed embeddings</span>
+        <span class="n">integrated_db</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">integrated_db</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">d1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_1_transformed</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">d1</span><span class="p">]</span>
+        
+        <span class="c1"># Filter queries to only include those where the top answer is in D1</span>
+        <span class="n">d1_queries</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">query_idx</span><span class="p">,</span> <span class="n">answer_indices</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_index2answer_index</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># Check if any answer is in D1</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">ans_idx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">d1</span> <span class="k">for</span> <span class="n">ans_idx</span> <span class="ow">in</span> <span class="n">answer_indices</span><span class="p">):</span>
+                <span class="n">d1_queries</span><span class="p">[</span><span class="n">query_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">answer_indices</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">d1_queries</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No queries found with answers in D1&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;recall_d1@</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_list</span><span class="p">}</span>
+        
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_list</span><span class="p">:</span>
+            <span class="n">hit_count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">query_idx</span><span class="p">,</span> <span class="n">answer_indices</span> <span class="ow">in</span> <span class="n">d1_queries</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">query_emb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_emb_2</span><span class="p">[</span><span class="n">query_idx</span><span class="p">:</span><span class="n">query_idx</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">rank</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_rank_of_answer</span><span class="p">(</span><span class="n">query_emb</span><span class="p">,</span> <span class="n">answer_indices</span><span class="p">,</span> <span class="n">integrated_db</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">rank</span> <span class="o">&lt;=</span> <span class="n">k</span><span class="p">:</span>
+                    <span class="n">hit_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            
+            <span class="n">recall_d1</span> <span class="o">=</span> <span class="n">hit_count</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">d1_queries</span><span class="p">)</span>
+            <span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;recall_d1@</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">recall_d1</span>
+        
+        <span class="k">return</span> <span class="n">results</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_evaluate_relative_ndcg</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate Relative NDCG - measures relative rank changes compared to ground truth.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict containing relative NDCG scores</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Computing Relative NDCG metrics...&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Create integrated database using transformed embeddings</span>
+        <span class="n">integrated_db</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">integrated_db</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">d1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_1_transformed</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">d1</span><span class="p">]</span>
+        
+        <span class="c1"># Create ground truth database (D* = emb2(O1 ∪ O∩ ∪ O2))</span>
+        <span class="c1"># This includes all documents embedded with emb2</span>
+        <span class="n">ground_truth_db</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        
+        <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">query_idx</span><span class="p">,</span> <span class="n">answer_indices</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_index2answer_index</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">answer_indices</span><span class="p">:</span>
+                <span class="k">continue</span>
+                
+            <span class="n">query_emb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_emb_2</span><span class="p">[</span><span class="n">query_idx</span><span class="p">:</span><span class="n">query_idx</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            
+            <span class="c1"># Get rank in integrated database</span>
+            <span class="n">r_merge</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_rank_of_answer</span><span class="p">(</span><span class="n">query_emb</span><span class="p">,</span> <span class="n">answer_indices</span><span class="p">,</span> <span class="n">integrated_db</span><span class="p">)</span>
+            
+            <span class="c1"># Get rank in ground truth database</span>
+            <span class="n">r_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_rank_of_answer</span><span class="p">(</span><span class="n">query_emb</span><span class="p">,</span> <span class="n">answer_indices</span><span class="p">,</span> <span class="n">ground_truth_db</span><span class="p">)</span>
+            
+            <span class="c1"># Compute relative NDCG score: 1/log2(|r_merge - r_star| + 1)</span>
+            <span class="k">if</span> <span class="n">r_merge</span> <span class="o">==</span> <span class="n">r_star</span><span class="p">:</span>
+                <span class="n">score</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># Perfect alignment</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">score</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">r_merge</span> <span class="o">-</span> <span class="n">r_star</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            
+            <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">scores</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No valid queries for relative NDCG computation&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;relative_ndcg&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
+        
+        <span class="n">relative_ndcg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;relative_ndcg&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">relative_ndcg</span><span class="p">)}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_evaluate_beta</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate integration error β - measures distance between transformed and target embeddings.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict containing beta (integration error) scores</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Computing integration error β...&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># For each o ∈ O1, compute distance ||A(emb1(o)) - emb2(o)||</span>
+        <span class="c1"># where A(emb1(o)) is the transformed representation in D2 space</span>
+        
+        <span class="c1"># Get embeddings for D1 documents</span>
+        <span class="n">d1_emb_1_transformed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_1_transformed</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">d1</span><span class="p">]</span>  <span class="c1"># A(emb1(o))</span>
+        <span class="n">d1_emb_2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">d1</span><span class="p">]</span>  <span class="c1"># emb2(o)</span>
+        
+        <span class="c1"># Compute L2 distances</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">d1_emb_1_transformed</span> <span class="o">-</span> <span class="n">d1_emb_2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1"># Compute average β</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span>
+        <span class="n">beta_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;integration_error_beta&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">beta</span><span class="p">),</span>
+            <span class="s2">&quot;integration_error_beta_std&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">beta_std</span><span class="p">),</span>
+            <span class="s2">&quot;integration_error_beta_min&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">distances</span><span class="p">)),</span>
+            <span class="s2">&quot;integration_error_beta_max&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">distances</span><span class="p">))</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_evaluate_recall_at_k</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate standard Recall@k - measures if the top answer is retrieved within top-k.</span>
+<span class="sd">        </span>
+<span class="sd">        Formula: (1/|Q|) * Σ_{q∈Q} I(rank(emb2(q), A(D1, D2)) ≤ k)</span>
+<span class="sd">        where I(p) is the indicator function (1 if p is true, 0 otherwise)</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict containing Recall@k scores for different k values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Computing standard Recall@k metrics...&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Create integrated database using transformed embeddings</span>
+        <span class="n">integrated_db</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">integrated_db</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">d1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus_emb_1_transformed</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">d1</span><span class="p">]</span>
+        
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">total_queries</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query_index2answer_index</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_list</span><span class="p">:</span>
+            <span class="n">hit_count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">query_idx</span><span class="p">,</span> <span class="n">answer_indices</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_index2answer_index</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">answer_indices</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                    
+                <span class="n">query_emb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_emb_2</span><span class="p">[</span><span class="n">query_idx</span><span class="p">:</span><span class="n">query_idx</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">rank</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_rank_of_answer</span><span class="p">(</span><span class="n">query_emb</span><span class="p">,</span> <span class="n">answer_indices</span><span class="p">,</span> <span class="n">integrated_db</span><span class="p">)</span>
+                
+                <span class="c1"># Indicator function: 1 if rank ≤ k, 0 otherwise</span>
+                <span class="k">if</span> <span class="n">rank</span> <span class="o">&lt;=</span> <span class="n">k</span><span class="p">:</span>
+                    <span class="n">hit_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            
+            <span class="n">recall_at_k</span> <span class="o">=</span> <span class="n">hit_count</span> <span class="o">/</span> <span class="n">total_queries</span>
+            <span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;recall_at_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">recall_at_k</span>
+        
+        <span class="k">return</span> <span class="n">results</span>
     
 <div class="viewcode-block" id="Evaluator.get_retrieval_list">
 <a class="viewcode-back" href="../../../api/evaluation.html#vectormerge.evaluation.Evaluator.get_retrieval_list">[docs]</a>
