@@ -341,6 +341,7 @@ class Evaluator:
             
             # Iterate through each query
             for query_idx, answer_indices in query_index2answer_index.items():
+                answer_indices = [answer_indices[0]] # only use the first answer
                 for method, results in retrieval_results.items():
                     # Check if any answer is in the retrieved results for this query
                     retrieved_for_query = results[query_idx]
