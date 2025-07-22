@@ -767,6 +767,7 @@
             
             <span class="c1"># Iterate through each query</span>
             <span class="k">for</span> <span class="n">query_idx</span><span class="p">,</span> <span class="n">answer_indices</span> <span class="ow">in</span> <span class="n">query_index2answer_index</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">answer_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">answer_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="c1"># only use the first answer</span>
                 <span class="k">for</span> <span class="n">method</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">retrieval_results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="c1"># Check if any answer is in the retrieved results for this query</span>
                     <span class="n">retrieved_for_query</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">query_idx</span><span class="p">]</span>
