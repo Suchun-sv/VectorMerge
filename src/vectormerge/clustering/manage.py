@@ -19,7 +19,10 @@ method_map = {
 SUPPORTED_CLUSTERING_METHODS = list(method_map.keys())
 
 def config_hash_path(dataset_name: str, model: str, reference_key: str, strategy_name: str, strategy_config: ClusteringConfig) -> str:
-    hash_target_str = strategy_config.to_string() + reference_key
+    if reference_key is not None:
+        hash_target_str = strategy_config.to_string() + reference_key
+    else:
+        hash_target_str = strategy_config.to_string()
     return hashlib.md5(hash_target_str.encode()).hexdigest()
 
 def get_cluster_save_path(

@@ -82,7 +82,7 @@ def single_run(
 
     if reference_key is not None:
         reference_indices = get_reference(reference_key=reference_key, reference_path=config.reference_path)
-        d0_index = reference_indices['d0_index']
+        d0_index, d1_index, d2_index = reference_indices['d0_index'], reference_indices['d1_index'], reference_indices['d2_index']
     else:
         embedding_dataset = EmbeddingDataset(text_dataset_name=dataset_name, source_embedding_model_name=source_model, target_embedding_model_name=target_model, align_dimension=True, dataset_path=config.data_path, embedding_path=config.embedding_path, reference_method=reference_method, reference_config={})
         d0_index, d1_index, d2_index = embedding_dataset.d0_index, embedding_dataset.d1_index, embedding_dataset.d2_index
@@ -104,9 +104,12 @@ def single_run(
 
     print("transformed_embeddings.shape", transformed_embeddings.shape)
 
-    recalls = evaluator.evaluate()
-    wandb.log(recalls)
-    print(recalls)
+    results = evaluator.evaluate()
+    wandb.log(results)
+    from rich.console import Console
+    console = Console()
+    console.rule("results")
+    console.print(results)
     
 
 
