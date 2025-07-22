@@ -212,3 +212,5 @@ output/
 wandb/
 wandb_config/
 .jasminetool/
+notebooks/aggregate_results.ipynb
+notebooks/cache/
