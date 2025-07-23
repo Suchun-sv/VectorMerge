@@ -51,6 +51,8 @@ class Evaluator:
         self.query_emb_1 = query_emb_1
         self.query_emb_2 = query_emb_2
         self.query_index2answer_index = query_index2answer_index
+        for key, value in query_index2answer_index.items():
+                self.query_index2answer_index[key] = [value[0]] # only use the first answer
         self.d0 = d0
         self.d1 = d1
         self.d2 = d2
