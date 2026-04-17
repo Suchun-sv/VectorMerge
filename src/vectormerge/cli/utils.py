@@ -16,45 +16,59 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 import typer
 from click import Context
 
-from vectormerge.config import VectorMergeConfig, ConfigLoader
+from vectormerge.config import (
+    VectorMergeConfig,
+    ConfigLoader,
+    load_settings_with_args,
+    parse_overrides,
+    settings_to_legacy_config,
+)
 
-from vectormerge.cli.base import SUPPORTED_MODELS, SUPPORTED_DATASETS, SUPPORTED_REFERENCE_STRATEGIES, console
+from vectormerge.cli.base import (
+    SUPPORTED_MODELS,
+    SUPPORTED_DATASETS,
+    SUPPORTED_REFERENCE_STRATEGIES,
+    console,
+)
 
 
 def select_model_interactively() -> str:
     """Interactive model selection."""
     rprint("[cyan]Available models:[/cyan]")
-    
+
     # Create table
     table = Table(show_header=True, header_style="bold magenta")
     table.add_column("Index", style="dim", width=6)
     table.add_column("Model", style="cyan")
     table.add_column("Type", style="green")
-    
+
     for i, model in enumerate(SUPPORTED_MODELS, 1):
-        model_type = "API" if model.startswith(("text-embedding", "mistral")) else "Local"
+        model_type = (
+            "API" if model.startswith(("text-embedding", "mistral")) else "Local"
+        )
         table.add_row(str(i), model, model_type)
-    
+
     console.print(table)
-    
+
     while True:
         try:
             choice = typer.prompt("Select model (index or name)")
-            
+
             # Try by index
             if choice.isdigit():
                 idx = int(choice) - 1
                 if 0 <= idx < len(SUPPORTED_MODELS):
                     return SUPPORTED_MODELS[idx]
-            
+
             # Try by name (partial match)
             for model in SUPPORTED_MODELS:
                 if choice.lower() in model.lower():
                     return model
-            
+
             rprint(f"[red]Invalid choice: {choice}[/red]")
         except typer.Abort:
             raise typer.Exit(code=1)
+
 
 def select_reference_strategy_interactively() -> str:
     """Interactive reference strategy selection."""
@@ -83,42 +97,44 @@ def select_reference_strategy_interactively() -> str:
 def select_dataset_interactively() -> str:
     """Interactive dataset selection."""
     rprint("[cyan]Available datasets:[/cyan]")
-    
+
     # Create table with multiple columns
     table = Table(show_header=True, header_style="bold magenta")
     table.add_column("Index", style="dim", width=6)
     table.add_column("Dataset", style="cyan")
     table.add_column("Index", style="dim", width=6)
     table.add_column("Dataset", style="cyan")
-    
+
     # Split datasets into two columns
     half = len(SUPPORTED_DATASETS) // 2
     for i in range(half):
         left_idx = i + 1
         left_dataset = SUPPORTED_DATASETS[i]
-        
+
         right_idx = i + half + 1 if i + half < len(SUPPORTED_DATASETS) else ""
-        right_dataset = SUPPORTED_DATASETS[i + half] if i + half < len(SUPPORTED_DATASETS) else ""
-        
+        right_dataset = (
+            SUPPORTED_DATASETS[i + half] if i + half < len(SUPPORTED_DATASETS) else ""
+        )
+
         table.add_row(str(left_idx), left_dataset, str(right_idx), right_dataset)
-    
+
     console.print(table)
-    
+
     while True:
         try:
             choice = typer.prompt("Select dataset (index or name)")
-            
+
             # Try by index
             if choice.isdigit():
                 idx = int(choice) - 1
                 if 0 <= idx < len(SUPPORTED_DATASETS):
                     return SUPPORTED_DATASETS[idx]
-            
+
             # Try by name (partial match)
             for dataset in SUPPORTED_DATASETS:
                 if choice.lower() in dataset.lower():
                     return dataset
-            
+
             rprint(f"[red]Invalid choice: {choice}[/red]")
         except typer.Abort:
             raise typer.Exit(code=1)
@@ -127,11 +143,17 @@ def select_dataset_interactively() -> str:
 def validate_model_and_dataset(model: str, dataset: str) -> Tuple[bool, str]:
     """Validate model and dataset combination."""
     if model not in SUPPORTED_MODELS:
-        return False, f"Model '{model}' not supported. Use 'vectormerge list-models' to see available models."
-    
+        return (
+            False,
+            f"Model '{model}' not supported. Use 'vectormerge list-models' to see available models.",
+        )
+
     if dataset not in SUPPORTED_DATASETS:
-        return False, f"Dataset '{dataset}' not supported. Use 'vectormerge list-datasets' to see available datasets."
-    
+        return (
+            False,
+            f"Dataset '{dataset}' not supported. Use 'vectormerge list-datasets' to see available datasets.",
+        )
+
     return True, ""
 
 
@@ -139,7 +161,7 @@ def check_file_exists(file_path: Path, description: str, required: bool = True) 
     """Check if a file exists and provide user feedback."""
     if file_path.exists():
         return True
-    
+
     if required:
         rprint(f"[red]Error:[/red] {description} not found: {file_path}")
         return False
@@ -151,37 +173,37 @@ def check_file_exists(file_path: Path, description: str, required: bool = True) 
 def parse_embedding_filename(filename: str) -> Optional[Tuple[str, str, str]]:
     """
     Parse embedding filename to extract model, dataset, and type.
-    
+
     Args:
         filename: Embedding filename (e.g., "corpus_embeddings_gte_fiqa.npy")
-        
+
     Returns:
         Tuple of (model, dataset, type) or None if parsing fails
     """
-    if not filename.endswith('.npy'):
+    if not filename.endswith(".npy"):
         return None
-    
+
     # Remove .npy extension
     base_name = filename[:-4]
-    
+
     # Split by underscore
-    parts = base_name.split('_')
-    
+    parts = base_name.split("_")
+
     if len(parts) < 3:
         return None
-    
+
     # Last part is type (corpus/query)
     type_ = parts[0]
-    if type_ not in ['corpus', 'query']:
+    if type_ not in ["corpus", "query"]:
         return None
-    
+
     # Second to last is dataset
     dataset = parts[-1]
-    
+
     # Everything before that is model (may contain underscores)
     # model = '_'.join(parts[:-2])
     model = parts[2]
-    
+
     return model, dataset, type_
 
 
@@ -203,9 +225,10 @@ def format_size(size_bytes: int) -> str:
     """Format size in bytes to human readable format."""
     if size_bytes == 0:
         return "0 B"
-    
+
     size_names = ["B", "KB", "MB", "GB", "TB"]
     import math
+
     i = int(math.floor(math.log(size_bytes, 1024)))
     p = math.pow(1024, i)
     s = round(size_bytes / p, 2)
@@ -218,17 +241,15 @@ def show_success_tips() -> None:
         "💡 Use 'vectormerge doctor' to check system health",
         "📚 Check 'vectormerge --help' for all commands",
         "🔧 Configure defaults with 'vectormerge init'",
-        "📊 View configs with 'vectormerge show-config'"
+        "📊 View configs with 'vectormerge show-config'",
     ]
-    
+
     import random
+
     tip = random.choice(tips)
-    
+
     panel = Panel(
-        tip,
-        title="[bold blue]💡 Tip[/bold blue]",
-        border_style="blue",
-        padding=(0, 1)
+        tip, title="[bold blue]💡 Tip[/bold blue]", border_style="blue", padding=(0, 1)
     )
     console.print(panel)
 
@@ -247,7 +268,7 @@ def confirm_action(message: str, default: bool = False) -> bool:
         response = typer.prompt(message + suffix, default="" if not default else "y")
         if not response:
             return default
-        return response.lower().startswith('y')
+        return response.lower().startswith("y")
     except typer.Abort:
         return False
 
@@ -270,32 +291,32 @@ def display_info(message: str) -> None:
 
 def display_success(message: str) -> None:
     """Display success message."""
-    rprint(f"[green]Success:[/green] {message}") 
+    rprint(f"[green]Success:[/green] {message}")
+
 
 def handle_extra_args(ctx: Context) -> VectorMergeConfig:
     """Handle extra arguments."""
     extra_dict = parse_dynamic_config(ctx)
+    settings_path = Path.cwd() / "settings.yaml"
+
+    if settings_path.exists():
+        try:
+            settings = load_settings_with_args(
+                overrides=extra_dict, settings_path=settings_path
+            )
+            return settings_to_legacy_config(settings)
+        except Exception:
+            pass
+
     config_loader = ConfigLoader().load_config()
     if extra_dict:
         config_loader.update_config(extra_dict)
     return config_loader.config
 
+
 def parse_dynamic_config(ctx: Context) -> dict[str, Any]:
-    extra = ctx.args  # All unknown parameters are here
-    dynamic: dict[str, Any] = {}
-    for arg in assemble_args_list(extra):
-        if arg.startswith("--") and "=" in arg:
-            key_path, val = arg.lstrip("-").split("=", 1)
-            if val.isdigit():
-                val = int(val)
-            elif val.replace(".", "").isdigit():
-                val = float(val)
-            ptr = dynamic
-            parts = key_path.split(".")
-            for p in parts[:-1]:
-                ptr = ptr.setdefault(p, {})
-            ptr[parts[-1]] = val
-    return dynamic
+    return parse_overrides(ctx.args)
+
 
 def assemble_args_list(args: List[str]) -> List[str]:
     """Assemble a list of arguments from a list of strings."""
@@ -303,6 +324,10 @@ def assemble_args_list(args: List[str]) -> List[str]:
     for index, arg in enumerate(args):
         if arg.startswith("--") and "=" in arg:
             new_args.append(arg)
-        elif arg.startswith("--") and index+1 < len(args) and not args[index + 1].startswith("--"):
+        elif (
+            arg.startswith("--")
+            and index + 1 < len(args)
+            and not args[index + 1].startswith("--")
+        ):
             new_args.append(f"{arg}={args[index + 1]}")
     return new_args

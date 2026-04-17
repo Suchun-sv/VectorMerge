@@ -49,23 +49,24 @@ from .mapping import (
     GromovWassersteinMappingStrategy,
 )
 
+from .core.api import prepare_dataset, run_transform
+from .core.specs import RunOptions, DatasetPrepareSpec, TransformSpec
+from .core.results import DatasetPrepareResult, TransformResult
+
 # Public API
 __all__ = [
     # Dataset
     "load_dataset",
     "list_datasets",
     "validate_dataset",
-    
     # Embeddings
     "EmbeddingGenerator",
     "get_embedding_generator",
     "generate_embeddings",
-
     # Clustering
     "ClusterManager",
     "ClusteringConfig",
     "ClusteringResult",
-
     # Vector space mapping
     "VectorSpaceMapper",
     "ProcrustesMappingStrategy",
@@ -73,15 +74,20 @@ __all__ = [
     "LA2MStrategy",
     "CCAMappingStrategy",
     "GromovWassersteinMappingStrategy",
-    
-
+    # V2 core API
+    "prepare_dataset",
+    "run_transform",
+    "RunOptions",
+    "DatasetPrepareSpec",
+    "TransformSpec",
+    "DatasetPrepareResult",
+    "TransformResult",
     # Constants
     "SUPPORTED_MODELS",
     "SUPPORTED_DATASETS",
-    
     # Package metadata
     "__version__",
     "__author__",
     "__email__",
     "__description__",
-] 
+]

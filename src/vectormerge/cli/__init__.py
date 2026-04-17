@@ -17,6 +17,7 @@ from .dataset import dataset_app
 from .config import config_app
 from .evaluate import evaluate_app
 from .cluster import create_cluster_app
+from .tran_emb import tran_emb_app
 
 
 # Initialize main CLI application
@@ -26,34 +27,55 @@ app = typer.Typer(
     add_completion=False,
     rich_markup_mode="rich",
     no_args_is_help=True,
-    context_settings={"allow_extra_args": True, "ignore_unknown_options": True}
+    context_settings={"allow_extra_args": True, "ignore_unknown_options": True},
 )
 
 # Add version callback
 app.callback()(lambda version: None)
 app.add_typer(embedding_app, name="embedding")
-app.add_typer(map_app, name="map-embedding", help="Create and manage embedding mappings")
-app.command("create-reference", help="Create and manage reference datasets")(create_reference)
-app.add_typer(create_cluster_app, name="create-cluster", help="Create and manage clustering operations")
+app.add_typer(
+    map_app, name="map-embedding", help="Create and manage embedding mappings"
+)
+app.command("create-reference", help="Create and manage reference datasets")(
+    create_reference
+)
+app.add_typer(
+    create_cluster_app,
+    name="create-cluster",
+    help="Create and manage clustering operations",
+)
 app.add_typer(dataset_app, name="dataset")
 app.add_typer(config_app, name="config", help="Manage VectorMerge configuration")
-app.add_typer(evaluate_app, name="evaluate", help="Evaluate the performance of a mapping model.")
+app.add_typer(
+    evaluate_app, name="evaluate", help="Evaluate the performance of a mapping model."
+)
+app.add_typer(
+    tran_emb_app, name="tran-emb", help="Run transform embedding methods (V2)."
+)
+
+
 # Add global options
 @app.callback()
 def main(
     version: bool = typer.Option(
-        False, "--version", callback=version_callback, is_eager=True,
-        help="Show version information"
+        False,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Show version information",
     ),
-    verbose: bool = typer.Option(False, "--verbose", "-v", help="Enable verbose output"),
+    verbose: bool = typer.Option(
+        False, "--verbose", "-v", help="Enable verbose output"
+    ),
 ):
     """VectorMerge CLI - Advanced embedding generation and mapping tools."""
     # Set random seed for reproducibility
     set_seed()
-    
+
     # Configure logging if verbose
     if verbose:
         import logging
+
         logging.basicConfig(level=logging.INFO)
 
 
@@ -61,7 +83,9 @@ def main(
 @app.command("download-dataset", help="Download datasets")
 def download_dataset_compat(
     dataset: str = typer.Argument(..., help="Dataset name"),
-    data_path: Path = typer.Option(Path("./data/raw/"), "--data-path", help="Path to save datasets"),
+    data_path: Path = typer.Option(
+        Path("./data/raw/"), "--data-path", help="Path to save datasets"
+    ),
     force: bool = typer.Option(False, "--force", help="Force re-download"),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Verbose output"),
 ):
@@ -69,16 +93,26 @@ def download_dataset_compat(
     # from ..dataset import download_dataset as download_dataset_func
     # download_dataset_func(dataset=dataset, data_path=data_path, force=force, interactive=False, verbose=verbose)
     from ..dataset import load_dataset
-    load_dataset(dataset_name=dataset, data_path=data_path, force=force, interactive=False, verbose=verbose)
+
+    load_dataset(
+        dataset_name=dataset,
+        data_path=data_path,
+        force=force,
+        interactive=False,
+        verbose=verbose,
+    )
 
 
 @app.command("list-datasets", help="List available datasets")
 def list_datasets_compat(
     show_stats: bool = typer.Option(False, "--stats", help="Show dataset statistics"),
-    data_path: Path = typer.Option(Path("./data/raw/"), "--data-path", help="Path to data directory"),
+    data_path: Path = typer.Option(
+        Path("./data/raw/"), "--data-path", help="Path to data directory"
+    ),
 ):
     """List available datasets (backward compatibility)."""
     from .dataset import list_datasets
+
     list_datasets(show_stats=show_stats, data_path=data_path)
 
 
@@ -88,15 +122,15 @@ def list_models():
     from .base import SUPPORTED_MODELS
     from rich.table import Table
     from .base import console
-    
+
     rprint("[blue]📋 Available Models:[/blue]")
-    
+
     table = Table(show_header=True, header_style="bold magenta")
     table.add_column("Index", style="dim", width=6)
     table.add_column("Model", style="cyan")
     table.add_column("Type", style="green")
     table.add_column("Description", style="yellow")
-    
+
     for i, model in enumerate(SUPPORTED_MODELS, 1):
         if model.startswith("text-embedding"):
             model_type = "OpenAI API"
@@ -119,13 +153,14 @@ def list_models():
         else:
             model_type = "Unknown"
             desc = "Unknown model type"
-        
+
         table.add_row(str(i), model, model_type, desc)
-    
+
     console.print(table)
+
 
 main_app = app
 
 # For direct module usage
 if __name__ == "__main__":
-    app() 
+    app()

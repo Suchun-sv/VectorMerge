@@ -6,18 +6,23 @@ import os
 import dotenv
 import shutil
 
-REPO_ENTITY = "suchun"
-REPO_NAME = "VectorMerge"  # your dataset repo name
+REPO_ENTITY = os.getenv("VM_HF_REPO_ENTITY", "DB-Edinburgh")
+REPO_NAME = os.getenv("VM_HF_REPO_NAME", "VectorBenchmark")
 
-def _get_token() -> str:
-    """Load Hugging Face token from environment or .env file."""
+
+def _get_token(required: bool = True) -> Optional[str]:
+    """Load Hugging Face token from environment or .env file.
+
+    Public dataset downloads can work without auth; uploads require auth.
+    """
     dotenv.load_dotenv()
     token = os.getenv("HF_TOKEN") or os.getenv("HUGGINGFACE_TOKEN")
-    if not token:
+    if required and not token:
         raise RuntimeError(
             "HF_TOKEN or HUGGINGFACE_TOKEN not found in environment or .env"
         )
     return token
+
 
 def upload_embedding(
     local_file: Path,
@@ -29,7 +34,7 @@ def upload_embedding(
     """
     Upload a local .npy file to Hugging Face under `embeddings/<upload_file_name>`.
     """
-    token = _get_token()
+    token = _get_token(required=True)
     api = HfApi(token=token)
     path_in_repo = f"embeddings/{upload_file_name}"
     api.upload_file(
@@ -39,7 +44,10 @@ def upload_embedding(
         repo_type="dataset",
         commit_message=commit_message or f"Upload embedding: {upload_file_name}",
     )
-    print(f"✅ Uploaded '{local_file.name}' → '{path_in_repo}' in {repo_entity}/{repo_name}")
+    print(
+        f"✅ Uploaded '{local_file.name}' → '{path_in_repo}' in {repo_entity}/{repo_name}"
+    )
+
 
 def download_embedding(
     download_file_name: str,
@@ -51,9 +59,9 @@ def download_embedding(
     """
     Download a specific embedding file from HF under `embeddings/<filename>`,
     caching locally in target_dir. Returns the local file path.
-    For now, only support use of HF_TOKEN in .env file.
+    Uses HF token if available; falls back to anonymous download for public repos.
     """
-    token = _get_token()
+    token = _get_token(required=False)
     target_dir.mkdir(parents=True, exist_ok=True)
     local_path = hf_hub_download(
         repo_id=f"{repo_entity}/{repo_name}",

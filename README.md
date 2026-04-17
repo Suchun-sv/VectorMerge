@@ -1,6 +1,16 @@
 # VectorMerge 🚀
 ![logo](./images/logo.png)
 
+## Vector Embedding Dataset (about 1TB)
+
+Precomputed vector embeddings are hosted at:
+
+- https://huggingface.co/datasets/DB-Edinburgh/VectorBenchmark/
+
+This dataset is access-controlled. Please fill in the required access information on Hugging Face and wait for approval before downloading.
+
+If approval is delayed for a long time, please email `suchunsv@gmail.com` to remind us to approve your request.
+
 # Generate Embeddings
 ## vectormerge generate-embedding
 
