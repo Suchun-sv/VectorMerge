@@ -73,8 +73,11 @@ def download_embedding(
         revision=revision,
         token=token,
     )
-    shutil.move(local_path, target_dir / Path(download_file_name))
-    if Path(local_path).parent.exists() and not os.listdir(Path(local_path).parent):
-        shutil.rmtree(Path(local_path).parent)
-    print(f"✅ Downloaded: {local_path}")
-    return Path(local_path)
+    source_path = Path(local_path)
+    destination_path = target_dir / download_file_name
+    if source_path.resolve() != destination_path.resolve():
+        shutil.move(str(source_path), str(destination_path))
+        if source_path.parent.exists() and not os.listdir(source_path.parent):
+            shutil.rmtree(source_path.parent)
+    print(f"✅ Downloaded: {destination_path}")
+    return destination_path
