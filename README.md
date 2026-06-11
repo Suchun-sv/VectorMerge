@@ -1,5 +1,9 @@
 # VectorMerge 🚀
 
+# Setting Data
+We provide embeddings in the HF(
+https://github.com/DBgroup-Edinburgh/VectorBenchmark), you can also use https://github.com/DBgroup-Edinburgh/VectorBenchmark)
+
 # Generate Embeddings
 ## vectormerge generate-embedding
 
