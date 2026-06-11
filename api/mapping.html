@@ -27,21 +27,22 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
   
   <!-- So that users can add custom icons -->
-  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/mapping';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Reference Points" href="reference.html" />
@@ -49,20 +50,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -88,7 +95,7 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
   <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
@@ -203,11 +210,18 @@
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -220,8 +234,7 @@
           
           
           
-          <a href="https://github.com/Suchun-sv/VectorMerge" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
+          <a href="https://github.com/Suchun-sv/VectorMerge" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
         </li>
 </ul></div>
       
@@ -331,11 +344,18 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -348,8 +368,7 @@
           
           
           
-          <a href="https://github.com/Suchun-sv/VectorMerge" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
+          <a href="https://github.com/Suchun-sv/VectorMerge" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
         </li>
 </ul></div>
         
@@ -358,7 +377,14 @@
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
         <div class="sidebar-primary-item">
+
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
@@ -418,1118 +444,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-vectormerge.mapping">
-<span id="mapping-strategies"></span><h1>Mapping Strategies<a class="headerlink" href="#module-vectormerge.mapping" title="Link to this heading">#</a></h1>
-<p>VectorMerge Mapping Package</p>
-<p>This package provides comprehensive vector space mapping functionality for VectorMerge.
-It includes various mapping strategies, clustering algorithms, loss functions, and utilities
-for transforming embeddings between different vector spaces.</p>
-<p>Main Classes:
-- VectorSpaceMapper: Main interface for all mapping strategies
-- MappingConfig: Configuration class for mapping parameters
-- MappingResult: Result container for mapping operations</p>
-<p>Mapping Strategies:
-- ProcrustesMappingStrategy: Procrustes analysis-based mapping
-- NonLinearMappingStrategy: Non-linear neural network mapping
-- LA2MStrategy: Clustering-based mapping from the LA2M paper</p>
-<p>Quick Usage:
-<a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>python
-from vectormerge.mapping import VectorSpaceMapper, MappingConfig</p>
-<p># Create mapper with default configuration
-mapper = VectorSpaceMapper(strategy=”procrustes”)</p>
-<p># Or with custom configuration
-config = MappingConfig(num_clusters=100, learning_rate=0.001)
-mapper = VectorSpaceMapper(strategy=”la2m”, config=config)</p>
-<p># Fit and transform
-transformed = mapper.fit_transform(</p>
-<blockquote>
-<div><p>source_embeddings, target_embeddings, reference_indices</p>
-</div></blockquote>
-<section id="id5">
-<h2>)<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
-</section>
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.mapping.CCAMappingStrategy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">CCAMappingStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.mapping.MappingConfig" title="vectormerge.mapping.base.MappingConfig"><span class="pre">MappingConfig</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/cca.html#CCAMappingStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.CCAMappingStrategy" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vectormerge.mapping.MappingStrategy" title="vectormerge.mapping.base.MappingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">MappingStrategy</span></code></a></p>
-<p>CCA (Canonical Correlation Analysis) mapping strategy.</p>
-<p>This strategy uses CCA to find linear transformations that maximize
-correlation between source and target embedding spaces.</p>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.CCAMappingStrategy.check_fit" title="vectormerge.mapping.CCAMappingStrategy.check_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_fit</span></code></a>(path)</p></td>
-<td><p>Check if CCA mapping is fitted and saved.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_on_disk</span></code>(path)</p></td>
-<td><p>Check if the mapping is fitted and on disk.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(source_embeddings, target_embeddings, ...)</p></td>
-<td><p>Fit the mapping from source to target embeddings using reference data.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(source_embeddings, ...[, ...])</p></td>
-<td><p>Fit the mapping and transform embeddings.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.CCAMappingStrategy.load" title="vectormerge.mapping.CCAMappingStrategy.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(path)</p></td>
-<td><p>Load CCA mapping parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.CCAMappingStrategy.save" title="vectormerge.mapping.CCAMappingStrategy.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(path)</p></td>
-<td><p>Save CCA mapping parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(embeddings, **kwargs)</p></td>
-<td><p>Transform embeddings using the learned mapping.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.CCAMappingStrategy.check_fit">
-<span class="sig-name descname"><span class="pre">check_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/cca.html#CCAMappingStrategy.check_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.CCAMappingStrategy.check_fit" title="Link to this definition">#</a></dt>
-<dd><p>Check if CCA mapping is fitted and saved.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – Path to check for saved mapping</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>True if mapping is fitted and saved, False otherwise</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.CCAMappingStrategy.load">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.mapping.CCAMappingStrategy" title="vectormerge.mapping.strategies.cca.CCAMappingStrategy"><span class="pre">CCAMappingStrategy</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/cca.html#CCAMappingStrategy.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.CCAMappingStrategy.load" title="Link to this definition">#</a></dt>
-<dd><p>Load CCA mapping parameters.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – Path to load the mapping parameters from</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Loaded CCA mapping strategy</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.CCAMappingStrategy.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/cca.html#CCAMappingStrategy.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.CCAMappingStrategy.save" title="Link to this definition">#</a></dt>
-<dd><p>Save CCA mapping parameters.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – Path to save the mapping parameters</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.mapping.GromovWassersteinMappingStrategy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">GromovWassersteinMappingStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.mapping.MappingConfig" title="vectormerge.mapping.base.MappingConfig"><span class="pre">MappingConfig</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/gromov_wasserstein.html#GromovWassersteinMappingStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.GromovWassersteinMappingStrategy" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vectormerge.mapping.MappingStrategy" title="vectormerge.mapping.base.MappingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">MappingStrategy</span></code></a></p>
-<p>GPU/CPU compatible Gromov-Wasserstein alignment strategy using POT implementation.</p>
-<p>This strategy uses the Gromov-Wasserstein distance to find correspondences between
-embedding spaces by comparing their internal structure rather than absolute positions.
-Uses the POT library for efficient computation with automatic GPU/CPU selection.</p>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.GromovWassersteinMappingStrategy.check_fit" title="vectormerge.mapping.GromovWassersteinMappingStrategy.check_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_fit</span></code></a>(path)</p></td>
-<td><p>Check if Gromov-Wasserstein mapping is fitted and saved.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_on_disk</span></code>(path)</p></td>
-<td><p>Check if the mapping is fitted and on disk.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(source_embeddings, target_embeddings, ...)</p></td>
-<td><p>Fit the mapping from source to target embeddings using reference data.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(source_embeddings, ...[, ...])</p></td>
-<td><p>Fit the mapping and transform embeddings.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.GromovWassersteinMappingStrategy.load" title="vectormerge.mapping.GromovWassersteinMappingStrategy.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(path)</p></td>
-<td><p>Load Gromov-Wasserstein mapping parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.GromovWassersteinMappingStrategy.save" title="vectormerge.mapping.GromovWassersteinMappingStrategy.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(path)</p></td>
-<td><p>Save Gromov-Wasserstein mapping parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(embeddings, **kwargs)</p></td>
-<td><p>Transform embeddings using the learned mapping.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.GromovWassersteinMappingStrategy.check_fit">
-<span class="sig-name descname"><span class="pre">check_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/gromov_wasserstein.html#GromovWassersteinMappingStrategy.check_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.GromovWassersteinMappingStrategy.check_fit" title="Link to this definition">#</a></dt>
-<dd><p>Check if Gromov-Wasserstein mapping is fitted and saved.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – Path to check for saved mapping</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>True if mapping is fitted and saved, False otherwise</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.GromovWassersteinMappingStrategy.load">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.mapping.GromovWassersteinMappingStrategy" title="vectormerge.mapping.strategies.gromov_wasserstein.GromovWassersteinMappingStrategy"><span class="pre">GromovWassersteinMappingStrategy</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/gromov_wasserstein.html#GromovWassersteinMappingStrategy.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.GromovWassersteinMappingStrategy.load" title="Link to this definition">#</a></dt>
-<dd><p>Load Gromov-Wasserstein mapping parameters.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – Path to load the mapping parameters from</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Loaded Gromov-Wasserstein mapping strategy</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.GromovWassersteinMappingStrategy.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/gromov_wasserstein.html#GromovWassersteinMappingStrategy.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.GromovWassersteinMappingStrategy.save" title="Link to this definition">#</a></dt>
-<dd><p>Save Gromov-Wasserstein mapping parameters.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – Path to save the mapping parameters</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.mapping.LA2MMapper">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">LA2MMapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cluster_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'la2m-cluster'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_prime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pca_mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pca_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_norm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_param</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_embedding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'./data/processed/references'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'./data/processed/clusters'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'./data/processed/embeddings'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_save_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_clusters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">42</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/mapping/wrapper.html#LA2MMapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.LA2MMapper" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vectormerge.mapping.LA2MStrategy" title="vectormerge.mapping.strategies.la2m.LA2MStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">LA2MStrategy</span></code></a></p>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_on_disk</span></code>(path)</p></td>
-<td><p>Check if the mapping is fitted and on disk.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(source_embeddings, target_embeddings, ...)</p></td>
-<td><p>Fit the mapping from source to target embeddings using reference data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(source_embeddings, ...[, ...])</p></td>
-<td><p>Fit the mapping and transform embeddings.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_cluster_statistics</span></code>()</p></td>
-<td><p>Get detailed statistics about the clustering and mappings.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code>(path[, clustering_manager])</p></td>
-<td><p>Load a fitted LA2M mapping strategy.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_pca_instance</span></code>(load_path, prefix)</p></td>
-<td><p>Load PCA instance.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code>(path)</p></td>
-<td><p>Save the fitted LA2M mapping strategy.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_pca_instance</span></code>(pca_instance, save_path, ...)</p></td>
-<td><p>Save PCA instance.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(embeddings, **kwargs)</p></td>
-<td><p>Transform embeddings using the learned mapping.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.mapping.LA2MStrategy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">LA2MStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.mapping.MappingConfig" title="vectormerge.mapping.base.MappingConfig"><span class="pre">MappingConfig</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">clustering_manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="clustering.html#vectormerge.clustering.ClusterManager" title="vectormerge.clustering.manage.ClusterManager"><span class="pre">ClusterManager</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/la2m.html#LA2MStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.LA2MStrategy" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vectormerge.mapping.MappingStrategy" title="vectormerge.mapping.base.MappingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">MappingStrategy</span></code></a></p>
-<p>Clustering-based mapping strategy (LA2M method from the paper).</p>
-<p>This strategy:
-1. Uses ClusterManager to cluster reference points
-2. Assigns target points to clusters through ClusterManager
-3. Learns local Procrustes mappings for each cluster
-4. Applies appropriate local mapping based on cluster assignment</p>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_on_disk</span></code>(path)</p></td>
-<td><p>Check if the mapping is fitted and on disk.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(source_embeddings, target_embeddings, ...)</p></td>
-<td><p>Fit the mapping from source to target embeddings using reference data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(source_embeddings, ...[, ...])</p></td>
-<td><p>Fit the mapping and transform embeddings.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.LA2MStrategy.get_cluster_statistics" title="vectormerge.mapping.LA2MStrategy.get_cluster_statistics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_cluster_statistics</span></code></a>()</p></td>
-<td><p>Get detailed statistics about the clustering and mappings.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.LA2MStrategy.load" title="vectormerge.mapping.LA2MStrategy.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(path[, clustering_manager])</p></td>
-<td><p>Load a fitted LA2M mapping strategy.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.LA2MStrategy.load_pca_instance" title="vectormerge.mapping.LA2MStrategy.load_pca_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_pca_instance</span></code></a>(load_path, prefix)</p></td>
-<td><p>Load PCA instance.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.LA2MStrategy.save" title="vectormerge.mapping.LA2MStrategy.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(path)</p></td>
-<td><p>Save the fitted LA2M mapping strategy.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.LA2MStrategy.save_pca_instance" title="vectormerge.mapping.LA2MStrategy.save_pca_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_pca_instance</span></code></a>(pca_instance, save_path, ...)</p></td>
-<td><p>Save PCA instance.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(embeddings, **kwargs)</p></td>
-<td><p>Transform embeddings using the learned mapping.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.LA2MStrategy.get_cluster_statistics">
-<span class="sig-name descname"><span class="pre">get_cluster_statistics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/la2m.html#LA2MStrategy.get_cluster_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.LA2MStrategy.get_cluster_statistics" title="Link to this definition">#</a></dt>
-<dd><p>Get detailed statistics about the clustering and mappings.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dictionary with cluster statistics</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.LA2MStrategy.load">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clustering_manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="clustering.html#vectormerge.clustering.ClusterManager" title="vectormerge.clustering.manage.ClusterManager"><span class="pre">ClusterManager</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.mapping.LA2MStrategy" title="vectormerge.mapping.strategies.la2m.LA2MStrategy"><span class="pre">LA2MStrategy</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/la2m.html#LA2MStrategy.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.LA2MStrategy.load" title="Link to this definition">#</a></dt>
-<dd><p>Load a fitted LA2M mapping strategy.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.LA2MStrategy.load_pca_instance">
-<span class="sig-name descname"><span class="pre">load_pca_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">load_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/la2m.html#LA2MStrategy.load_pca_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.LA2MStrategy.load_pca_instance" title="Link to this definition">#</a></dt>
-<dd><p>Load PCA instance.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.LA2MStrategy.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/la2m.html#LA2MStrategy.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.LA2MStrategy.save" title="Link to this definition">#</a></dt>
-<dd><p>Save the fitted LA2M mapping strategy.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.LA2MStrategy.save_pca_instance">
-<span class="sig-name descname"><span class="pre">save_pca_instance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pca_instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PCA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/la2m.html#LA2MStrategy.save_pca_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.LA2MStrategy.save_pca_instance" title="Link to this definition">#</a></dt>
-<dd><p>Save PCA instance.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingConfig">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">MappingConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_param</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_embedding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">la2m_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LA2MConfig</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">LA2MConfig(num_clusters=50,</span> <span class="pre">cluster_method='la2m-cluster',</span> <span class="pre">d_prime=10,</span> <span class="pre">pca_mapping=True,</span> <span class="pre">pca_dim=14,</span> <span class="pre">use_norm=False)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonlinear_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">NonLinearMappingConfig</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">NonLinearMappingConfig(num_layers=3,</span> <span class="pre">batch_size=32,</span> <span class="pre">learning_rate=0.001,</span> <span class="pre">num_epochs=100,</span> <span class="pre">hidden_dim=512,</span> <span class="pre">dropout_rate=0.1,</span> <span class="pre">loss_type='mse')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">procrustes_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProcrustesConfig</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">ProcrustesConfig(approximate=False,</span> <span class="pre">q=1500,</span> <span class="pre">with_rotation=True,</span> <span class="pre">with_scaling=True,</span> <span class="pre">use_pca=False,</span> <span class="pre">reduced_dim=0,</span> <span class="pre">procrustes_pca_type='none',</span> <span class="pre">use_norm=True)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cca_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CCAConfig</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">CCAConfig(n_components=10,</span> <span class="pre">scale=True,</span> <span class="pre">max_iter=500,</span> <span class="pre">tol=1e-06,</span> <span class="pre">copy=True)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gromov_wasserstein_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">GromovWassersteinConfig</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">GromovWassersteinConfig(loss_fun='square_loss',</span> <span class="pre">max_iter=1000,</span> <span class="pre">tol=1e-09,</span> <span class="pre">verbose=False,</span> <span class="pre">log=False,</span> <span class="pre">armijo=False,</span> <span class="pre">epsilon=0.1,</span> <span class="pre">symmetric=True,</span> <span class="pre">G0='uniform')</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/mapping/base.html#MappingConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.MappingConfig" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Configuration for mapping strategies.</p>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.MappingConfig.from_dict" title="vectormerge.mapping.MappingConfig.from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_dict</span></code></a>(config_dict)</p></td>
-<td><p>Create from dictionary.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.MappingConfig.from_update_dict" title="vectormerge.mapping.MappingConfig.from_update_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_update_dict</span></code></a>(update_dict)</p></td>
-<td><p>init and update config from dictionary.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.MappingConfig.to_dict" title="vectormerge.mapping.MappingConfig.to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_dict</span></code></a>()</p></td>
-<td><p>Convert to dictionary.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.MappingConfig.to_string" title="vectormerge.mapping.MappingConfig.to_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_string</span></code></a>()</p></td>
-<td><p>Convert to string.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingConfig.batch_size">
-<span class="sig-name descname"><span class="pre">batch_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">32</span></em><a class="headerlink" href="#vectormerge.mapping.MappingConfig.batch_size" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingConfig.cca_config">
-<span class="sig-name descname"><span class="pre">cca_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">CCAConfig</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">CCAConfig(n_components=10,</span> <span class="pre">scale=True,</span> <span class="pre">max_iter=500,</span> <span class="pre">tol=1e-06,</span> <span class="pre">copy=True)</span></em><a class="headerlink" href="#vectormerge.mapping.MappingConfig.cca_config" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingConfig.device">
-<span class="sig-name descname"><span class="pre">device</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'auto'</span></em><a class="headerlink" href="#vectormerge.mapping.MappingConfig.device" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingConfig.from_dict">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.mapping.MappingConfig" title="vectormerge.mapping.base.MappingConfig"><span class="pre">MappingConfig</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/base.html#MappingConfig.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.MappingConfig.from_dict" title="Link to this definition">#</a></dt>
-<dd><p>Create from dictionary.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingConfig.from_update_dict">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_update_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">update_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.mapping.MappingConfig" title="vectormerge.mapping.base.MappingConfig"><span class="pre">MappingConfig</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/base.html#MappingConfig.from_update_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.MappingConfig.from_update_dict" title="Link to this definition">#</a></dt>
-<dd><p>init and update config from dictionary.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingConfig.gromov_wasserstein_config">
-<span class="sig-name descname"><span class="pre">gromov_wasserstein_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">GromovWassersteinConfig</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">GromovWassersteinConfig(loss_fun='square_loss',</span> <span class="pre">max_iter=1000,</span> <span class="pre">tol=1e-09,</span> <span class="pre">verbose=False,</span> <span class="pre">log=False,</span> <span class="pre">armijo=False,</span> <span class="pre">epsilon=0.1,</span> <span class="pre">symmetric=True,</span> <span class="pre">G0='uniform')</span></em><a class="headerlink" href="#vectormerge.mapping.MappingConfig.gromov_wasserstein_config" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingConfig.la2m_config">
-<span class="sig-name descname"><span class="pre">la2m_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">LA2MConfig</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">LA2MConfig(num_clusters=50,</span> <span class="pre">cluster_method='la2m-cluster',</span> <span class="pre">d_prime=10,</span> <span class="pre">pca_mapping=True,</span> <span class="pre">pca_dim=14,</span> <span class="pre">use_norm=False)</span></em><a class="headerlink" href="#vectormerge.mapping.MappingConfig.la2m_config" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingConfig.nonlinear_config">
-<span class="sig-name descname"><span class="pre">nonlinear_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NonLinearMappingConfig</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">NonLinearMappingConfig(num_layers=3,</span> <span class="pre">batch_size=32,</span> <span class="pre">learning_rate=0.001,</span> <span class="pre">num_epochs=100,</span> <span class="pre">hidden_dim=512,</span> <span class="pre">dropout_rate=0.1,</span> <span class="pre">loss_type='mse')</span></em><a class="headerlink" href="#vectormerge.mapping.MappingConfig.nonlinear_config" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingConfig.procrustes_config">
-<span class="sig-name descname"><span class="pre">procrustes_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ProcrustesConfig</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ProcrustesConfig(approximate=False,</span> <span class="pre">q=1500,</span> <span class="pre">with_rotation=True,</span> <span class="pre">with_scaling=True,</span> <span class="pre">use_pca=False,</span> <span class="pre">reduced_dim=0,</span> <span class="pre">procrustes_pca_type='none',</span> <span class="pre">use_norm=True)</span></em><a class="headerlink" href="#vectormerge.mapping.MappingConfig.procrustes_config" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingConfig.save_embedding">
-<span class="sig-name descname"><span class="pre">save_embedding</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#vectormerge.mapping.MappingConfig.save_embedding" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingConfig.save_param">
-<span class="sig-name descname"><span class="pre">save_param</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#vectormerge.mapping.MappingConfig.save_param" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingConfig.to_dict">
-<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/base.html#MappingConfig.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.MappingConfig.to_dict" title="Link to this definition">#</a></dt>
-<dd><p>Convert to dictionary.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingConfig.to_string">
-<span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/base.html#MappingConfig.to_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.MappingConfig.to_string" title="Link to this definition">#</a></dt>
-<dd><p>Convert to string.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingConfig.verbose">
-<span class="sig-name descname"><span class="pre">verbose</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#vectormerge.mapping.MappingConfig.verbose" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingResult">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">MappingResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transformed_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping_strategy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/mapping/base.html#MappingResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.MappingResult" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Result container for mapping operations.</p>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.MappingResult.load" title="vectormerge.mapping.MappingResult.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(path)</p></td>
-<td><p>Load mapping result from disk.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.MappingResult.save" title="vectormerge.mapping.MappingResult.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(path)</p></td>
-<td><p>Save mapping result to disk.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingResult.load">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.mapping.MappingResult" title="vectormerge.mapping.base.MappingResult"><span class="pre">MappingResult</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/base.html#MappingResult.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.MappingResult.load" title="Link to this definition">#</a></dt>
-<dd><p>Load mapping result from disk.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – Path to load from</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Loaded mapping result</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingResult.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/base.html#MappingResult.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.MappingResult.save" title="Link to this definition">#</a></dt>
-<dd><p>Save mapping result to disk.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – Path to save the result</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingStrategy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">MappingStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.mapping.MappingConfig" title="vectormerge.mapping.base.MappingConfig"><span class="pre">MappingConfig</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/mapping/base.html#MappingStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.MappingStrategy" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<p>Abstract base class for embedding mapping strategies.</p>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.MappingStrategy.check_on_disk" title="vectormerge.mapping.MappingStrategy.check_on_disk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_on_disk</span></code></a>(path)</p></td>
-<td><p>Check if the mapping is fitted and on disk.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.MappingStrategy.fit" title="vectormerge.mapping.MappingStrategy.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(source_embeddings, target_embeddings, ...)</p></td>
-<td><p>Fit the mapping from source to target embeddings using reference data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.MappingStrategy.fit_transform" title="vectormerge.mapping.MappingStrategy.fit_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code></a>(source_embeddings, ...[, ...])</p></td>
-<td><p>Fit the mapping and transform embeddings.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.MappingStrategy.load" title="vectormerge.mapping.MappingStrategy.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(path)</p></td>
-<td><p>Load a fitted mapping from disk.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.MappingStrategy.save" title="vectormerge.mapping.MappingStrategy.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(path)</p></td>
-<td><p>Save the fitted mapping to disk.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.MappingStrategy.transform" title="vectormerge.mapping.MappingStrategy.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(embeddings, **kwargs)</p></td>
-<td><p>Transform embeddings using the learned mapping.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingStrategy.check_on_disk">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_on_disk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/base.html#MappingStrategy.check_on_disk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.MappingStrategy.check_on_disk" title="Link to this definition">#</a></dt>
-<dd><p>Check if the mapping is fitted and on disk.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingStrategy.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/base.html#MappingStrategy.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.MappingStrategy.fit" title="Link to this definition">#</a></dt>
-<dd><p>Fit the mapping from source to target embeddings using reference data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>source_embeddings</strong> – Source embedding space (model 1)</p></li>
-<li><p><strong>target_embeddings</strong> – Target embedding space (model 2)</p></li>
-<li><p><strong>reference_indices</strong> – Indices of reference points (D0)</p></li>
-<li><p><strong>**kwargs</strong> – Additional arguments specific to each strategy</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingStrategy.fit_transform">
-<span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embeddings_to_transform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/base.html#MappingStrategy.fit_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.MappingStrategy.fit_transform" title="Link to this definition">#</a></dt>
-<dd><p>Fit the mapping and transform embeddings.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>source_embeddings</strong> – Source embedding space</p></li>
-<li><p><strong>target_embeddings</strong> – Target embedding space</p></li>
-<li><p><strong>reference_indices</strong> – Reference indices for training</p></li>
-<li><p><strong>embeddings_to_transform</strong> – Embeddings to transform (if None, use source_embeddings)</p></li>
-<li><p><strong>**kwargs</strong> – Additional arguments</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Transformed embeddings</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingStrategy.load">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.mapping.MappingStrategy" title="vectormerge.mapping.base.MappingStrategy"><span class="pre">MappingStrategy</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/base.html#MappingStrategy.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.MappingStrategy.load" title="Link to this definition">#</a></dt>
-<dd><p>Load a fitted mapping from disk.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – Path to load the mapping from</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Loaded mapping strategy instance</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingStrategy.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/base.html#MappingStrategy.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.MappingStrategy.save" title="Link to this definition">#</a></dt>
-<dd><p>Save the fitted mapping to disk.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – Path to save the mapping</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.MappingStrategy.transform">
-<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/base.html#MappingStrategy.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.MappingStrategy.transform" title="Link to this definition">#</a></dt>
-<dd><p>Transform embeddings using the learned mapping.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>embeddings</strong> – Embeddings to transform</p></li>
-<li><p><strong>**kwargs</strong> – Additional arguments specific to each strategy</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Transformed embeddings</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.mapping.NonLinearMappingStrategy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">NonLinearMappingStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.mapping.MappingConfig" title="vectormerge.mapping.base.MappingConfig"><span class="pre">MappingConfig</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/nonlinear.html#NonLinearMappingStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.NonLinearMappingStrategy" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vectormerge.mapping.MappingStrategy" title="vectormerge.mapping.base.MappingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">MappingStrategy</span></code></a></p>
-<p>Non-linear neural network mapping strategy.</p>
-<p>This strategy uses a deeper neural network with non-linear activations
-to learn complex mappings between embedding spaces.</p>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.NonLinearMappingStrategy.check_fit" title="vectormerge.mapping.NonLinearMappingStrategy.check_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_fit</span></code></a>(path)</p></td>
-<td><p>Check if the model is fitted.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_on_disk</span></code>(path)</p></td>
-<td><p>Check if the mapping is fitted and on disk.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(source_embeddings, target_embeddings, ...)</p></td>
-<td><p>Fit the mapping from source to target embeddings using reference data.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(source_embeddings, ...[, ...])</p></td>
-<td><p>Fit the mapping and transform embeddings.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.NonLinearMappingStrategy.load" title="vectormerge.mapping.NonLinearMappingStrategy.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(path)</p></td>
-<td><p>Load a fitted non-linear mapping model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.NonLinearMappingStrategy.save" title="vectormerge.mapping.NonLinearMappingStrategy.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(path)</p></td>
-<td><p>Save the fitted non-linear mapping model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(embeddings, **kwargs)</p></td>
-<td><p>Transform embeddings using the learned mapping.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.NonLinearMappingStrategy.check_fit">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/nonlinear.html#NonLinearMappingStrategy.check_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.NonLinearMappingStrategy.check_fit" title="Link to this definition">#</a></dt>
-<dd><p>Check if the model is fitted.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.NonLinearMappingStrategy.load">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.mapping.NonLinearMappingStrategy" title="vectormerge.mapping.strategies.nonlinear.NonLinearMappingStrategy"><span class="pre">NonLinearMappingStrategy</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/nonlinear.html#NonLinearMappingStrategy.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.NonLinearMappingStrategy.load" title="Link to this definition">#</a></dt>
-<dd><p>Load a fitted non-linear mapping model.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.NonLinearMappingStrategy.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/nonlinear.html#NonLinearMappingStrategy.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.NonLinearMappingStrategy.save" title="Link to this definition">#</a></dt>
-<dd><p>Save the fitted non-linear mapping model.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.mapping.ProcrustesMapper">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">ProcrustesMapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">approximate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_rotation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_scaling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_pca</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduced_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">procrustes_pca_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_norm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_param</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_embedding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/mapping/wrapper.html#ProcrustesMapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.ProcrustesMapper" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vectormerge.mapping.ProcrustesMappingStrategy" title="vectormerge.mapping.strategies.procrustes.ProcrustesMappingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProcrustesMappingStrategy</span></code></a></p>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_fit</span></code>(path)</p></td>
-<td><p>Check if the mapping is fitted.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_on_disk</span></code>(path)</p></td>
-<td><p>Check if the mapping is fitted and on disk.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(source_embeddings, target_embeddings, ...)</p></td>
-<td><p>Fit the Procrustes mapping.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(source_embeddings, ...[, ...])</p></td>
-<td><p>Fit the mapping and transform embeddings.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code>(path)</p></td>
-<td><p>Load Procrustes mapping parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code>(path)</p></td>
-<td><p>Save Procrustes mapping parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(embeddings, **kwargs)</p></td>
-<td><p>Transform embeddings using fitted Procrustes mapping.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.mapping.ProcrustesMappingStrategy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">ProcrustesMappingStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.mapping.MappingConfig" title="vectormerge.mapping.base.MappingConfig"><span class="pre">MappingConfig</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/procrustes.html#ProcrustesMappingStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.ProcrustesMappingStrategy" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vectormerge.mapping.MappingStrategy" title="vectormerge.mapping.base.MappingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">MappingStrategy</span></code></a></p>
-<p>Procrustes analysis-based mapping strategy.</p>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.ProcrustesMappingStrategy.check_fit" title="vectormerge.mapping.ProcrustesMappingStrategy.check_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_fit</span></code></a>(path)</p></td>
-<td><p>Check if the mapping is fitted.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_on_disk</span></code>(path)</p></td>
-<td><p>Check if the mapping is fitted and on disk.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.ProcrustesMappingStrategy.fit" title="vectormerge.mapping.ProcrustesMappingStrategy.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(source_embeddings, target_embeddings, ...)</p></td>
-<td><p>Fit the Procrustes mapping.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(source_embeddings, ...[, ...])</p></td>
-<td><p>Fit the mapping and transform embeddings.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.ProcrustesMappingStrategy.load" title="vectormerge.mapping.ProcrustesMappingStrategy.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(path)</p></td>
-<td><p>Load Procrustes mapping parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.ProcrustesMappingStrategy.save" title="vectormerge.mapping.ProcrustesMappingStrategy.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(path)</p></td>
-<td><p>Save Procrustes mapping parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.ProcrustesMappingStrategy.transform" title="vectormerge.mapping.ProcrustesMappingStrategy.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(embeddings, **kwargs)</p></td>
-<td><p>Transform embeddings using fitted Procrustes mapping.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.ProcrustesMappingStrategy.check_fit">
-<span class="sig-name descname"><span class="pre">check_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/procrustes.html#ProcrustesMappingStrategy.check_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.ProcrustesMappingStrategy.check_fit" title="Link to this definition">#</a></dt>
-<dd><p>Check if the mapping is fitted.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.ProcrustesMappingStrategy.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/procrustes.html#ProcrustesMappingStrategy.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.ProcrustesMappingStrategy.fit" title="Link to this definition">#</a></dt>
-<dd><p>Fit the Procrustes mapping.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>source_embeddings</strong> – Source embedding space</p></li>
-<li><p><strong>target_embeddings</strong> – Target embedding space</p></li>
-<li><p><strong>reference_indices</strong> – Reference point indices for alignment</p></li>
-<li><p><strong>**kwargs</strong> – Additional arguments</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.ProcrustesMappingStrategy.load">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.mapping.ProcrustesMappingStrategy" title="vectormerge.mapping.strategies.procrustes.ProcrustesMappingStrategy"><span class="pre">ProcrustesMappingStrategy</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/procrustes.html#ProcrustesMappingStrategy.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.ProcrustesMappingStrategy.load" title="Link to this definition">#</a></dt>
-<dd><p>Load Procrustes mapping parameters.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.ProcrustesMappingStrategy.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/procrustes.html#ProcrustesMappingStrategy.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.ProcrustesMappingStrategy.save" title="Link to this definition">#</a></dt>
-<dd><p>Save Procrustes mapping parameters.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.ProcrustesMappingStrategy.transform">
-<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/strategies/procrustes.html#ProcrustesMappingStrategy.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.ProcrustesMappingStrategy.transform" title="Link to this definition">#</a></dt>
-<dd><p>Transform embeddings using fitted Procrustes mapping.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>embeddings</strong> – Embeddings to transform</p></li>
-<li><p><strong>**kwargs</strong> – Additional arguments</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Transformed embeddings</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.mapping.VectorSpaceMapper">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">VectorSpaceMapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.mapping.MappingConfig" title="vectormerge.mapping.base.MappingConfig"><span class="pre">MappingConfig</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping_param_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping_embedding_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_param</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_embedding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clustering_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="clustering.html#vectormerge.clustering.ClusteringConfig" title="vectormerge.clustering.base.ClusteringConfig"><span class="pre">ClusteringConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/mapping/manager.html#VectorSpaceMapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.VectorSpaceMapper" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Main interface for vector space mapping in VectorMerge.</p>
-<p>This class provides a unified interface for different mapping strategies
-and handles the complete mapping workflow from training to transformation.</p>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.VectorSpaceMapper.check_embedding_on_disk" title="vectormerge.mapping.VectorSpaceMapper.check_embedding_on_disk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_embedding_on_disk</span></code></a>()</p></td>
-<td><p>Check if the transformed embeddings exist.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.VectorSpaceMapper.check_on_disk" title="vectormerge.mapping.VectorSpaceMapper.check_on_disk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_on_disk</span></code></a>(path)</p></td>
-<td><p>Check if the mapping is fitted and on disk.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.VectorSpaceMapper.evaluate_mapping" title="vectormerge.mapping.VectorSpaceMapper.evaluate_mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">evaluate_mapping</span></code></a>(source_embeddings, ...)</p></td>
-<td><p>Evaluate the mapping quality on test data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.VectorSpaceMapper.fit" title="vectormerge.mapping.VectorSpaceMapper.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(source_embeddings, target_embeddings, ...)</p></td>
-<td><p>Fit the mapping strategy on reference data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.VectorSpaceMapper.fit_and_transform" title="vectormerge.mapping.VectorSpaceMapper.fit_and_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_and_transform</span></code></a>(source_embeddings, ...[, ...])</p></td>
-<td><p>Fit the mapping and transform embeddings in one step.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.VectorSpaceMapper.get_mapping_result" title="vectormerge.mapping.VectorSpaceMapper.get_mapping_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mapping_result</span></code></a>(transformed_embeddings)</p></td>
-<td><p>Create a MappingResult object with metadata.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.VectorSpaceMapper.get_strategy_description" title="vectormerge.mapping.VectorSpaceMapper.get_strategy_description"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_strategy_description</span></code></a>(strategy)</p></td>
-<td><p>Get description of a mapping strategy.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.VectorSpaceMapper.get_strategy_info" title="vectormerge.mapping.VectorSpaceMapper.get_strategy_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_strategy_info</span></code></a>()</p></td>
-<td><p>Get information about the current mapping strategy.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.VectorSpaceMapper.list_available_strategies" title="vectormerge.mapping.VectorSpaceMapper.list_available_strategies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_available_strategies</span></code></a>()</p></td>
-<td><p>List all available mapping strategies.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.VectorSpaceMapper.load" title="vectormerge.mapping.VectorSpaceMapper.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(path[, mapping_param_path, ...])</p></td>
-<td><p>Load a fitted mapper from disk.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.VectorSpaceMapper.load_embedding_from_disk" title="vectormerge.mapping.VectorSpaceMapper.load_embedding_from_disk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_embedding_from_disk</span></code></a>()</p></td>
-<td><p>Load the transformed embeddings from disk.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.VectorSpaceMapper.save" title="vectormerge.mapping.VectorSpaceMapper.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>([path])</p></td>
-<td><p>Save the fitted mapper to disk.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.mapping.VectorSpaceMapper.save_embedding_to_disk" title="vectormerge.mapping.VectorSpaceMapper.save_embedding_to_disk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_embedding_to_disk</span></code></a>(embeddings)</p></td>
-<td><p>Save the transformed embeddings to disk.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.mapping.VectorSpaceMapper.transform" title="vectormerge.mapping.VectorSpaceMapper.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(embeddings, **kwargs)</p></td>
-<td><p>Transform embeddings using the fitted mapping strategy.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.mapping.VectorSpaceMapper.AVAILABLE_STRATEGIES">
-<span class="sig-name descname"><span class="pre">AVAILABLE_STRATEGIES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'cca':</span> <span class="pre">&lt;class</span> <span class="pre">'vectormerge.mapping.strategies.cca.CCAMappingStrategy'&gt;,</span> <span class="pre">'gromov_wasserstein':</span> <span class="pre">&lt;class</span> <span class="pre">'vectormerge.mapping.strategies.gromov_wasserstein.GromovWassersteinMappingStrategy'&gt;,</span> <span class="pre">'la2m':</span> <span class="pre">&lt;class</span> <span class="pre">'vectormerge.mapping.strategies.la2m.LA2MStrategy'&gt;,</span> <span class="pre">'nonlinear':</span> <span class="pre">&lt;class</span> <span class="pre">'vectormerge.mapping.strategies.nonlinear.NonLinearMappingStrategy'&gt;,</span> <span class="pre">'procrustes':</span> <span class="pre">&lt;class</span> <span class="pre">'vectormerge.mapping.strategies.procrustes.ProcrustesMappingStrategy'&gt;}</span></em><a class="headerlink" href="#vectormerge.mapping.VectorSpaceMapper.AVAILABLE_STRATEGIES" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.VectorSpaceMapper.check_embedding_on_disk">
-<span class="sig-name descname"><span class="pre">check_embedding_on_disk</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/manager.html#VectorSpaceMapper.check_embedding_on_disk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.VectorSpaceMapper.check_embedding_on_disk" title="Link to this definition">#</a></dt>
-<dd><p>Check if the transformed embeddings exist.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.VectorSpaceMapper.check_on_disk">
-<span class="sig-name descname"><span class="pre">check_on_disk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/manager.html#VectorSpaceMapper.check_on_disk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.VectorSpaceMapper.check_on_disk" title="Link to this definition">#</a></dt>
-<dd><p>Check if the mapping is fitted and on disk.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.VectorSpaceMapper.evaluate_mapping">
-<span class="sig-name descname"><span class="pre">evaluate_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/manager.html#VectorSpaceMapper.evaluate_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.VectorSpaceMapper.evaluate_mapping" title="Link to this definition">#</a></dt>
-<dd><p>Evaluate the mapping quality on test data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>source_embeddings</strong> – Source embeddings</p></li>
-<li><p><strong>target_embeddings</strong> – Target embeddings</p></li>
-<li><p><strong>test_indices</strong> – Indices of test points</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dictionary with evaluation metrics</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.VectorSpaceMapper.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.mapping.VectorSpaceMapper" title="vectormerge.mapping.manager.VectorSpaceMapper"><span class="pre">VectorSpaceMapper</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/manager.html#VectorSpaceMapper.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.VectorSpaceMapper.fit" title="Link to this definition">#</a></dt>
-<dd><p>Fit the mapping strategy on reference data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>source_embeddings</strong> – Source embedding space (N x D1)</p></li>
-<li><p><strong>target_embeddings</strong> – Target embedding space (N x D2)</p></li>
-<li><p><strong>reference_indices</strong> – Indices of reference points for training</p></li>
-<li><p><strong>**kwargs</strong> – Additional arguments for the mapping strategy</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Self for method chaining</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.VectorSpaceMapper.fit_and_transform">
-<span class="sig-name descname"><span class="pre">fit_and_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embeddings_to_transform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/manager.html#VectorSpaceMapper.fit_and_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.VectorSpaceMapper.fit_and_transform" title="Link to this definition">#</a></dt>
-<dd><p>Fit the mapping and transform embeddings in one step.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>source_embeddings</strong> – Source embedding space</p></li>
-<li><p><strong>target_embeddings</strong> – Target embedding space</p></li>
-<li><p><strong>reference_indices</strong> – Reference indices for training</p></li>
-<li><p><strong>embeddings_to_transform</strong> – Embeddings to transform (if None, uses source_embeddings)</p></li>
-<li><p><strong>**kwargs</strong> – Additional arguments</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Transformed embeddings</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.VectorSpaceMapper.get_mapping_result">
-<span class="sig-name descname"><span class="pre">get_mapping_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transformed_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.mapping.MappingResult" title="vectormerge.mapping.base.MappingResult"><span class="pre">MappingResult</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/manager.html#VectorSpaceMapper.get_mapping_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.VectorSpaceMapper.get_mapping_result" title="Link to this definition">#</a></dt>
-<dd><p>Create a MappingResult object with metadata.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>transformed_embeddings</strong> – The transformed embeddings</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>MappingResult object</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.VectorSpaceMapper.get_strategy_description">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_strategy_description</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/manager.html#VectorSpaceMapper.get_strategy_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.VectorSpaceMapper.get_strategy_description" title="Link to this definition">#</a></dt>
-<dd><p>Get description of a mapping strategy.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>strategy</strong> – Strategy name</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Strategy description</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.VectorSpaceMapper.get_strategy_info">
-<span class="sig-name descname"><span class="pre">get_strategy_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/manager.html#VectorSpaceMapper.get_strategy_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.VectorSpaceMapper.get_strategy_info" title="Link to this definition">#</a></dt>
-<dd><p>Get information about the current mapping strategy.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dictionary with strategy information</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.VectorSpaceMapper.list_available_strategies">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_available_strategies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/manager.html#VectorSpaceMapper.list_available_strategies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.VectorSpaceMapper.list_available_strategies" title="Link to this definition">#</a></dt>
-<dd><p>List all available mapping strategies.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of strategy names</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.VectorSpaceMapper.load">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping_param_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'./output/mapping_models/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping_embedding_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'./output/mapping_embeddings/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.mapping.VectorSpaceMapper" title="vectormerge.mapping.manager.VectorSpaceMapper"><span class="pre">VectorSpaceMapper</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/manager.html#VectorSpaceMapper.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.VectorSpaceMapper.load" title="Link to this definition">#</a></dt>
-<dd><p>Load a fitted mapper from disk.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> – Path to load the mapper from</p></li>
-<li><p><strong>mapping_param_path</strong> – Path for mapping parameters (for future use)</p></li>
-<li><p><strong>mapping_embedding_path</strong> – Path for mapping embeddings (for future use)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Loaded VectorSpaceMapper instance</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.VectorSpaceMapper.load_embedding_from_disk">
-<span class="sig-name descname"><span class="pre">load_embedding_from_disk</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/manager.html#VectorSpaceMapper.load_embedding_from_disk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.VectorSpaceMapper.load_embedding_from_disk" title="Link to this definition">#</a></dt>
-<dd><p>Load the transformed embeddings from disk.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.VectorSpaceMapper.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/manager.html#VectorSpaceMapper.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.VectorSpaceMapper.save" title="Link to this definition">#</a></dt>
-<dd><p>Save the fitted mapper to disk.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – Path to save the mapper</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.VectorSpaceMapper.save_embedding_to_disk">
-<span class="sig-name descname"><span class="pre">save_embedding_to_disk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/manager.html#VectorSpaceMapper.save_embedding_to_disk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.VectorSpaceMapper.save_embedding_to_disk" title="Link to this definition">#</a></dt>
-<dd><p>Save the transformed embeddings to disk.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.mapping.VectorSpaceMapper.transform">
-<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/manager.html#VectorSpaceMapper.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.VectorSpaceMapper.transform" title="Link to this definition">#</a></dt>
-<dd><p>Transform embeddings using the fitted mapping strategy.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>embeddings</strong> – Embeddings to transform (N x D1)</p></li>
-<li><p><strong>**kwargs</strong> – Additional arguments for the mapping strategy</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Transformed embeddings (N x D2)</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vectormerge.mapping.compute_alignment_metrics">
-<span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">compute_alignment_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embeddings2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/utils/metrics.html#compute_alignment_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.compute_alignment_metrics" title="Link to this definition">#</a></dt>
-<dd><p>Compute alignment metrics between two embedding sets.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vectormerge.mapping.compute_loss">
-<span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">compute_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/losses/common.html#compute_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.compute_loss" title="Link to this definition">#</a></dt>
-<dd><p>Compute loss based on specified type.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>predictions</strong> – Predicted embeddings</p></li>
-<li><p><strong>targets</strong> – Target embeddings</p></li>
-<li><p><strong>loss_type</strong> – Type of loss to compute</p></li>
-<li><p><strong>query_embeddings</strong> – Query embeddings (for some loss types)</p></li>
-<li><p><strong>**kwargs</strong> – Additional arguments for specific loss functions</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Computed loss</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vectormerge.mapping.contrastive_loss">
-<span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">contrastive_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/losses/common.html#contrastive_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.contrastive_loss" title="Link to this definition">#</a></dt>
-<dd><p>Contrastive loss for similarity learning.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>predictions</strong> – Predicted embeddings</p></li>
-<li><p><strong>targets</strong> – Target embeddings</p></li>
-<li><p><strong>labels</strong> – Binary labels (1 for similar, 0 for dissimilar)</p></li>
-<li><p><strong>margin</strong> – Margin for contrastive loss</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Contrastive loss</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vectormerge.mapping.cosine_similarity_loss">
-<span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">cosine_similarity_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/losses/common.html#cosine_similarity_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.cosine_similarity_loss" title="Link to this definition">#</a></dt>
-<dd><p>Cosine similarity loss.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>predictions</strong> – Predicted embeddings</p></li>
-<li><p><strong>targets</strong> – Target embeddings</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Cosine similarity loss (1 - cosine_similarity)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vectormerge.mapping.create_reference_indices">
-<span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">create_reference_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_total</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_ref</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">42</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/utils/creation.html#create_reference_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.create_reference_indices" title="Link to this definition">#</a></dt>
-<dd><p>Create random reference indices.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vectormerge.mapping.load_embeddings">
-<span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">load_embeddings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/utils/io.html#load_embeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.load_embeddings" title="Link to this definition">#</a></dt>
-<dd><p>Load embeddings from file.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vectormerge.mapping.mse_loss">
-<span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">mse_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/losses/common.html#mse_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.mse_loss" title="Link to this definition">#</a></dt>
-<dd><p>Mean Squared Error loss.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>predictions</strong> – Predicted embeddings</p></li>
-<li><p><strong>targets</strong> – Target embeddings</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>MSE loss</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vectormerge.mapping.ranking_loss">
-<span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">ranking_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/losses/common.html#ranking_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.ranking_loss" title="Link to this definition">#</a></dt>
-<dd><p>Ranking loss for information retrieval.</p>
-<p>This loss encourages predicted embeddings to have the same ranking
-as target embeddings when compared with query embeddings.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>predictions</strong> – Predicted embeddings</p></li>
-<li><p><strong>targets</strong> – Target embeddings</p></li>
-<li><p><strong>queries</strong> – Query embeddings</p></li>
-<li><p><strong>margin</strong> – Margin for ranking loss</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Ranking loss</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vectormerge.mapping.save_embeddings">
-<span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">save_embeddings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/utils/io.html#save_embeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.save_embeddings" title="Link to this definition">#</a></dt>
-<dd><p>Save embeddings to file.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vectormerge.mapping.triplet_loss">
-<span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">triplet_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">anchor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/losses/common.html#triplet_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.triplet_loss" title="Link to this definition">#</a></dt>
-<dd><p>Triplet loss for embedding learning.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>anchor</strong> – Anchor embeddings</p></li>
-<li><p><strong>positive</strong> – Positive embeddings (similar to anchor)</p></li>
-<li><p><strong>negative</strong> – Negative embeddings (dissimilar to anchor)</p></li>
-<li><p><strong>margin</strong> – Margin for triplet loss</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Triplet loss</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vectormerge.mapping.validate_embeddings">
-<span class="sig-prename descclassname"><span class="pre">vectormerge.mapping.</span></span><span class="sig-name descname"><span class="pre">validate_embeddings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/vectormerge/mapping/utils/validation.html#validate_embeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.mapping.validate_embeddings" title="Link to this definition">#</a></dt>
-<dd><p>Validate embedding array.</p>
-</dd></dl>
-
+  <section id="mapping-strategies">
+<h1>Mapping Strategies<a class="headerlink" href="#mapping-strategies" title="Link to this heading">#</a></h1>
 </section>
 
 
@@ -1572,114 +488,6 @@ as target embeddings when compared with query embeddings.</p>
 
 
   <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.CCAMappingStrategy"><code class="docutils literal notranslate"><span class="pre">CCAMappingStrategy</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.CCAMappingStrategy.check_fit"><code class="docutils literal notranslate"><span class="pre">CCAMappingStrategy.check_fit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.CCAMappingStrategy.load"><code class="docutils literal notranslate"><span class="pre">CCAMappingStrategy.load()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.CCAMappingStrategy.save"><code class="docutils literal notranslate"><span class="pre">CCAMappingStrategy.save()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.GromovWassersteinMappingStrategy"><code class="docutils literal notranslate"><span class="pre">GromovWassersteinMappingStrategy</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.GromovWassersteinMappingStrategy.check_fit"><code class="docutils literal notranslate"><span class="pre">GromovWassersteinMappingStrategy.check_fit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.GromovWassersteinMappingStrategy.load"><code class="docutils literal notranslate"><span class="pre">GromovWassersteinMappingStrategy.load()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.GromovWassersteinMappingStrategy.save"><code class="docutils literal notranslate"><span class="pre">GromovWassersteinMappingStrategy.save()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.LA2MMapper"><code class="docutils literal notranslate"><span class="pre">LA2MMapper</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.LA2MStrategy"><code class="docutils literal notranslate"><span class="pre">LA2MStrategy</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.LA2MStrategy.get_cluster_statistics"><code class="docutils literal notranslate"><span class="pre">LA2MStrategy.get_cluster_statistics()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.LA2MStrategy.load"><code class="docutils literal notranslate"><span class="pre">LA2MStrategy.load()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.LA2MStrategy.load_pca_instance"><code class="docutils literal notranslate"><span class="pre">LA2MStrategy.load_pca_instance()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.LA2MStrategy.save"><code class="docutils literal notranslate"><span class="pre">LA2MStrategy.save()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.LA2MStrategy.save_pca_instance"><code class="docutils literal notranslate"><span class="pre">LA2MStrategy.save_pca_instance()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingConfig"><code class="docutils literal notranslate"><span class="pre">MappingConfig</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingConfig.batch_size"><code class="docutils literal notranslate"><span class="pre">MappingConfig.batch_size</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingConfig.cca_config"><code class="docutils literal notranslate"><span class="pre">MappingConfig.cca_config</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingConfig.device"><code class="docutils literal notranslate"><span class="pre">MappingConfig.device</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingConfig.from_dict"><code class="docutils literal notranslate"><span class="pre">MappingConfig.from_dict()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingConfig.from_update_dict"><code class="docutils literal notranslate"><span class="pre">MappingConfig.from_update_dict()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingConfig.gromov_wasserstein_config"><code class="docutils literal notranslate"><span class="pre">MappingConfig.gromov_wasserstein_config</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingConfig.la2m_config"><code class="docutils literal notranslate"><span class="pre">MappingConfig.la2m_config</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingConfig.nonlinear_config"><code class="docutils literal notranslate"><span class="pre">MappingConfig.nonlinear_config</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingConfig.procrustes_config"><code class="docutils literal notranslate"><span class="pre">MappingConfig.procrustes_config</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingConfig.save_embedding"><code class="docutils literal notranslate"><span class="pre">MappingConfig.save_embedding</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingConfig.save_param"><code class="docutils literal notranslate"><span class="pre">MappingConfig.save_param</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingConfig.to_dict"><code class="docutils literal notranslate"><span class="pre">MappingConfig.to_dict()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingConfig.to_string"><code class="docutils literal notranslate"><span class="pre">MappingConfig.to_string()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingConfig.verbose"><code class="docutils literal notranslate"><span class="pre">MappingConfig.verbose</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingResult"><code class="docutils literal notranslate"><span class="pre">MappingResult</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingResult.load"><code class="docutils literal notranslate"><span class="pre">MappingResult.load()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingResult.save"><code class="docutils literal notranslate"><span class="pre">MappingResult.save()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingStrategy"><code class="docutils literal notranslate"><span class="pre">MappingStrategy</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingStrategy.check_on_disk"><code class="docutils literal notranslate"><span class="pre">MappingStrategy.check_on_disk()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingStrategy.fit"><code class="docutils literal notranslate"><span class="pre">MappingStrategy.fit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingStrategy.fit_transform"><code class="docutils literal notranslate"><span class="pre">MappingStrategy.fit_transform()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingStrategy.load"><code class="docutils literal notranslate"><span class="pre">MappingStrategy.load()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingStrategy.save"><code class="docutils literal notranslate"><span class="pre">MappingStrategy.save()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.MappingStrategy.transform"><code class="docutils literal notranslate"><span class="pre">MappingStrategy.transform()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.NonLinearMappingStrategy"><code class="docutils literal notranslate"><span class="pre">NonLinearMappingStrategy</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.NonLinearMappingStrategy.check_fit"><code class="docutils literal notranslate"><span class="pre">NonLinearMappingStrategy.check_fit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.NonLinearMappingStrategy.load"><code class="docutils literal notranslate"><span class="pre">NonLinearMappingStrategy.load()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.NonLinearMappingStrategy.save"><code class="docutils literal notranslate"><span class="pre">NonLinearMappingStrategy.save()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.ProcrustesMapper"><code class="docutils literal notranslate"><span class="pre">ProcrustesMapper</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.ProcrustesMappingStrategy"><code class="docutils literal notranslate"><span class="pre">ProcrustesMappingStrategy</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.ProcrustesMappingStrategy.check_fit"><code class="docutils literal notranslate"><span class="pre">ProcrustesMappingStrategy.check_fit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.ProcrustesMappingStrategy.fit"><code class="docutils literal notranslate"><span class="pre">ProcrustesMappingStrategy.fit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.ProcrustesMappingStrategy.load"><code class="docutils literal notranslate"><span class="pre">ProcrustesMappingStrategy.load()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.ProcrustesMappingStrategy.save"><code class="docutils literal notranslate"><span class="pre">ProcrustesMappingStrategy.save()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.ProcrustesMappingStrategy.transform"><code class="docutils literal notranslate"><span class="pre">ProcrustesMappingStrategy.transform()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.VectorSpaceMapper"><code class="docutils literal notranslate"><span class="pre">VectorSpaceMapper</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.VectorSpaceMapper.AVAILABLE_STRATEGIES"><code class="docutils literal notranslate"><span class="pre">VectorSpaceMapper.AVAILABLE_STRATEGIES</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.VectorSpaceMapper.check_embedding_on_disk"><code class="docutils literal notranslate"><span class="pre">VectorSpaceMapper.check_embedding_on_disk()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.VectorSpaceMapper.check_on_disk"><code class="docutils literal notranslate"><span class="pre">VectorSpaceMapper.check_on_disk()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.VectorSpaceMapper.evaluate_mapping"><code class="docutils literal notranslate"><span class="pre">VectorSpaceMapper.evaluate_mapping()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.VectorSpaceMapper.fit"><code class="docutils literal notranslate"><span class="pre">VectorSpaceMapper.fit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.VectorSpaceMapper.fit_and_transform"><code class="docutils literal notranslate"><span class="pre">VectorSpaceMapper.fit_and_transform()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.VectorSpaceMapper.get_mapping_result"><code class="docutils literal notranslate"><span class="pre">VectorSpaceMapper.get_mapping_result()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.VectorSpaceMapper.get_strategy_description"><code class="docutils literal notranslate"><span class="pre">VectorSpaceMapper.get_strategy_description()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.VectorSpaceMapper.get_strategy_info"><code class="docutils literal notranslate"><span class="pre">VectorSpaceMapper.get_strategy_info()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.VectorSpaceMapper.list_available_strategies"><code class="docutils literal notranslate"><span class="pre">VectorSpaceMapper.list_available_strategies()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.VectorSpaceMapper.load"><code class="docutils literal notranslate"><span class="pre">VectorSpaceMapper.load()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.VectorSpaceMapper.load_embedding_from_disk"><code class="docutils literal notranslate"><span class="pre">VectorSpaceMapper.load_embedding_from_disk()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.VectorSpaceMapper.save"><code class="docutils literal notranslate"><span class="pre">VectorSpaceMapper.save()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.VectorSpaceMapper.save_embedding_to_disk"><code class="docutils literal notranslate"><span class="pre">VectorSpaceMapper.save_embedding_to_disk()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.VectorSpaceMapper.transform"><code class="docutils literal notranslate"><span class="pre">VectorSpaceMapper.transform()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.compute_alignment_metrics"><code class="docutils literal notranslate"><span class="pre">compute_alignment_metrics()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.compute_loss"><code class="docutils literal notranslate"><span class="pre">compute_loss()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.contrastive_loss"><code class="docutils literal notranslate"><span class="pre">contrastive_loss()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.cosine_similarity_loss"><code class="docutils literal notranslate"><span class="pre">cosine_similarity_loss()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.create_reference_indices"><code class="docutils literal notranslate"><span class="pre">create_reference_indices()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.load_embeddings"><code class="docutils literal notranslate"><span class="pre">load_embeddings()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.mse_loss"><code class="docutils literal notranslate"><span class="pre">mse_loss()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.ranking_loss"><code class="docutils literal notranslate"><span class="pre">ranking_loss()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.save_embeddings"><code class="docutils literal notranslate"><span class="pre">save_embeddings()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.triplet_loss"><code class="docutils literal notranslate"><span class="pre">triplet_loss()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.mapping.validate_embeddings"><code class="docutils literal notranslate"><span class="pre">validate_embeddings()</span></code></a></li>
-</ul>
-  </nav></div>
-
-  <div class="sidebar-secondary-item">
 
   
   <div class="tocsection editthispage">
@@ -1696,13 +504,13 @@ as target embeddings when compared with query embeddings.</p>
 </div>
 
   <div class="sidebar-secondary-item">
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/api/mapping.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div></div>
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/api/mapping.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
 
 </div></div>
               
@@ -1717,8 +525,8 @@ as target embeddings when compared with query embeddings.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1742,7 +550,7 @@ as target embeddings when compared with query embeddings.</p>
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.18.0.
 </p></div>
       
     </div>

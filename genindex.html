@@ -26,40 +26,47 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
   
   <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
     <script src="_static/documentation_options.js?v=5929fcd5"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -85,7 +92,7 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
   <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
@@ -200,11 +207,18 @@
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -217,8 +231,7 @@
           
           
           
-          <a href="https://github.com/Suchun-sv/VectorMerge" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
+          <a href="https://github.com/Suchun-sv/VectorMerge" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
         </li>
 </ul></div>
       
@@ -326,11 +339,18 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -343,8 +363,7 @@
           
           
           
-          <a href="https://github.com/Suchun-sv/VectorMerge" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
+          <a href="https://github.com/Suchun-sv/VectorMerge" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
         </li>
 </ul></div>
         
@@ -384,832 +403,8 @@
 <h1 id="index">Index</h1>
 
 <div class="genindex-jumpbox">
- <a href="#A"><strong>A</strong></a>
- | <a href="#B"><strong>B</strong></a>
- | <a href="#C"><strong>C</strong></a>
- | <a href="#D"><strong>D</strong></a>
- | <a href="#E"><strong>E</strong></a>
- | <a href="#F"><strong>F</strong></a>
- | <a href="#G"><strong>G</strong></a>
- | <a href="#H"><strong>H</strong></a>
- | <a href="#I"><strong>I</strong></a>
- | <a href="#K"><strong>K</strong></a>
- | <a href="#L"><strong>L</strong></a>
- | <a href="#M"><strong>M</strong></a>
- | <a href="#N"><strong>N</strong></a>
- | <a href="#O"><strong>O</strong></a>
- | <a href="#P"><strong>P</strong></a>
- | <a href="#Q"><strong>Q</strong></a>
- | <a href="#R"><strong>R</strong></a>
- | <a href="#S"><strong>S</strong></a>
- | <a href="#T"><strong>T</strong></a>
- | <a href="#U"><strong>U</strong></a>
- | <a href="#V"><strong>V</strong></a>
- | <a href="#W"><strong>W</strong></a>
  
 </div>
-<h2 id="A">A</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.add_loader">add_loader() (vectormerge.dataset.UnifiedDatasetLoader method)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.add_reference_point">add_reference_point() (vectormerge.clustering.ClusterData method)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.add_target_point">add_target_point() (vectormerge.clustering.ClusterData method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.align_dimension">align_dimension() (in module vectormerge.embeddings)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringStrategy.assign_to_clusters">assign_to_clusters() (vectormerge.clustering.ClusteringStrategy method)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.auto_detect_source">auto_detect_source() (vectormerge.dataset.UnifiedDatasetLoader method)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.AVAILABLE_STRATEGIES">AVAILABLE_STRATEGIES (vectormerge.mapping.VectorSpaceMapper attribute)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="B">B</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.batch_internal_indices_to_original_ids">batch_internal_indices_to_original_ids() (vectormerge.dataset.Dataset method)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.batch_original_ids_to_internal_indices">batch_original_ids_to_internal_indices() (vectormerge.dataset.Dataset method)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.batch_size">batch_size (vectormerge.mapping.MappingConfig attribute)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/dataset.html#vectormerge.dataset.BEIRDatasetLoader">BEIRDatasetLoader (class in vectormerge.dataset)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.bound_index">bound_index (vectormerge.clustering.ClusterData property)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.bound_size">bound_size (vectormerge.clustering.ClusterData property)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="C">C</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.cca_config">cca_config (vectormerge.mapping.MappingConfig attribute)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.CCAMappingStrategy">CCAMappingStrategy (class in vectormerge.mapping)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.center">center (vectormerge.clustering.ClusterData property)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.center_embedding">center_embedding (vectormerge.clustering.ClusterData attribute)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.check_embedding_on_disk">check_embedding_on_disk() (vectormerge.mapping.VectorSpaceMapper method)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.CCAMappingStrategy.check_fit">check_fit() (vectormerge.mapping.CCAMappingStrategy method)</a>
-
-      <ul>
-        <li><a href="api/mapping.html#vectormerge.mapping.GromovWassersteinMappingStrategy.check_fit">(vectormerge.mapping.GromovWassersteinMappingStrategy method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.NonLinearMappingStrategy.check_fit">(vectormerge.mapping.NonLinearMappingStrategy class method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.ProcrustesMappingStrategy.check_fit">(vectormerge.mapping.ProcrustesMappingStrategy method)</a>
-</li>
-      </ul></li>
-      <li><a href="api/mapping.html#vectormerge.mapping.MappingStrategy.check_on_disk">check_on_disk() (vectormerge.mapping.MappingStrategy class method)</a>
-
-      <ul>
-        <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.check_on_disk">(vectormerge.mapping.VectorSpaceMapper method)</a>
-</li>
-      </ul></li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.cluster_centers">cluster_centers (vectormerge.clustering.ClusteringResult attribute)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.cluster_data_list">cluster_data_list (vectormerge.clustering.ClusteringResult attribute)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.cluster_labels">cluster_labels (vectormerge.clustering.ClusteringResult attribute)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.cluster_sizes">cluster_sizes (vectormerge.clustering.ClusteringResult property)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData">ClusterData (class in vectormerge.clustering)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringConfig.clustering_method">clustering_method (vectormerge.clustering.ClusteringConfig attribute)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringConfig">ClusteringConfig (class in vectormerge.clustering)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult">ClusteringResult (class in vectormerge.clustering)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringStrategy">ClusteringStrategy (class in vectormerge.clustering)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterManager">ClusterManager (class in vectormerge.clustering)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.compute_alignment_metrics">compute_alignment_metrics() (in module vectormerge.mapping)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.compute_all_centers">compute_all_centers() (vectormerge.clustering.ClusteringResult method)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.compute_center">compute_center() (vectormerge.clustering.ClusterData method)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.compute_cluster_metrics">compute_cluster_metrics() (in module vectormerge.clustering)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.compute_loss">compute_loss() (in module vectormerge.mapping)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringConfig.compute_metrics">compute_metrics (vectormerge.clustering.ClusteringConfig attribute)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringStrategy.compute_quality_metrics">compute_quality_metrics() (vectormerge.clustering.ClusteringStrategy method)</a>
-
-      <ul>
-        <li><a href="api/clustering.html#vectormerge.clustering.KMeansClusteringStrategy.compute_quality_metrics">(vectormerge.clustering.KMeansClusteringStrategy method)</a>
-</li>
-      </ul></li>
-      <li><a href="api/mapping.html#vectormerge.mapping.contrastive_loss">contrastive_loss() (in module vectormerge.mapping)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.corpus">corpus (vectormerge.dataset.Dataset attribute)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.corpus_ids2index">corpus_ids2index (vectormerge.dataset.Dataset attribute)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.cosine_similarity_loss">cosine_similarity_loss() (in module vectormerge.mapping)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.CustomDatasetLoader.create_dataset_template">create_dataset_template() (vectormerge.dataset.CustomDatasetLoader method)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.create_reference_indices">create_reference_indices() (in module vectormerge.mapping)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.CustomDatasetLoader">CustomDatasetLoader (class in vectormerge.dataset)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="D">D</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset">Dataset (class in vectormerge.dataset)</a>
-</li>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingModelConfig.dataset">dataset (vectormerge.embeddings.EmbeddingModelConfig attribute)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.DatasetLoader">DatasetLoader (class in vectormerge.dataset)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringConfig.device">device (vectormerge.clustering.ClusteringConfig attribute)</a>
-
-      <ul>
-        <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.device">(vectormerge.mapping.MappingConfig attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="api/dataset.html#vectormerge.dataset.BEIRDatasetLoader.download_all">download_all() (vectormerge.dataset.BEIRDatasetLoader method)</a>
-</li>
-      <li><a href="api/cli.html#vectormerge.cli.download_dataset_compat">download_dataset_compat() (in module vectormerge.cli)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="E">E</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/dataset.html#vectormerge.dataset.EmbeddingDataset">EmbeddingDataset (in module vectormerge.dataset)</a>
-</li>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingGenerator">EmbeddingGenerator (class in vectormerge.embeddings)</a>
-</li>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingModelConfig">EmbeddingModelConfig (class in vectormerge.embeddings)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/evaluation.html#vectormerge.evaluation.Evaluator.evaluate">evaluate() (vectormerge.evaluation.Evaluator method)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.evaluate_mapping">evaluate_mapping() (vectormerge.mapping.VectorSpaceMapper method)</a>
-</li>
-      <li><a href="api/evaluation.html#vectormerge.evaluation.Evaluator">Evaluator (class in vectormerge.evaluation)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="F">F</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingModelConfig.fast_text_config">fast_text_config (vectormerge.embeddings.EmbeddingModelConfig attribute)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.filter_corpus">filter_corpus() (vectormerge.dataset.Dataset method)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringStrategy.fit">fit() (vectormerge.clustering.ClusteringStrategy method)</a>
-
-      <ul>
-        <li><a href="api/clustering.html#vectormerge.clustering.ClusterManager.fit">(vectormerge.clustering.ClusterManager method)</a>
-</li>
-        <li><a href="api/clustering.html#vectormerge.clustering.KMeansClusteringStrategy.fit">(vectormerge.clustering.KMeansClusteringStrategy method)</a>
-</li>
-        <li><a href="api/clustering.html#vectormerge.clustering.LA2MClusteringStrategy.fit">(vectormerge.clustering.LA2MClusteringStrategy method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.MappingStrategy.fit">(vectormerge.mapping.MappingStrategy method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.ProcrustesMappingStrategy.fit">(vectormerge.mapping.ProcrustesMappingStrategy method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.fit">(vectormerge.mapping.VectorSpaceMapper method)</a>
-</li>
-      </ul></li>
-      <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.fit_and_transform">fit_and_transform() (vectormerge.mapping.VectorSpaceMapper method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/clustering.html#vectormerge.clustering.KMeansClusteringStrategy.fit_predict">fit_predict() (vectormerge.clustering.KMeansClusteringStrategy method)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.MappingStrategy.fit_transform">fit_transform() (vectormerge.mapping.MappingStrategy method)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.from_dict">from_dict() (vectormerge.clustering.ClusterData class method)</a>
-
-      <ul>
-        <li><a href="api/clustering.html#vectormerge.clustering.ClusteringConfig.from_dict">(vectormerge.clustering.ClusteringConfig class method)</a>
-</li>
-        <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.from_dict">(vectormerge.clustering.ClusteringResult class method)</a>
-</li>
-        <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingModelConfig.from_dict">(vectormerge.embeddings.EmbeddingModelConfig class method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.from_dict">(vectormerge.mapping.MappingConfig class method)</a>
-</li>
-      </ul></li>
-      <li><a href="api/reference.html#vectormerge.reference.LA2MSplit.from_qrels">from_qrels() (vectormerge.reference.LA2MSplit class method)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterManager.from_saved">from_saved() (vectormerge.clustering.ClusterManager class method)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.from_update_dict">from_update_dict() (vectormerge.mapping.MappingConfig class method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="G">G</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingGenerator.generate_corpus_embeddings">generate_corpus_embeddings() (vectormerge.embeddings.EmbeddingGenerator method)</a>
-</li>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.generate_embeddings">generate_embeddings() (in module vectormerge.embeddings)</a>
-
-      <ul>
-        <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingGenerator.generate_embeddings">(vectormerge.embeddings.EmbeddingGenerator method)</a>
-</li>
-      </ul></li>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingGenerator.generate_query_embeddings">generate_query_embeddings() (vectormerge.embeddings.EmbeddingGenerator method)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.get_cluster_centers">get_cluster_centers() (vectormerge.clustering.ClusteringResult method)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.KMeansClusteringStrategy.get_cluster_info">get_cluster_info() (vectormerge.clustering.KMeansClusteringStrategy method)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.LA2MStrategy.get_cluster_statistics">get_cluster_statistics() (vectormerge.mapping.LA2MStrategy method)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.get_corpus_texts">get_corpus_texts() (vectormerge.dataset.Dataset method)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.get_dataset_index">get_dataset_index() (vectormerge.dataset.Dataset method)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.BEIRDatasetLoader.get_dataset_info">get_dataset_info() (vectormerge.dataset.BEIRDatasetLoader method)</a>
-
-      <ul>
-        <li><a href="api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.get_dataset_info">(vectormerge.dataset.UnifiedDatasetLoader method)</a>
-</li>
-      </ul></li>
-      <li><a href="api/dataset.html#vectormerge.dataset.get_dataset_loader">get_dataset_loader() (in module vectormerge.dataset)</a>
-</li>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.get_embedding">get_embedding() (in module vectormerge.embeddings)</a>
-</li>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.get_embedding_generator">get_embedding_generator() (in module vectormerge.embeddings)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.get_internal_index">get_internal_index() (vectormerge.dataset.Dataset method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.get_mapping_result">get_mapping_result() (vectormerge.mapping.VectorSpaceMapper method)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.get_query_texts">get_query_texts() (vectormerge.dataset.Dataset method)</a>
-</li>
-      <li><a href="api/evaluation.html#vectormerge.evaluation.Evaluator.get_rank_of_answer">get_rank_of_answer() (vectormerge.evaluation.Evaluator static method)</a>
-</li>
-      <li><a href="api/reference.html#vectormerge.reference.get_reference">get_reference() (in module vectormerge.reference)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.get_relevant_docs">get_relevant_docs() (vectormerge.dataset.Dataset method)</a>
-</li>
-      <li><a href="api/evaluation.html#vectormerge.evaluation.get_retrieval_list">get_retrieval_list() (in module vectormerge.evaluation)</a>
-
-      <ul>
-        <li><a href="api/evaluation.html#vectormerge.evaluation.Evaluator.get_retrieval_list">(vectormerge.evaluation.Evaluator method)</a>
-</li>
-      </ul></li>
-      <li><a href="api/reference.html#vectormerge.reference.get_split_config">get_split_config() (in module vectormerge.reference)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.get_stats">get_stats() (vectormerge.dataset.Dataset method)</a>
-
-      <ul>
-        <li><a href="api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.get_stats">(vectormerge.dataset.UnifiedDatasetLoader method)</a>
-</li>
-      </ul></li>
-      <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.get_strategy_description">get_strategy_description() (vectormerge.mapping.VectorSpaceMapper class method)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.get_strategy_info">get_strategy_info() (vectormerge.mapping.VectorSpaceMapper method)</a>
-</li>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingModelConfig.glove_config">glove_config (vectormerge.embeddings.EmbeddingModelConfig attribute)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.gromov_wasserstein_config">gromov_wasserstein_config (vectormerge.mapping.MappingConfig attribute)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.GromovWassersteinMappingStrategy">GromovWassersteinMappingStrategy (class in vectormerge.mapping)</a>
-</li>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingModelConfig.gte_config">gte_config (vectormerge.embeddings.EmbeddingModelConfig attribute)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="H">H</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.has_center">has_center (vectormerge.clustering.ClusterData property)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.has_embeddings">has_embeddings (vectormerge.clustering.ClusteringResult property)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="I">I</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.index2corpus_id">index2corpus_id (vectormerge.dataset.Dataset attribute)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.internal_index_to_original_id">internal_index_to_original_id() (vectormerge.dataset.Dataset method)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.DatasetLoader.is_available">is_available() (vectormerge.dataset.DatasetLoader method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="K">K</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringConfig.kmeans_config">kmeans_config (vectormerge.clustering.ClusteringConfig attribute)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/clustering.html#vectormerge.clustering.KMeansClusteringStrategy">KMeansClusteringStrategy (class in vectormerge.clustering)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="L">L</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringConfig.la2m_config">la2m_config (vectormerge.clustering.ClusteringConfig attribute)</a>
-
-      <ul>
-        <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.la2m_config">(vectormerge.mapping.MappingConfig attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="api/clustering.html#vectormerge.clustering.LA2MClusteringStrategy">LA2MClusteringStrategy (class in vectormerge.clustering)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.LA2MMapper">LA2MMapper (class in vectormerge.mapping)</a>
-</li>
-      <li><a href="api/reference.html#vectormerge.reference.LA2MSplit">LA2MSplit (class in vectormerge.reference)</a>
-</li>
-      <li><a href="api/reference.html#vectormerge.reference.LA2MSplitConfig">LA2MSplitConfig (class in vectormerge.reference)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.LA2MStrategy">LA2MStrategy (class in vectormerge.mapping)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.linked_target_embeddings">linked_target_embeddings (vectormerge.clustering.ClusterData attribute)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.linked_target_indices">linked_target_indices (vectormerge.clustering.ClusterData attribute)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.BEIRDatasetLoader.list_available_datasets">list_available_datasets() (vectormerge.dataset.BEIRDatasetLoader method)</a>
-
-      <ul>
-        <li><a href="api/dataset.html#vectormerge.dataset.CustomDatasetLoader.list_available_datasets">(vectormerge.dataset.CustomDatasetLoader method)</a>
-</li>
-        <li><a href="api/dataset.html#vectormerge.dataset.DatasetLoader.list_available_datasets">(vectormerge.dataset.DatasetLoader method)</a>
-</li>
-        <li><a href="api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.list_available_datasets">(vectormerge.dataset.UnifiedDatasetLoader method)</a>
-</li>
-      </ul></li>
-      <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.list_available_strategies">list_available_strategies() (vectormerge.mapping.VectorSpaceMapper class method)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.list_datasets">list_datasets() (in module vectormerge.dataset)</a>
-</li>
-      <li><a href="api/cli.html#vectormerge.cli.list_datasets_compat">list_datasets_compat() (in module vectormerge.cli)</a>
-</li>
-      <li><a href="api/cli.html#vectormerge.cli.list_models">list_models() (in module vectormerge.cli)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.load">load() (vectormerge.clustering.ClusteringResult class method)</a>
-
-      <ul>
-        <li><a href="api/clustering.html#vectormerge.clustering.ClusteringStrategy.load">(vectormerge.clustering.ClusteringStrategy class method)</a>
-</li>
-        <li><a href="api/clustering.html#vectormerge.clustering.ClusterManager.load">(vectormerge.clustering.ClusterManager method)</a>
-</li>
-        <li><a href="api/dataset.html#vectormerge.dataset.BEIRDatasetLoader.load">(vectormerge.dataset.BEIRDatasetLoader method)</a>
-</li>
-        <li><a href="api/dataset.html#vectormerge.dataset.CustomDatasetLoader.load">(vectormerge.dataset.CustomDatasetLoader method)</a>
-</li>
-        <li><a href="api/dataset.html#vectormerge.dataset.DatasetLoader.load">(vectormerge.dataset.DatasetLoader method)</a>
-</li>
-        <li><a href="api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.load">(vectormerge.dataset.UnifiedDatasetLoader method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.CCAMappingStrategy.load">(vectormerge.mapping.CCAMappingStrategy class method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.GromovWassersteinMappingStrategy.load">(vectormerge.mapping.GromovWassersteinMappingStrategy class method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.LA2MStrategy.load">(vectormerge.mapping.LA2MStrategy class method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.MappingResult.load">(vectormerge.mapping.MappingResult class method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.MappingStrategy.load">(vectormerge.mapping.MappingStrategy class method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.NonLinearMappingStrategy.load">(vectormerge.mapping.NonLinearMappingStrategy class method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.ProcrustesMappingStrategy.load">(vectormerge.mapping.ProcrustesMappingStrategy class method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.load">(vectormerge.mapping.VectorSpaceMapper class method)</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/dataset.html#vectormerge.dataset.load_beir_dataset">load_beir_dataset() (in module vectormerge.dataset)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.load_cluster_data">load_cluster_data() (in module vectormerge.clustering)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.load_custom_dataset">load_custom_dataset() (in module vectormerge.dataset)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.load_dataset">load_dataset() (in module vectormerge.dataset)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.load_embedding_from_disk">load_embedding_from_disk() (vectormerge.mapping.VectorSpaceMapper method)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.load_embeddings">load_embeddings() (in module vectormerge.mapping)</a>
-</li>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingModelConfig.load_model_settings">load_model_settings() (vectormerge.embeddings.EmbeddingModelConfig method)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.LA2MStrategy.load_pca_instance">load_pca_instance() (vectormerge.mapping.LA2MStrategy method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="M">M</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/cli.html#vectormerge.cli.main">main() (in module vectormerge.cli)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig">MappingConfig (class in vectormerge.mapping)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.MappingResult">MappingResult (class in vectormerge.mapping)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.MappingStrategy">MappingStrategy (class in vectormerge.mapping)</a>
-</li>
-      <li><a href="api/evaluation.html#vectormerge.evaluation.Evaluator.merge_and_evaluate_embeddings">merge_and_evaluate_embeddings() (vectormerge.evaluation.Evaluator method)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.metadata">metadata (vectormerge.clustering.ClusteringResult attribute)</a>
-
-      <ul>
-        <li><a href="api/dataset.html#vectormerge.dataset.Dataset.metadata">(vectormerge.dataset.Dataset attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingModelConfig.mistral_config">mistral_config (vectormerge.embeddings.EmbeddingModelConfig attribute)</a>
-</li>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingModelConfig.model">model (vectormerge.embeddings.EmbeddingModelConfig attribute)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    module
-
-      <ul>
-        <li><a href="api/cli.html#module-vectormerge.cli">vectormerge.cli</a>
-</li>
-        <li><a href="api/clustering.html#module-vectormerge.clustering">vectormerge.clustering</a>
-</li>
-        <li><a href="api/dataset.html#module-vectormerge.dataset">vectormerge.dataset</a>
-</li>
-        <li><a href="api/embeddings.html#module-vectormerge.embeddings">vectormerge.embeddings</a>
-</li>
-        <li><a href="api/evaluation.html#module-vectormerge.evaluation">vectormerge.evaluation</a>
-</li>
-        <li><a href="api/mapping.html#module-vectormerge.mapping">vectormerge.mapping</a>
-</li>
-        <li><a href="api/reference.html#module-vectormerge.reference">vectormerge.reference</a>
-</li>
-      </ul></li>
-      <li><a href="api/mapping.html#vectormerge.mapping.mse_loss">mse_loss() (in module vectormerge.mapping)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="N">N</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.name">name (vectormerge.dataset.Dataset attribute)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.nonlinear_config">nonlinear_config (vectormerge.mapping.MappingConfig attribute)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.NonLinearMappingStrategy">NonLinearMappingStrategy (class in vectormerge.mapping)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.num_clusters">num_clusters (vectormerge.clustering.ClusteringResult property)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.num_qrels">num_qrels (vectormerge.dataset.Dataset property)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.num_queries">num_queries (vectormerge.dataset.Dataset property)</a>
-</li>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingModelConfig.nv_embed_config">nv_embed_config (vectormerge.embeddings.EmbeddingModelConfig attribute)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="O">O</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingModelConfig.openai_config">openai_config (vectormerge.embeddings.EmbeddingModelConfig attribute)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.original_id_to_internal_index">original_id_to_internal_index() (vectormerge.dataset.Dataset method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="P">P</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringStrategy.predict">predict() (vectormerge.clustering.ClusteringStrategy method)</a>
-
-      <ul>
-        <li><a href="api/clustering.html#vectormerge.clustering.ClusterManager.predict">(vectormerge.clustering.ClusterManager method)</a>
-</li>
-        <li><a href="api/clustering.html#vectormerge.clustering.KMeansClusteringStrategy.predict">(vectormerge.clustering.KMeansClusteringStrategy method)</a>
-</li>
-        <li><a href="api/clustering.html#vectormerge.clustering.LA2MClusteringStrategy.predict">(vectormerge.clustering.LA2MClusteringStrategy method)</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.procrustes_config">procrustes_config (vectormerge.mapping.MappingConfig attribute)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.ProcrustesMapper">ProcrustesMapper (class in vectormerge.mapping)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.ProcrustesMappingStrategy">ProcrustesMappingStrategy (class in vectormerge.mapping)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="Q">Q</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.qrels">qrels (vectormerge.dataset.Dataset attribute)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.quality_metrics">quality_metrics (vectormerge.clustering.ClusteringResult attribute)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.queries">queries (vectormerge.dataset.Dataset attribute)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="R">R</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/reference.html#vectormerge.reference.RandomSplit">RandomSplit (in module vectormerge.reference)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.ranking_loss">ranking_loss() (in module vectormerge.mapping)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.ref_index">ref_index (vectormerge.clustering.ClusterData property)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.ref_size">ref_size (vectormerge.clustering.ClusterData property)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.reference_cluster_sizes">reference_cluster_sizes (vectormerge.clustering.ClusteringResult property)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.reference_embeddings">reference_embeddings (vectormerge.clustering.ClusterData attribute)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.reference_indices">reference_indices (vectormerge.clustering.ClusterData attribute)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/reference.html#vectormerge.reference.SplitConfig.reference_key">reference_key (vectormerge.reference.SplitConfig attribute)</a>
-</li>
-      <li><a href="api/reference.html#vectormerge.reference.SplitConfig.reference_method">reference_method (vectormerge.reference.SplitConfig attribute)</a>
-</li>
-      <li><a href="api/reference.html#vectormerge.reference.SplitConfig.reference_path">reference_path (vectormerge.reference.SplitConfig attribute)</a>
-</li>
-      <li><a href="api/reference.html#vectormerge.reference.SplitConfig.reference_ratio">reference_ratio (vectormerge.reference.SplitConfig attribute)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.reload_reference_embeddings">reload_reference_embeddings() (vectormerge.clustering.ClusteringResult method)</a>
-</li>
-      <li><a href="api/reference.html#vectormerge.reference.LA2MSplitConfig.remove_dup_answer">remove_dup_answer (vectormerge.reference.LA2MSplitConfig attribute)</a>
-
-      <ul>
-        <li><a href="api/reference.html#vectormerge.reference.SplitConfig.remove_dup_answer">(vectormerge.reference.SplitConfig attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.remove_loader">remove_loader() (vectormerge.dataset.UnifiedDatasetLoader method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="S">S</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/reference.html#vectormerge.reference.SplitConfig.save">save (vectormerge.reference.SplitConfig attribute)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.save">save() (vectormerge.clustering.ClusteringResult method)</a>
-
-      <ul>
-        <li><a href="api/clustering.html#vectormerge.clustering.ClusteringStrategy.save">(vectormerge.clustering.ClusteringStrategy method)</a>
-</li>
-        <li><a href="api/clustering.html#vectormerge.clustering.ClusterManager.save">(vectormerge.clustering.ClusterManager method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.CCAMappingStrategy.save">(vectormerge.mapping.CCAMappingStrategy method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.GromovWassersteinMappingStrategy.save">(vectormerge.mapping.GromovWassersteinMappingStrategy method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.LA2MStrategy.save">(vectormerge.mapping.LA2MStrategy method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.MappingResult.save">(vectormerge.mapping.MappingResult method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.MappingStrategy.save">(vectormerge.mapping.MappingStrategy method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.NonLinearMappingStrategy.save">(vectormerge.mapping.NonLinearMappingStrategy method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.ProcrustesMappingStrategy.save">(vectormerge.mapping.ProcrustesMappingStrategy method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.save">(vectormerge.mapping.VectorSpaceMapper method)</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/clustering.html#vectormerge.clustering.save_cluster_data">save_cluster_data() (in module vectormerge.clustering)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.save_embedding">save_embedding (vectormerge.mapping.MappingConfig attribute)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.save_embedding_to_disk">save_embedding_to_disk() (vectormerge.mapping.VectorSpaceMapper method)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.save_embeddings">save_embeddings() (in module vectormerge.mapping)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.save_param">save_param (vectormerge.mapping.MappingConfig attribute)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.LA2MStrategy.save_pca_instance">save_pca_instance() (vectormerge.mapping.LA2MStrategy method)</a>
-</li>
-      <li><a href="api/reference.html#vectormerge.reference.LA2MSplitConfig.select_top_1">select_top_1 (vectormerge.reference.LA2MSplitConfig attribute)</a>
-
-      <ul>
-        <li><a href="api/reference.html#vectormerge.reference.SplitConfig.select_top_1">(vectormerge.reference.SplitConfig attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.source">source (vectormerge.dataset.Dataset attribute)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.Dataset.split">split (vectormerge.dataset.Dataset attribute)</a>
-</li>
-      <li><a href="api/reference.html#vectormerge.reference.split_dataset">split_dataset() (in module vectormerge.reference)</a>
-</li>
-      <li><a href="api/reference.html#vectormerge.reference.SplitConfig">SplitConfig (class in vectormerge.reference)</a>
-</li>
-      <li><a href="api/dataset.html#vectormerge.dataset.BEIRDatasetLoader.SUPPORTED_DATASETS">SUPPORTED_DATASETS (vectormerge.dataset.BEIRDatasetLoader attribute)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="T">T</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.target_cluster_sizes">target_cluster_sizes (vectormerge.clustering.ClusteringResult property)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.to_dict">to_dict() (vectormerge.clustering.ClusterData method)</a>
-
-      <ul>
-        <li><a href="api/clustering.html#vectormerge.clustering.ClusteringConfig.to_dict">(vectormerge.clustering.ClusteringConfig method)</a>
-</li>
-        <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.to_dict">(vectormerge.clustering.ClusteringResult method)</a>
-</li>
-        <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingModelConfig.to_dict">(vectormerge.embeddings.EmbeddingModelConfig method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.to_dict">(vectormerge.mapping.MappingConfig method)</a>
-</li>
-        <li><a href="api/reference.html#vectormerge.reference.SplitConfig.to_dict">(vectormerge.reference.SplitConfig method)</a>
-</li>
-      </ul></li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringConfig.to_string">to_string() (vectormerge.clustering.ClusteringConfig method)</a>
-
-      <ul>
-        <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.to_string">(vectormerge.mapping.MappingConfig method)</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.total_reference_points">total_reference_points (vectormerge.clustering.ClusteringResult property)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusterData.total_size">total_size (vectormerge.clustering.ClusterData property)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringResult.total_target_points">total_target_points (vectormerge.clustering.ClusteringResult property)</a>
-</li>
-      <li><a href="api/mapping.html#vectormerge.mapping.MappingStrategy.transform">transform() (vectormerge.mapping.MappingStrategy method)</a>
-
-      <ul>
-        <li><a href="api/mapping.html#vectormerge.mapping.ProcrustesMappingStrategy.transform">(vectormerge.mapping.ProcrustesMappingStrategy method)</a>
-</li>
-        <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper.transform">(vectormerge.mapping.VectorSpaceMapper method)</a>
-</li>
-      </ul></li>
-      <li><a href="api/mapping.html#vectormerge.mapping.triplet_loss">triplet_loss() (in module vectormerge.mapping)</a>
-</li>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingModelConfig.type_">type_ (vectormerge.embeddings.EmbeddingModelConfig attribute)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="U">U</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader">UnifiedDatasetLoader (class in vectormerge.dataset)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/reference.html#vectormerge.reference.SplitConfig.update">update() (vectormerge.reference.SplitConfig method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="V">V</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/dataset.html#vectormerge.dataset.validate_dataset">validate_dataset() (in module vectormerge.dataset)</a>
-
-      <ul>
-        <li><a href="api/dataset.html#vectormerge.dataset.UnifiedDatasetLoader.validate_dataset">(vectormerge.dataset.UnifiedDatasetLoader method)</a>
-</li>
-      </ul></li>
-      <li><a href="api/mapping.html#vectormerge.mapping.validate_embeddings">validate_embeddings() (in module vectormerge.mapping)</a>
-</li>
-      <li>
-    vectormerge.cli
-
-      <ul>
-        <li><a href="api/cli.html#module-vectormerge.cli">module</a>
-</li>
-      </ul></li>
-      <li>
-    vectormerge.clustering
-
-      <ul>
-        <li><a href="api/clustering.html#module-vectormerge.clustering">module</a>
-</li>
-      </ul></li>
-      <li>
-    vectormerge.dataset
-
-      <ul>
-        <li><a href="api/dataset.html#module-vectormerge.dataset">module</a>
-</li>
-      </ul></li>
-      <li>
-    vectormerge.embeddings
-
-      <ul>
-        <li><a href="api/embeddings.html#module-vectormerge.embeddings">module</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    vectormerge.evaluation
-
-      <ul>
-        <li><a href="api/evaluation.html#module-vectormerge.evaluation">module</a>
-</li>
-      </ul></li>
-      <li>
-    vectormerge.mapping
-
-      <ul>
-        <li><a href="api/mapping.html#module-vectormerge.mapping">module</a>
-</li>
-      </ul></li>
-      <li>
-    vectormerge.reference
-
-      <ul>
-        <li><a href="api/reference.html#module-vectormerge.reference">module</a>
-</li>
-      </ul></li>
-      <li><a href="api/mapping.html#vectormerge.mapping.VectorSpaceMapper">VectorSpaceMapper (class in vectormerge.mapping)</a>
-</li>
-      <li><a href="api/clustering.html#vectormerge.clustering.ClusteringConfig.verbose">verbose (vectormerge.clustering.ClusteringConfig attribute)</a>
-
-      <ul>
-        <li><a href="api/mapping.html#vectormerge.mapping.MappingConfig.verbose">(vectormerge.mapping.MappingConfig attribute)</a>
-</li>
-        <li><a href="api/reference.html#vectormerge.reference.SplitConfig.verbose">(vectormerge.reference.SplitConfig attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="api/clustering.html#vectormerge.clustering.visualize_clusters">visualize_clusters() (in module vectormerge.clustering)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="W">W</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/embeddings.html#vectormerge.embeddings.EmbeddingModelConfig.word2vec_config">word2vec_config (vectormerge.embeddings.EmbeddingModelConfig attribute)</a>
-</li>
-  </ul></td>
-</tr></table>
-
 
 
                 </article>
@@ -1239,8 +434,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1264,7 +459,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.18.0.
 </p></div>
       
     </div>

@@ -27,21 +27,22 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
   
   <!-- So that users can add custom icons -->
-  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/clustering';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Data Handling" href="dataset.html" />
@@ -49,20 +50,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -88,7 +95,7 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
   <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
@@ -203,11 +210,18 @@
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -220,8 +234,7 @@
           
           
           
-          <a href="https://github.com/Suchun-sv/VectorMerge" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
+          <a href="https://github.com/Suchun-sv/VectorMerge" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
         </li>
 </ul></div>
       
@@ -331,11 +344,18 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -348,8 +368,7 @@
           
           
           
-          <a href="https://github.com/Suchun-sv/VectorMerge" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
+          <a href="https://github.com/Suchun-sv/VectorMerge" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
         </li>
 </ul></div>
         
@@ -358,7 +377,14 @@
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
         <div class="sidebar-primary-item">
+
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
@@ -418,830 +444,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-vectormerge.clustering">
-<span id="clustering-methods"></span><h1>Clustering Methods<a class="headerlink" href="#module-vectormerge.clustering" title="Link to this heading">#</a></h1>
-<p>VectorMerge Clustering Package</p>
-<p>This package provides comprehensive clustering functionality for VectorMerge.
-It includes various clustering strategies for embedding analysis, reference point clustering,
-and cluster-based operations.</p>
-<p>Main Classes:
-- ClusteringStrategy: Abstract base class for clustering strategies
-- ClusterData: Data structure for cluster information
-- KMeansClusteringStrategy: K-means clustering implementation
-- HierarchicalClusteringStrategy: Hierarchical clustering implementation
-- ClusterManager: Main interface for clustering operations</p>
-<p>Quick Usage:
-<a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>python
-from vectormerge.clustering import ClusterManager, ClusteringConfig</p>
-<p># Create cluster manager
-config = ClusteringConfig(num_clusters=50, method=”kmeans”)
-manager = ClusterManager(config)</p>
-<p># Cluster embeddings
-cluster_results = manager.cluster_embeddings(</p>
-<blockquote>
-<div><p>embeddings, reference_indices</p>
-</div></blockquote>
-<section id="id5">
-<h2>)<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
-</section>
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.clustering.</span></span><span class="sig-name descname"><span class="pre">ClusterData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reference_indices:</span> <span class="pre">~typing.List[int]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linked_target_indices:</span> <span class="pre">~typing.List[int]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_embeddings:</span> <span class="pre">~numpy.ndarray</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_embedding:</span> <span class="pre">~numpy.ndarray</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linked_target_embeddings:</span> <span class="pre">~numpy.ndarray</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusterData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusterData" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Data structure to store cluster information.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><a class="reference internal" href="#vectormerge.clustering.ClusterData.bound_index" title="vectormerge.clustering.ClusterData.bound_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bound_index</span></code></a></dt><dd><p>Backward compatibility: return linked target indices.</p>
-</dd>
-<dt><a class="reference internal" href="#vectormerge.clustering.ClusterData.bound_size" title="vectormerge.clustering.ClusterData.bound_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bound_size</span></code></a></dt><dd><p>Return number of bound points.</p>
-</dd>
-<dt><a class="reference internal" href="#vectormerge.clustering.ClusterData.center" title="vectormerge.clustering.ClusterData.center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">center</span></code></a></dt><dd><p>Backward compatibility: return center embedding.</p>
-</dd>
-<dt><strong>center_embedding</strong></dt><dd></dd>
-<dt><a class="reference internal" href="#vectormerge.clustering.ClusterData.has_center" title="vectormerge.clustering.ClusterData.has_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_center</span></code></a></dt><dd><p>Check if cluster has a center.</p>
-</dd>
-<dt><strong>linked_target_embeddings</strong></dt><dd></dd>
-<dt><a class="reference internal" href="#vectormerge.clustering.ClusterData.ref_index" title="vectormerge.clustering.ClusterData.ref_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ref_index</span></code></a></dt><dd><p>Backward compatibility: return reference indices.</p>
-</dd>
-<dt><a class="reference internal" href="#vectormerge.clustering.ClusterData.ref_size" title="vectormerge.clustering.ClusterData.ref_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ref_size</span></code></a></dt><dd><p>Return number of reference points.</p>
-</dd>
-<dt><strong>reference_embeddings</strong></dt><dd></dd>
-<dt><a class="reference internal" href="#vectormerge.clustering.ClusterData.total_size" title="vectormerge.clustering.ClusterData.total_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total_size</span></code></a></dt><dd><p>Return total number of points in cluster.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusterData.add_reference_point" title="vectormerge.clustering.ClusterData.add_reference_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_reference_point</span></code></a>(index[, embedding])</p></td>
-<td><p>Add a reference point to the cluster.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusterData.add_target_point" title="vectormerge.clustering.ClusterData.add_target_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_target_point</span></code></a>(index[, embedding])</p></td>
-<td><p>Add a target point to the cluster.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusterData.compute_center" title="vectormerge.clustering.ClusterData.compute_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_center</span></code></a>([embeddings])</p></td>
-<td><p>Compute cluster center from reference embeddings.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusterData.from_dict" title="vectormerge.clustering.ClusterData.from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_dict</span></code></a>(data)</p></td>
-<td><p>Create cluster data from dictionary.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusterData.to_dict" title="vectormerge.clustering.ClusterData.to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_dict</span></code></a>()</p></td>
-<td><p>Convert cluster data to dictionary for serialization.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.add_reference_point">
-<span class="sig-name descname"><span class="pre">add_reference_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusterData.add_reference_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusterData.add_reference_point" title="Link to this definition">#</a></dt>
-<dd><p>Add a reference point to the cluster.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.add_target_point">
-<span class="sig-name descname"><span class="pre">add_target_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusterData.add_target_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusterData.add_target_point" title="Link to this definition">#</a></dt>
-<dd><p>Add a target point to the cluster.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.bound_index">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bound_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#vectormerge.clustering.ClusterData.bound_index" title="Link to this definition">#</a></dt>
-<dd><p>return linked target indices.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Backward compatibility</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.bound_size">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bound_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#vectormerge.clustering.ClusterData.bound_size" title="Link to this definition">#</a></dt>
-<dd><p>Return number of bound points.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.center">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">center</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#vectormerge.clustering.ClusterData.center" title="Link to this definition">#</a></dt>
-<dd><p>return center embedding.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Backward compatibility</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.center_embedding">
-<span class="sig-name descname"><span class="pre">center_embedding</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#vectormerge.clustering.ClusterData.center_embedding" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.compute_center">
-<span class="sig-name descname"><span class="pre">compute_center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusterData.compute_center"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusterData.compute_center" title="Link to this definition">#</a></dt>
-<dd><p>Compute cluster center from reference embeddings.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.from_dict">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.clustering.ClusterData" title="vectormerge.clustering.base.ClusterData"><span class="pre">ClusterData</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusterData.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusterData.from_dict" title="Link to this definition">#</a></dt>
-<dd><p>Create cluster data from dictionary.</p>
-<p>Note: Embeddings are not loaded and need to be computed separately.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.has_center">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_center</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#vectormerge.clustering.ClusterData.has_center" title="Link to this definition">#</a></dt>
-<dd><p>Check if cluster has a center.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.linked_target_embeddings">
-<span class="sig-name descname"><span class="pre">linked_target_embeddings</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#vectormerge.clustering.ClusterData.linked_target_embeddings" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.linked_target_indices">
-<span class="sig-name descname"><span class="pre">linked_target_indices</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#vectormerge.clustering.ClusterData.linked_target_indices" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.ref_index">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ref_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#vectormerge.clustering.ClusterData.ref_index" title="Link to this definition">#</a></dt>
-<dd><p>return reference indices.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Backward compatibility</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.ref_size">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ref_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#vectormerge.clustering.ClusterData.ref_size" title="Link to this definition">#</a></dt>
-<dd><p>Return number of reference points.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.reference_embeddings">
-<span class="sig-name descname"><span class="pre">reference_embeddings</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#vectormerge.clustering.ClusterData.reference_embeddings" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.reference_indices">
-<span class="sig-name descname"><span class="pre">reference_indices</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#vectormerge.clustering.ClusterData.reference_indices" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.to_dict">
-<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusterData.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusterData.to_dict" title="Link to this definition">#</a></dt>
-<dd><p>Convert cluster data to dictionary for serialization.</p>
-<p>Note: Embeddings are not serialized to save space.
-They can be recomputed from the original data when needed.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterData.total_size">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#vectormerge.clustering.ClusterData.total_size" title="Link to this definition">#</a></dt>
-<dd><p>Return total number of points in cluster.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterManager">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.clustering.</span></span><span class="sig-name descname"><span class="pre">ClusterManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.clustering.ClusteringConfig" title="vectormerge.clustering.base.ClusteringConfig"><span class="pre">ClusteringConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_save_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/clustering/manage.html#ClusterManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusterManager" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<tbody>
-<tr class="row-odd"><td><p><strong>fit</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><strong>from_saved</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p><strong>load</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><strong>predict</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p><strong>save</strong></p></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterManager.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/manage.html#ClusterManager.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusterManager.fit" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterManager.from_saved">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_saved</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.clustering.ClusterManager" title="vectormerge.clustering.manage.ClusterManager"><span class="pre">ClusterManager</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/manage.html#ClusterManager.from_saved"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusterManager.from_saved" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterManager.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/manage.html#ClusterManager.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusterManager.load" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterManager.predict">
-<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clustering_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/manage.html#ClusterManager.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusterManager.predict" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusterManager.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clustering_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/manage.html#ClusterManager.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusterManager.save" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringConfig">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.clustering.</span></span><span class="sig-name descname"><span class="pre">ClusteringConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clustering_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'la2m-cluster'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">la2m_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LA2MClusteringConfig</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">LA2MClusteringConfig(d_prime=10)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kmeans_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">KMeansConfig</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">KMeansConfig(n_clusters=10,</span> <span class="pre">max_iter=300,</span> <span class="pre">tol=0.0001,</span> <span class="pre">random_state=42)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringConfig" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Configuration for clustering operations.</p>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusteringConfig.from_dict" title="vectormerge.clustering.ClusteringConfig.from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_dict</span></code></a>(data)</p></td>
-<td><p>Create configuration from dictionary.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusteringConfig.to_dict" title="vectormerge.clustering.ClusteringConfig.to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_dict</span></code></a>()</p></td>
-<td><p>Convert configuration to dictionary.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusteringConfig.to_string" title="vectormerge.clustering.ClusteringConfig.to_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_string</span></code></a>()</p></td>
-<td><p>Convert configuration to string.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringConfig.clustering_method">
-<span class="sig-name descname"><span class="pre">clustering_method</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'la2m-cluster'</span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringConfig.clustering_method" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringConfig.compute_metrics">
-<span class="sig-name descname"><span class="pre">compute_metrics</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringConfig.compute_metrics" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringConfig.device">
-<span class="sig-name descname"><span class="pre">device</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'auto'</span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringConfig.device" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringConfig.from_dict">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.clustering.ClusteringConfig" title="vectormerge.clustering.base.ClusteringConfig"><span class="pre">ClusteringConfig</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringConfig.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringConfig.from_dict" title="Link to this definition">#</a></dt>
-<dd><p>Create configuration from dictionary.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringConfig.kmeans_config">
-<span class="sig-name descname"><span class="pre">kmeans_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">KMeansConfig</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">KMeansConfig(n_clusters=10,</span> <span class="pre">max_iter=300,</span> <span class="pre">tol=0.0001,</span> <span class="pre">random_state=42)</span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringConfig.kmeans_config" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringConfig.la2m_config">
-<span class="sig-name descname"><span class="pre">la2m_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">LA2MClusteringConfig</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">LA2MClusteringConfig(d_prime=10)</span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringConfig.la2m_config" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringConfig.to_dict">
-<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringConfig.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringConfig.to_dict" title="Link to this definition">#</a></dt>
-<dd><p>Convert configuration to dictionary.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringConfig.to_string">
-<span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringConfig.to_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringConfig.to_string" title="Link to this definition">#</a></dt>
-<dd><p>Convert configuration to string.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringConfig.verbose">
-<span class="sig-name descname"><span class="pre">verbose</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringConfig.verbose" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.clustering.</span></span><span class="sig-name descname"><span class="pre">ClusteringResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">cluster_data_list:</span> <span class="pre">~typing.List[~vectormerge.clustering.base.ClusterData],</span> <span class="pre">cluster_labels:</span> <span class="pre">~numpy.ndarray,</span> <span class="pre">cluster_centers:</span> <span class="pre">~numpy.ndarray</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">quality_metrics:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">float]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">metadata:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringResult" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Result container for clustering operations.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>cluster_centers</strong></dt><dd></dd>
-<dt><a class="reference internal" href="#vectormerge.clustering.ClusteringResult.cluster_sizes" title="vectormerge.clustering.ClusteringResult.cluster_sizes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cluster_sizes</span></code></a></dt><dd><p>Return sizes of all clusters.</p>
-</dd>
-<dt><a class="reference internal" href="#vectormerge.clustering.ClusteringResult.has_embeddings" title="vectormerge.clustering.ClusteringResult.has_embeddings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_embeddings</span></code></a></dt><dd><p>Check if cluster result has embeddings.</p>
-</dd>
-<dt><a class="reference internal" href="#vectormerge.clustering.ClusteringResult.num_clusters" title="vectormerge.clustering.ClusteringResult.num_clusters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_clusters</span></code></a></dt><dd><p>Return number of clusters.</p>
-</dd>
-<dt><a class="reference internal" href="#vectormerge.clustering.ClusteringResult.reference_cluster_sizes" title="vectormerge.clustering.ClusteringResult.reference_cluster_sizes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reference_cluster_sizes</span></code></a></dt><dd><p>Return sizes of reference points in each cluster.</p>
-</dd>
-<dt><a class="reference internal" href="#vectormerge.clustering.ClusteringResult.target_cluster_sizes" title="vectormerge.clustering.ClusteringResult.target_cluster_sizes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">target_cluster_sizes</span></code></a></dt><dd><p>Return sizes of target points in each cluster.</p>
-</dd>
-<dt><a class="reference internal" href="#vectormerge.clustering.ClusteringResult.total_reference_points" title="vectormerge.clustering.ClusteringResult.total_reference_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total_reference_points</span></code></a></dt><dd><p>Return total number of reference points across all clusters.</p>
-</dd>
-<dt><a class="reference internal" href="#vectormerge.clustering.ClusteringResult.total_target_points" title="vectormerge.clustering.ClusteringResult.total_target_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total_target_points</span></code></a></dt><dd><p>Return total number of target points across all clusters.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusteringResult.compute_all_centers" title="vectormerge.clustering.ClusteringResult.compute_all_centers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_all_centers</span></code></a>()</p></td>
-<td><p>Compute centers for all clusters that don't have them.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusteringResult.from_dict" title="vectormerge.clustering.ClusteringResult.from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_dict</span></code></a>(data)</p></td>
-<td><p>Create result from dictionary.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusteringResult.get_cluster_centers" title="vectormerge.clustering.ClusteringResult.get_cluster_centers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_cluster_centers</span></code></a>()</p></td>
-<td><p>Get cluster centers from cluster data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusteringResult.load" title="vectormerge.clustering.ClusteringResult.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(path)</p></td>
-<td><p>Load the clustering result from a file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusteringResult.reload_reference_embeddings" title="vectormerge.clustering.ClusteringResult.reload_reference_embeddings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reload_reference_embeddings</span></code></a>(embeddings)</p></td>
-<td><p>Recompute cluster centers.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusteringResult.save" title="vectormerge.clustering.ClusteringResult.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(path[, save_embeddings])</p></td>
-<td><p>Save the clustering result to a file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusteringResult.to_dict" title="vectormerge.clustering.ClusteringResult.to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_dict</span></code></a>()</p></td>
-<td><p>Convert result to dictionary for serialization.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.cluster_centers">
-<span class="sig-name descname"><span class="pre">cluster_centers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.cluster_centers" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.cluster_data_list">
-<span class="sig-name descname"><span class="pre">cluster_data_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#vectormerge.clustering.ClusterData" title="vectormerge.clustering.base.ClusterData"><span class="pre">ClusterData</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.cluster_data_list" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.cluster_labels">
-<span class="sig-name descname"><span class="pre">cluster_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.cluster_labels" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.cluster_sizes">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cluster_sizes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.cluster_sizes" title="Link to this definition">#</a></dt>
-<dd><p>Return sizes of all clusters.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.compute_all_centers">
-<span class="sig-name descname"><span class="pre">compute_all_centers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringResult.compute_all_centers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.compute_all_centers" title="Link to this definition">#</a></dt>
-<dd><p>Compute centers for all clusters that don’t have them.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.from_dict">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringResult.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.from_dict" title="Link to this definition">#</a></dt>
-<dd><p>Create result from dictionary.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.get_cluster_centers">
-<span class="sig-name descname"><span class="pre">get_cluster_centers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringResult.get_cluster_centers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.get_cluster_centers" title="Link to this definition">#</a></dt>
-<dd><p>Get cluster centers from cluster data.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.has_embeddings">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_embeddings</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.has_embeddings" title="Link to this definition">#</a></dt>
-<dd><p>Check if cluster result has embeddings.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.load">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringResult.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.load" title="Link to this definition">#</a></dt>
-<dd><p>Load the clustering result from a file.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.metadata">
-<span class="sig-name descname"><span class="pre">metadata</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.metadata" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.num_clusters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_clusters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.num_clusters" title="Link to this definition">#</a></dt>
-<dd><p>Return number of clusters.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.quality_metrics">
-<span class="sig-name descname"><span class="pre">quality_metrics</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.quality_metrics" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.reference_cluster_sizes">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reference_cluster_sizes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.reference_cluster_sizes" title="Link to this definition">#</a></dt>
-<dd><p>Return sizes of reference points in each cluster.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.reload_reference_embeddings">
-<span class="sig-name descname"><span class="pre">reload_reference_embeddings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringResult.reload_reference_embeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.reload_reference_embeddings" title="Link to this definition">#</a></dt>
-<dd><p>Recompute cluster centers.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringResult.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.save" title="Link to this definition">#</a></dt>
-<dd><p>Save the clustering result to a file.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.target_cluster_sizes">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">target_cluster_sizes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.target_cluster_sizes" title="Link to this definition">#</a></dt>
-<dd><p>Return sizes of target points in each cluster.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.to_dict">
-<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringResult.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.to_dict" title="Link to this definition">#</a></dt>
-<dd><p>Convert result to dictionary for serialization.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.total_reference_points">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total_reference_points</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.total_reference_points" title="Link to this definition">#</a></dt>
-<dd><p>Return total number of reference points across all clusters.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringResult.total_target_points">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total_target_points</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#vectormerge.clustering.ClusteringResult.total_target_points" title="Link to this definition">#</a></dt>
-<dd><p>Return total number of target points across all clusters.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringStrategy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.clustering.</span></span><span class="sig-name descname"><span class="pre">ClusteringStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.clustering.ClusteringConfig" title="vectormerge.clustering.base.ClusteringConfig"><span class="pre">ClusteringConfig</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringStrategy" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<p>Abstract base class for clustering strategies.</p>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusteringStrategy.assign_to_clusters" title="vectormerge.clustering.ClusteringStrategy.assign_to_clusters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_to_clusters</span></code></a>(embeddings, ...)</p></td>
-<td><p>Assign target points to existing clusters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusteringStrategy.compute_quality_metrics" title="vectormerge.clustering.ClusteringStrategy.compute_quality_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_quality_metrics</span></code></a>(embeddings, ...)</p></td>
-<td><p>Compute quality metrics for the clustering.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusteringStrategy.fit" title="vectormerge.clustering.ClusteringStrategy.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(embeddings, reference_indices)</p></td>
-<td><p>Fit the clustering strategy to the data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusteringStrategy.load" title="vectormerge.clustering.ClusteringStrategy.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(path)</p></td>
-<td><p>Load clustering strategy and result.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusteringStrategy.predict" title="vectormerge.clustering.ClusteringStrategy.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(clustering_result, embeddings)</p></td>
-<td><p>Predict cluster assignments for new embeddings.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.clustering.ClusteringStrategy.save" title="vectormerge.clustering.ClusteringStrategy.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(path, clustering_result)</p></td>
-<td><p>Save the clustering result and strategy.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringStrategy.assign_to_clusters">
-<span class="sig-name descname"><span class="pre">assign_to_clusters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clustering_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringStrategy.assign_to_clusters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringStrategy.assign_to_clusters" title="Link to this definition">#</a></dt>
-<dd><p>Assign target points to existing clusters.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>embeddings</strong> – All embeddings</p></li>
-<li><p><strong>target_indices</strong> – Indices of target points to assign</p></li>
-<li><p><strong>clustering_result</strong> – Existing clustering result</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Updated clustering result with assigned target points</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringStrategy.compute_quality_metrics">
-<span class="sig-name descname"><span class="pre">compute_quality_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clustering_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringStrategy.compute_quality_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringStrategy.compute_quality_metrics" title="Link to this definition">#</a></dt>
-<dd><p>Compute quality metrics for the clustering.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>embeddings</strong> – All embeddings</p></li>
-<li><p><strong>clustering_result</strong> – Clustering result</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dictionary with quality metrics</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringStrategy.fit">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringStrategy.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringStrategy.fit" title="Link to this definition">#</a></dt>
-<dd><p>Fit the clustering strategy to the data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>embeddings</strong> – All embeddings (N x D)</p></li>
-<li><p><strong>reference_indices</strong> – Indices of reference points to cluster</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>ClusteringResult object with clustering information</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringStrategy.load">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#vectormerge.clustering.ClusteringStrategy" title="vectormerge.clustering.base.ClusteringStrategy"><span class="pre">ClusteringStrategy</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringStrategy.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringStrategy.load" title="Link to this definition">#</a></dt>
-<dd><p>Load clustering strategy and result.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – Path to load from</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Tuple of (clustering_strategy, clustering_result)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringStrategy.predict">
-<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clustering_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringStrategy.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringStrategy.predict" title="Link to this definition">#</a></dt>
-<dd><p>Predict cluster assignments for new embeddings.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>clustering_result</strong> – Clustering result to use for prediction</p></li>
-<li><p><strong>embeddings</strong> – New embeddings to assign to clusters</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Cluster assignments for each embedding</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.ClusteringStrategy.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clustering_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/base.html#ClusteringStrategy.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.ClusteringStrategy.save" title="Link to this definition">#</a></dt>
-<dd><p>Save the clustering result and strategy.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> – Path to save the clustering result</p></li>
-<li><p><strong>clustering_result</strong> – Clustering result to save</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.clustering.KMeansClusteringStrategy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.clustering.</span></span><span class="sig-name descname"><span class="pre">KMeansClusteringStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.clustering.ClusteringConfig" title="vectormerge.clustering.base.ClusteringConfig"><span class="pre">ClusteringConfig</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/clustering/strategies/kmeans.html#KMeansClusteringStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.KMeansClusteringStrategy" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vectormerge.clustering.ClusteringStrategy" title="vectormerge.clustering.base.ClusteringStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClusteringStrategy</span></code></a></p>
-<p>K-means clustering strategy for reference point clustering.</p>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_to_clusters</span></code>(embeddings, ...)</p></td>
-<td><p>Assign target points to existing clusters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.clustering.KMeansClusteringStrategy.compute_quality_metrics" title="vectormerge.clustering.KMeansClusteringStrategy.compute_quality_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_quality_metrics</span></code></a>(embeddings, ...)</p></td>
-<td><p>Compute quality metrics for the clustering.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.KMeansClusteringStrategy.fit" title="vectormerge.clustering.KMeansClusteringStrategy.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(embeddings, reference_indices)</p></td>
-<td><p>Fit K-means clustering to reference embeddings.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#vectormerge.clustering.KMeansClusteringStrategy.fit_predict" title="vectormerge.clustering.KMeansClusteringStrategy.fit_predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_predict</span></code></a>(embeddings, reference_indices)</p></td>
-<td><p>Fit K-means clustering and predict cluster assignments for all embeddings.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.KMeansClusteringStrategy.get_cluster_info" title="vectormerge.clustering.KMeansClusteringStrategy.get_cluster_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_cluster_info</span></code></a>()</p></td>
-<td><p>Get information about the fitted K-means model.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code>(path)</p></td>
-<td><p>Load clustering strategy and result.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.KMeansClusteringStrategy.predict" title="vectormerge.clustering.KMeansClusteringStrategy.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(embeddings)</p></td>
-<td><p>Predict cluster assignments for new embeddings.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code>(path, clustering_result)</p></td>
-<td><p>Save the clustering result and strategy.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.KMeansClusteringStrategy.compute_quality_metrics">
-<span class="sig-name descname"><span class="pre">compute_quality_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clustering_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/strategies/kmeans.html#KMeansClusteringStrategy.compute_quality_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.KMeansClusteringStrategy.compute_quality_metrics" title="Link to this definition">#</a></dt>
-<dd><p>Compute quality metrics for the clustering.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>embeddings</strong> – All embeddings</p></li>
-<li><p><strong>clustering_result</strong> – Clustering result</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dictionary with quality metrics</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.KMeansClusteringStrategy.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/strategies/kmeans.html#KMeansClusteringStrategy.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.KMeansClusteringStrategy.fit" title="Link to this definition">#</a></dt>
-<dd><p>Fit K-means clustering to reference embeddings.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>embeddings</strong> – All embeddings (N x D)</p></li>
-<li><p><strong>reference_indices</strong> – Indices of reference points</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>ClusteringResult object with clustering information</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.KMeansClusteringStrategy.fit_predict">
-<span class="sig-name descname"><span class="pre">fit_predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/strategies/kmeans.html#KMeansClusteringStrategy.fit_predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.KMeansClusteringStrategy.fit_predict" title="Link to this definition">#</a></dt>
-<dd><p>Fit K-means clustering and predict cluster assignments for all embeddings.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>embeddings</strong> – All embeddings (N x D)</p></li>
-<li><p><strong>reference_indices</strong> – Indices of reference points</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Tuple of (ClusteringResult, cluster_assignments_for_all_embeddings)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.KMeansClusteringStrategy.get_cluster_info">
-<span class="sig-name descname"><span class="pre">get_cluster_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/strategies/kmeans.html#KMeansClusteringStrategy.get_cluster_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.KMeansClusteringStrategy.get_cluster_info" title="Link to this definition">#</a></dt>
-<dd><p>Get information about the fitted K-means model.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dictionary with cluster information</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.KMeansClusteringStrategy.predict">
-<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/strategies/kmeans.html#KMeansClusteringStrategy.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.KMeansClusteringStrategy.predict" title="Link to this definition">#</a></dt>
-<dd><p>Predict cluster assignments for new embeddings.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>embeddings</strong> – New embeddings to assign to clusters</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Cluster assignments for each embedding</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vectormerge.clustering.LA2MClusteringStrategy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectormerge.clustering.</span></span><span class="sig-name descname"><span class="pre">LA2MClusteringStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.clustering.ClusteringConfig" title="vectormerge.clustering.base.ClusteringConfig"><span class="pre">ClusteringConfig</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/vectormerge/clustering/strategies/la2m_cluster.html#LA2MClusteringStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.LA2MClusteringStrategy" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vectormerge.clustering.ClusteringStrategy" title="vectormerge.clustering.base.ClusteringStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClusteringStrategy</span></code></a></p>
-<p>LA2M clustering strategy.</p>
-<p>This strategy creates neighborhoods around each point based on nearest neighbors.</p>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_to_clusters</span></code>(embeddings, ...)</p></td>
-<td><p>Assign target points to existing clusters.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_quality_metrics</span></code>(embeddings, ...)</p></td>
-<td><p>Compute quality metrics for the clustering.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.LA2MClusteringStrategy.fit" title="vectormerge.clustering.LA2MClusteringStrategy.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(embeddings, reference_indices)</p></td>
-<td><p>Fit clustering strategy to reference embeddings.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code>(path)</p></td>
-<td><p>Load clustering strategy and result.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#vectormerge.clustering.LA2MClusteringStrategy.predict" title="vectormerge.clustering.LA2MClusteringStrategy.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(clustering_result, embeddings)</p></td>
-<td><p>Predict cluster assignments for new embeddings.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code>(path, clustering_result)</p></td>
-<td><p>Save the clustering result and strategy.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.LA2MClusteringStrategy.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/strategies/la2m_cluster.html#LA2MClusteringStrategy.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.LA2MClusteringStrategy.fit" title="Link to this definition">#</a></dt>
-<dd><p>Fit clustering strategy to reference embeddings.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vectormerge.clustering.LA2MClusteringStrategy.predict">
-<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clustering_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/strategies/la2m_cluster.html#LA2MClusteringStrategy.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.LA2MClusteringStrategy.predict" title="Link to this definition">#</a></dt>
-<dd><p>Predict cluster assignments for new embeddings.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vectormerge.clustering.compute_cluster_metrics">
-<span class="sig-prename descclassname"><span class="pre">vectormerge.clustering.</span></span><span class="sig-name descname"><span class="pre">compute_cluster_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clustering_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/utils.html#compute_cluster_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.compute_cluster_metrics" title="Link to this definition">#</a></dt>
-<dd><p>Compute comprehensive metrics for clustering quality.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>embeddings</strong> – Original embeddings</p></li>
-<li><p><strong>clustering_result</strong> – Clustering result</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dictionary with clustering metrics</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vectormerge.clustering.load_cluster_data">
-<span class="sig-prename descclassname"><span class="pre">vectormerge.clustering.</span></span><span class="sig-name descname"><span class="pre">load_cluster_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/utils.html#load_cluster_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.load_cluster_data" title="Link to this definition">#</a></dt>
-<dd><p>Load cluster data from disk.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – Path to the cluster data directory</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Loaded clustering result</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vectormerge.clustering.save_cluster_data">
-<span class="sig-prename descclassname"><span class="pre">vectormerge.clustering.</span></span><span class="sig-name descname"><span class="pre">save_cluster_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clustering_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/utils.html#save_cluster_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.save_cluster_data" title="Link to this definition">#</a></dt>
-<dd><p>Save cluster data to disk.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>clustering_result</strong> – Clustering result to save</p></li>
-<li><p><strong>path</strong> – Path to save the cluster data</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vectormerge.clustering.visualize_clusters">
-<span class="sig-prename descclassname"><span class="pre">vectormerge.clustering.</span></span><span class="sig-name descname"><span class="pre">visualize_clusters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clustering_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#vectormerge.clustering.ClusteringResult" title="vectormerge.clustering.base.ClusteringResult"><span class="pre">ClusteringResult</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'tsne'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/vectormerge/clustering/utils.html#visualize_clusters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectormerge.clustering.visualize_clusters" title="Link to this definition">#</a></dt>
-<dd><p>Visualize clustering results using dimensionality reduction.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>embeddings</strong> – Original embeddings</p></li>
-<li><p><strong>clustering_result</strong> – Clustering result</p></li>
-<li><p><strong>method</strong> – Dimensionality reduction method (“tsne”, “pca”, “umap”)</p></li>
-<li><p><strong>save_path</strong> – Path to save the plot (optional)</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
+  <section id="clustering-methods">
+<h1>Clustering Methods<a class="headerlink" href="#clustering-methods" title="Link to this heading">#</a></h1>
 </section>
 
 
@@ -1284,106 +488,6 @@ They can be recomputed from the original data when needed.</p>
 
 
   <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData"><code class="docutils literal notranslate"><span class="pre">ClusterData</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.add_reference_point"><code class="docutils literal notranslate"><span class="pre">ClusterData.add_reference_point()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.add_target_point"><code class="docutils literal notranslate"><span class="pre">ClusterData.add_target_point()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.bound_index"><code class="docutils literal notranslate"><span class="pre">ClusterData.bound_index</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.bound_size"><code class="docutils literal notranslate"><span class="pre">ClusterData.bound_size</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.center"><code class="docutils literal notranslate"><span class="pre">ClusterData.center</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.center_embedding"><code class="docutils literal notranslate"><span class="pre">ClusterData.center_embedding</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.compute_center"><code class="docutils literal notranslate"><span class="pre">ClusterData.compute_center()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.from_dict"><code class="docutils literal notranslate"><span class="pre">ClusterData.from_dict()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.has_center"><code class="docutils literal notranslate"><span class="pre">ClusterData.has_center</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.linked_target_embeddings"><code class="docutils literal notranslate"><span class="pre">ClusterData.linked_target_embeddings</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.linked_target_indices"><code class="docutils literal notranslate"><span class="pre">ClusterData.linked_target_indices</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.ref_index"><code class="docutils literal notranslate"><span class="pre">ClusterData.ref_index</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.ref_size"><code class="docutils literal notranslate"><span class="pre">ClusterData.ref_size</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.reference_embeddings"><code class="docutils literal notranslate"><span class="pre">ClusterData.reference_embeddings</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.reference_indices"><code class="docutils literal notranslate"><span class="pre">ClusterData.reference_indices</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.to_dict"><code class="docutils literal notranslate"><span class="pre">ClusterData.to_dict()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterData.total_size"><code class="docutils literal notranslate"><span class="pre">ClusterData.total_size</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterManager"><code class="docutils literal notranslate"><span class="pre">ClusterManager</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterManager.fit"><code class="docutils literal notranslate"><span class="pre">ClusterManager.fit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterManager.from_saved"><code class="docutils literal notranslate"><span class="pre">ClusterManager.from_saved()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterManager.load"><code class="docutils literal notranslate"><span class="pre">ClusterManager.load()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterManager.predict"><code class="docutils literal notranslate"><span class="pre">ClusterManager.predict()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusterManager.save"><code class="docutils literal notranslate"><span class="pre">ClusterManager.save()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringConfig"><code class="docutils literal notranslate"><span class="pre">ClusteringConfig</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringConfig.clustering_method"><code class="docutils literal notranslate"><span class="pre">ClusteringConfig.clustering_method</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringConfig.compute_metrics"><code class="docutils literal notranslate"><span class="pre">ClusteringConfig.compute_metrics</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringConfig.device"><code class="docutils literal notranslate"><span class="pre">ClusteringConfig.device</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringConfig.from_dict"><code class="docutils literal notranslate"><span class="pre">ClusteringConfig.from_dict()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringConfig.kmeans_config"><code class="docutils literal notranslate"><span class="pre">ClusteringConfig.kmeans_config</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringConfig.la2m_config"><code class="docutils literal notranslate"><span class="pre">ClusteringConfig.la2m_config</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringConfig.to_dict"><code class="docutils literal notranslate"><span class="pre">ClusteringConfig.to_dict()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringConfig.to_string"><code class="docutils literal notranslate"><span class="pre">ClusteringConfig.to_string()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringConfig.verbose"><code class="docutils literal notranslate"><span class="pre">ClusteringConfig.verbose</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult"><code class="docutils literal notranslate"><span class="pre">ClusteringResult</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.cluster_centers"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.cluster_centers</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.cluster_data_list"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.cluster_data_list</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.cluster_labels"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.cluster_labels</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.cluster_sizes"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.cluster_sizes</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.compute_all_centers"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.compute_all_centers()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.from_dict"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.from_dict()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.get_cluster_centers"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.get_cluster_centers()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.has_embeddings"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.has_embeddings</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.load"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.load()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.metadata"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.metadata</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.num_clusters"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.num_clusters</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.quality_metrics"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.quality_metrics</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.reference_cluster_sizes"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.reference_cluster_sizes</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.reload_reference_embeddings"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.reload_reference_embeddings()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.save"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.save()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.target_cluster_sizes"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.target_cluster_sizes</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.to_dict"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.to_dict()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.total_reference_points"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.total_reference_points</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringResult.total_target_points"><code class="docutils literal notranslate"><span class="pre">ClusteringResult.total_target_points</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringStrategy"><code class="docutils literal notranslate"><span class="pre">ClusteringStrategy</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringStrategy.assign_to_clusters"><code class="docutils literal notranslate"><span class="pre">ClusteringStrategy.assign_to_clusters()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringStrategy.compute_quality_metrics"><code class="docutils literal notranslate"><span class="pre">ClusteringStrategy.compute_quality_metrics()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringStrategy.fit"><code class="docutils literal notranslate"><span class="pre">ClusteringStrategy.fit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringStrategy.load"><code class="docutils literal notranslate"><span class="pre">ClusteringStrategy.load()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringStrategy.predict"><code class="docutils literal notranslate"><span class="pre">ClusteringStrategy.predict()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.ClusteringStrategy.save"><code class="docutils literal notranslate"><span class="pre">ClusteringStrategy.save()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.KMeansClusteringStrategy"><code class="docutils literal notranslate"><span class="pre">KMeansClusteringStrategy</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.KMeansClusteringStrategy.compute_quality_metrics"><code class="docutils literal notranslate"><span class="pre">KMeansClusteringStrategy.compute_quality_metrics()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.KMeansClusteringStrategy.fit"><code class="docutils literal notranslate"><span class="pre">KMeansClusteringStrategy.fit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.KMeansClusteringStrategy.fit_predict"><code class="docutils literal notranslate"><span class="pre">KMeansClusteringStrategy.fit_predict()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.KMeansClusteringStrategy.get_cluster_info"><code class="docutils literal notranslate"><span class="pre">KMeansClusteringStrategy.get_cluster_info()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.KMeansClusteringStrategy.predict"><code class="docutils literal notranslate"><span class="pre">KMeansClusteringStrategy.predict()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.LA2MClusteringStrategy"><code class="docutils literal notranslate"><span class="pre">LA2MClusteringStrategy</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.LA2MClusteringStrategy.fit"><code class="docutils literal notranslate"><span class="pre">LA2MClusteringStrategy.fit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.LA2MClusteringStrategy.predict"><code class="docutils literal notranslate"><span class="pre">LA2MClusteringStrategy.predict()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.compute_cluster_metrics"><code class="docutils literal notranslate"><span class="pre">compute_cluster_metrics()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.load_cluster_data"><code class="docutils literal notranslate"><span class="pre">load_cluster_data()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.save_cluster_data"><code class="docutils literal notranslate"><span class="pre">save_cluster_data()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectormerge.clustering.visualize_clusters"><code class="docutils literal notranslate"><span class="pre">visualize_clusters()</span></code></a></li>
-</ul>
-  </nav></div>
-
-  <div class="sidebar-secondary-item">
 
   
   <div class="tocsection editthispage">
@@ -1400,13 +504,13 @@ They can be recomputed from the original data when needed.</p>
 </div>
 
   <div class="sidebar-secondary-item">
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/api/clustering.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div></div>
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/api/clustering.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
 
 </div></div>
               
@@ -1421,8 +525,8 @@ They can be recomputed from the original data when needed.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1446,7 +550,7 @@ They can be recomputed from the original data when needed.</p>
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.18.0.
 </p></div>
       
     </div>
