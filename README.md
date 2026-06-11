@@ -32,12 +32,13 @@ high recall of top-k similarity search over the integrated datasets.
 
 ## 1. Environment Setup
 
-The project utilizes Poetry for dependency management. Follow these steps to set up your environment:
+The project utilizes UV for dependency management. Follow these steps to set up your environment:
 
-1. Install Poetry following the [official installation guide](https://python-poetry.org/docs/#installation)
+1. Install UV following the [official installation guide]([https://python-poetry.org/docs/#installation](https://docs.astral.sh/uv/getting-started/installation/))
 2. Install project dependencies:
    ```bash
-   poetry install
+   cd your folder
+   uv sync
    ```
 
 ## 2. Data Preparation
