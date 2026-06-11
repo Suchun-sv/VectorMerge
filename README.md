@@ -1,5 +1,4 @@
 # VectorMerge 🚀
-![logo](./images/logo.png)
 
 # Generate Embeddings
 ## vectormerge generate-embedding
@@ -56,3 +55,18 @@ vectormerge evaluate
 --output-path [output_path]
 --force [force retrain, default is use existing mapping]
 **kwargs**
+---
+If you think this paper is useful for your work, please cite us at 
+```code
+@article{Yang2025integrating,
+  author       = {Beining Yang and
+                  Yang Cao and
+                  Yang Ren},
+  title        = {Integrating Vector Databases across Embedding Models},
+  journal      = {Proc. {ACM} Manag. Data},
+  volume       = {3},
+  number       = {6},
+  pages        = {1--28},
+  year         = {2025}
+}
+```
