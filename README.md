@@ -55,23 +55,6 @@ And we also provide the embedding dataset in the https://huggingface.co/datasets
 
 ## 3. Embedding Generation [Optional, you can use [Benchmark](https://github.com/DBgroup-Edinburgh/VectorBenchmark) to support more models/datasets]
 
-The framework supports multiple embedding models:
-
-### FastText
-```bash
-source scripts/embedding_generate/fast_text.sh
-```
-
-- NV-Embed
-- GTE
-
-These models are automatically downloaded and configured when specified in the `--model_name_1_model_name_2` argument.
-
-- GloVe: Download pre-trained vectors from [Stanford NLP](https://nlp.stanford.edu/projects/glove/) and place them in `data/processed/model_weights/`
-
-- Mistral: Requires `MISTRAL_API_KEY` environment variable
-- OpenAI: Requires `OPENAI_API_KEY` environment variable
-
 ## 4. Running the Framework
 
 Execute the main script with the following command:
