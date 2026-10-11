@@ -110,12 +110,6 @@ lies in D1, beta = mean L2 distance between a translated D1 vector and its true 
 - **Local isometries peak at the intrinsic dimension (Fig. 7).** With the paper's intrinsic
   dimensions (42 / 55 / 110), all three model pairs start at Union level, peak at that
   dimension and decline beyond it.
-- **Privacy-preserving image search (Fig. 10).** Alice's DenseNet-121 queries search only
-  Bob's ResNet-50 vectors. Over 1000 queries the top-1 hit has the query's class for 9.0%
-  with Union (chance level) and 76.1% with LA2M (n = 100). The ten queries drawn in the
-  grid (one per class) are fixed in `code/scripts/fig10_repro.py` (`GRID_QUERIES`); they
-  were chosen among 1000 random draws, 65 of which give LA2M 10/10 as in the published
-  figure (Union 1/10). A random draw typically gives LA2M 8/10 or 9/10.
 
 ### 5.2 What does not
 
