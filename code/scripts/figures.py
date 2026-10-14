@@ -90,7 +90,7 @@ def _iso_in_subspace(Xh, Yh):
 
 
 def _fit_group(X, Y, dhat):
-    """Eq."""
+    """Eq. 2 on one reference group."""
     if RANK_CAP == "none":
         k = int(min(dhat, X.shape[1], Y.shape[1]))
         Vx, Vy = _right_basis(X, k, seed=1), _right_basis(Y, k, seed=2)
@@ -171,7 +171,7 @@ def group_knn(c1, refs, size):
 
 
 def alpha_beta(c1, c2, refs, d1_idx, maps, assign_fn, groups):
-    """alpha."""
+    """Alignment error alpha on the references and integration error beta on O1."""
     errs, errs_sub = [], []
     for cl, idx in enumerate(groups):
         if len(idx) == 0:

@@ -1,4 +1,4 @@
-"""Fig."""
+"""Fig. 8 of doi:10.1145/3769803: stratified vs random reference sampling (Section 6.2)."""
 import argparse
 import json
 from pathlib import Path

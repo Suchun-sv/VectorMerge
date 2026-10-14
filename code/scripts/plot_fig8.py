@@ -1,4 +1,4 @@
-"""Fig."""
+"""Fig. 8 layout: RN and beta against the reference ratio gamma."""
 import json
 import sys
 from pathlib import Path

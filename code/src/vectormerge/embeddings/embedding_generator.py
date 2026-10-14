@@ -393,7 +393,7 @@ class GTEEmbeddingGenerator(EmbeddingGenerator):
 
 class GloVeEmbeddingGenerator(EmbeddingGenerator):
     def __init__(self, cache_dir: str, dataset_name: str, model_settings: dict, force: bool = False):
-        """Args."""
+        """Initialise the GloVe embedding generator."""
         device = model_settings.get('device', torch.device('cuda'))
         batch_size = model_settings.get('batch_size', 32)
         dim = model_settings.get('dim', 300)

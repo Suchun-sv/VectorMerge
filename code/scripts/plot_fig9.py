@@ -1,4 +1,4 @@
-"""Fig."""
+"""Fig. 9 from two runs of figures.py: alpha from the run without fallback, recall@100 from the Fig 9 version."""
 import json
 import sys
 from pathlib import Path

@@ -7,7 +7,7 @@ from vectormerge.clustering.base import ClusteringConfig, LA2MClusteringConfig, 
 class LA2MMapper(LA2MStrategy):
     def __init__(self,
             cluster_method: str="la2m-cluster", d_prime: int=10, pca_mapping: bool=True, pca_dim: int=14, use_norm: bool=False, device: str="auto", batch_size: int=32, verbose: bool=False, save_param: bool=True, save_embedding: bool=False, dataset_name: str="", model: str="", reference_key: str="", reference_path: str="./data/processed/references", cluster_path:str ="./data/processed/clusters", embedding_path: str="./data/processed/embeddings", force: bool=True, auto_save_results: bool=False, n_clusters: int=10, max_iter: int=300, tol: float=1e-4, random_state: int=42):
-        """Args."""
+        """Initialise the LA2M mapper."""
 
         config = MappingConfig(
             device=device,

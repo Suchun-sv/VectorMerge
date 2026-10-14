@@ -1,4 +1,4 @@
-"""Reproduce the image case study of Section 7.4 / Fig."""
+"""Reproduce the image case study of Section 7.4 / Fig. 10 on CIFAR-10."""
 import argparse, json, sys
 from pathlib import Path
 import numpy as np
