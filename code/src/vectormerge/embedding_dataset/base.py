@@ -8,21 +8,9 @@ from .single_embedding_dataset import SingleEmbeddingDataset
 
 class EmbeddingDataset(Dataset):
     """Single embedding dataset container for VectorMerge."""
-    
-    def __init__(self, text_dataset_name: str, source_embedding_model_name: str, target_embedding_model_name: str, align_dimension: bool, dataset_path: str = "./data/raw/beir/", embedding_path: str = "./data/processed/embeddings/", reference_method: str = "la2m", reference_config: dict = {}):
-        """
-        Embedding dataset container for VectorMerge.
 
-        Args:
-            text_dataset_name: Name of the text dataset.
-            source_embedding_model_name: Name of the source embedding model.
-            target_embedding_model_name: Name of the target embedding model.
-            align_dimension: Whether to align the dimension of the source and target embeddings. If True, the dimension of the source and target embeddings will be aligned.
-            dataset_path: Path to the raw dataset.
-            embedding_path: Path to the processed embeddings.
-            reference_method: Method for splitting the dataset. See vectormerge.reference.SUPPORTED_REFERENCE_STRATEGIES
-            reference_config: Update the reference configuration. See vectormerge.reference.get_split_config
-        """
+    def __init__(self, text_dataset_name: str, source_embedding_model_name: str, target_embedding_model_name: str, align_dimension: bool, dataset_path: str = "./data/raw/beir/", embedding_path: str = "./data/processed/embeddings/", reference_method: str = "la2m", reference_config: dict = {}):
+        """Embedding dataset container for VectorMerge."""
         self.text_dataset_name = text_dataset_name
         self.text_dataset: TextDataset = load_dataset(text_dataset_name, split="test", dataset_path=dataset_path)
         self.source_embedding_dataset = SingleEmbeddingDataset(text_dataset_name, source_embedding_model_name, dataset_path, embedding_path, load_text_dataset=False, type_="corpus")
@@ -39,10 +27,8 @@ class EmbeddingDataset(Dataset):
             self.target_embeddings = self.target_embedding_dataset.embedding
             self.source_query_embeddings = self.source_query_embedding_dataset.embedding
             self.target_query_embeddings = self.target_query_embedding_dataset.embedding
-        
+
         self.d0_index, self.d1_index, self.d2_index = split_dataset(self, reference_method, reference_config)
-
-
 
 
 def get_split_config(split_method_name: str, **kwargs) -> 'SplitConfig':

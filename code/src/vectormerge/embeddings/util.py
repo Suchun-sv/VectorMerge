@@ -3,9 +3,7 @@ from typing import Tuple
 from loguru import logger
 
 def align_dimension(emb_1: np.ndarray, emb_2: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
-    """
-    Align the dimension of two embeddings. It not, we pad the shorter one with zeros.
-    """
+    """Align the dimension of two embeddings."""
     if emb_1.shape[1] != emb_2.shape[1]:
         max_dim = max(emb_1.shape[1], emb_2.shape[1])
         logger.info(f"Aligning dimension of {emb_1.shape} and {emb_2.shape} to {max_dim}")

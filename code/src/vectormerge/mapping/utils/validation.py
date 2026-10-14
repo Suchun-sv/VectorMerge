@@ -10,4 +10,4 @@ def validate_embeddings(embeddings: np.ndarray) -> bool:
         return False
     if embeddings.shape[0] == 0 or embeddings.shape[1] == 0:
         return False
-    return True 
+    return True

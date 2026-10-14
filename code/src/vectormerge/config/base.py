@@ -1,9 +1,4 @@
-"""
-Configuration loader for VectorMerge.
-
-This module provides functionality to load configuration from multiple sources
-with proper precedence: CLI args > project config > global config > defaults.
-"""
+"""Configuration loader for VectorMerge."""
 
 import os
 import yaml
@@ -17,7 +12,7 @@ from vectormerge.embeddings import EmbeddingModelConfig
 
 from ruamel.yaml import YAML
 from dataclasses import asdict
-from dacite import from_dict, Config as DaciteConfig    
+from dacite import from_dict, Config as DaciteConfig
 from ruamel.yaml.comments import CommentedMap
 import io
 
@@ -52,25 +47,22 @@ class BaseConfig:
     @classmethod
     def from_dict(cls: Type[T], data: Dict[str, Any]) -> T:
         kwargs = data.copy()
-        
+
         for field in dataclasses.fields(cls):
             field_type = field.type
             field_name = field.name
-            
+
             if dataclasses.is_dataclass(field_type) and isinstance(kwargs.get(field_name), dict):
                 kwargs[field_name] = field_type.from_dict(kwargs[field_name])
-        
+
         cls_fields = {f.name for f in dataclasses.fields(cls)}
         filtered_kwargs = {k: v for k, v in kwargs.items() if k in cls_fields}
-        
+
         return cls(**filtered_kwargs)
 
 
 def _to_dict_recursive(obj: Any) -> Any:
-    """
-    Recursively convert a dataclass to a dictionary.
-
-    """
+    """Recursively convert a dataclass to a dictionary."""
     if dataclasses.is_dataclass(obj) and not isinstance(obj, type):
         result = {}
         for field in dataclasses.fields(obj):
@@ -88,7 +80,7 @@ def _to_dict_recursive(obj: Any) -> Any:
 @dataclass
 class VectorMergeConfig(BaseConfig):
     """Configuration container for VectorMerge."""
-    
+
     data_path: str = "./data/raw/beir/"
     embedding_path: str = "./data/processed/embeddings/"
     embedding_cache_path: str = "./data/processed/embeddings/.cache/"
@@ -122,18 +114,18 @@ class VectorMergeConfig(BaseConfig):
         yaml.default_flow_style = False
         yaml.indent(mapping=2, sequence=4, offset=2)
         yaml.width = 4096
-        
+
         config_dict = CommentedMap(self.to_dict())
-        
+
         config_dict.yaml_set_start_comment(copyright_info)
         config_dict.yaml_set_comment_before_after_key(
             'mapping_config',
             before='============================ Mapper config ============================',
             indent=0
         )
-        
+
         config_dict.yaml_set_comment_before_after_key(
-            'clustering_config', 
+            'clustering_config',
             before='============================ Clustering config ============================',
             indent=0
         )
@@ -143,72 +135,72 @@ class VectorMergeConfig(BaseConfig):
             before='============================ Embedding models config ============================',
             indent=0
         )
-        
-        
+
+
         stream = io.StringIO()
         yaml.dump(config_dict, stream)
         return stream.getvalue()
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert configuration to dictionary."""
         return _to_dict_recursive(self)
-    
+
 
 class ConfigLoader:
     """Loads configuration from multiple sources with proper precedence."""
-    
+
     def __init__(self):
         self.config = VectorMergeConfig()
         self._cached_configs = {}
-    
+
     def load_config(self) -> "ConfigLoader":
         self._load_configs()
         return self
-    
+
     def __getitem__(self, key: str) -> Any:
         """Get a configuration value by key."""
         return getattr(self.config, key)
-    
+
     def update_config(self, update_dict: Dict[str, Any]) -> "ConfigLoader":
         """Update configuration with a dictionary."""
         default_config = self.config.to_dict()
         default_config.update(update_dict)
         self.config = from_dict(self.config.__class__, default_config)
         return self
-    
+
     def to_commented_yaml(self) -> str:
         """Convert configuration to YAML string with comments."""
         return self.config.to_commented_yaml()
-    
+
     @property
     def package_config_path(self) -> Path:
         """Get the path to the package config."""
         return Path(__file__).parent.parent.parent / "configs" / "config.yaml"
-    
+
     @property
     def global_config_path(self) -> Path:
         """Get the path to the global config."""
         return Path.home() / ".vectormerge" / "config.yaml"
-    
+
     @property
     def local_config_path(self) -> Path:
         """Get the path to the local config."""
         return Path.cwd() / ".vectormerge" / "config.yaml"
-    
+
     def _load_configs(self):
         """Load configurations in order of precedence."""
         configs = {
             'package': self._load_package_config(),
-            'global': self._load_global_config(), 
+            'global': self._load_global_config(),
             'project': self._load_project_config()
         }
-        
+
         test_dict = {}
         for config_type, config_data in configs.items():
             if config_data:
                 test_dict.update(config_data)
                 self._merge_config(config_data)
-        
+
         self.config = from_dict(
     data_class=self.config.__class__,
     data=test_dict,
@@ -220,7 +212,7 @@ class ConfigLoader:
         }
     )
 )
-        
+
 
     def load_yaml_config(self, config_path: Path) -> "ConfigLoader":
         """Load configuration from YAML file."""
@@ -230,7 +222,7 @@ class ConfigLoader:
         else:
             raise ValueError(f"No configuration found in {config_path}")
         return self
-    
+
     def _load_config_file(self, config_path: Path) -> Optional[Dict[str, Any]]:
         """Generic config file loader."""
         try:
@@ -240,32 +232,32 @@ class ConfigLoader:
         except Exception as e:
             print(f"Warning: Could not load config from {config_path}: {e}")
         return None
-    
+
     def _load_package_config(self) -> Optional[Dict[str, Any]]:
         """Load config from package's configs/config.yaml."""
         package_dir = Path(__file__).parent.parent.parent
         return self._load_config_file(package_dir / "configs" / "config.yaml")
-    
+
     def _load_global_config(self) -> Optional[Dict[str, Any]]:
         """Load config from ~/.vectormerge/config.yaml."""
         return self._load_config_file(Path.home() / ".vectormerge" / "config.yaml")
-    
+
     def _load_project_config(self) -> Optional[Dict[str, Any]]:
         """Load config from ./.vectormerge/config.yaml."""
         return self._load_config_file(Path.cwd() / ".vectormerge" / "config.yaml")
-    
+
     def _merge_config(self, config_dict: Dict[str, Any]):
         """Merge configuration dictionary into current config."""
         for key, value in config_dict.items():
             if hasattr(self.config, key):
                 setattr(self.config, key, value)
-    
+
     def _load_config_from_yaml(self, config_path: Path) -> Optional[Dict[str, Any]]:
         """Load configuration from YAML file."""
         if config_path.exists():
             return self._load_config_file(config_path)
         return None
-    
+
     def get_default(self, key: str, fallback: Any = None) -> Any:
         """Get a default value from config."""
         return getattr(self.config, key, fallback)

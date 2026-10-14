@@ -36,19 +36,16 @@ def single_run(
     wandb_entity: str = typer.Option(None, "--wandb-entity", "-we", help="Weights and Biases"),
     wandb_project: str = typer.Option("vector-merge", "--wandb-project", "-wp", help="Weights and Biases project"),
 ):
-    """
-    Evaluate the performance of a mapping model, you can pass extra arguments to the command to override the default values.
-    E.g. --mapping_config.la2m.num_clusters=50
-    """
+    """Evaluate the performance of a mapping model, you can pass extra arguments to the command to override the default values."""
     if src_tar_model is not None:
         source_model = src_tar_model.split("_")[0]
         target_model = src_tar_model.split("_")[1]
-    
+
     if source_model not in SUPPORTED_MODELS:
         raise ValueError(f"Source model is not supported, support: " + ", ".join(SUPPORTED_MODELS))
     if target_model not in SUPPORTED_MODELS:
         raise ValueError(f"Target model is not supported, support: " + ", ".join(SUPPORTED_MODELS))
-    
+
     if source_model is None or target_model is None:
         raise ValueError("Source and target model are required")
 
@@ -58,11 +55,11 @@ def single_run(
 
     dataset = load_dataset(dataset_name=dataset_name, data_path=config.data_path, force=force, interactive=False, verbose=verbose)
 
-    vectormerge = VectorSpaceMapper(strategy_name=mapping_method, 
-    config=config.mapping_config, 
-    dataset_name=dataset_name, 
-    source_model=source_model, 
-    target_model=target_model, 
+    vectormerge = VectorSpaceMapper(strategy_name=mapping_method,
+    config=config.mapping_config,
+    dataset_name=dataset_name,
+    source_model=source_model,
+    target_model=target_model,
     reference_key=reference_key,
     reference_path=config.reference_path,
     cluster_path=config.cluster_path,
@@ -110,7 +107,5 @@ def single_run(
     console = Console()
     console.rule("results")
     console.print(results)
-    
-
 
 

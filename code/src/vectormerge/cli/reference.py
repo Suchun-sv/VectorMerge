@@ -1,8 +1,4 @@
-"""
-Reference creation commands for VectorMerge CLI.
-
-This module contains commands for creating and managing reference datasets.
-"""
+"""Reference creation commands for VectorMerge CLI."""
 
 from pathlib import Path
 from typing import Optional
@@ -42,46 +38,46 @@ def create_reference(
     set_seed()
 
     config = handle_extra_args(ctx)
-    
+
     if interactive:
         if not dataset:
             dataset = select_dataset_interactively()
-        
+
         if not strategy:
             strategy = select_reference_strategy_interactively()
-    
+
     if not dataset:
         display_error_and_exit("Please specify dataset name (or use --interactive)")
-    
+
     if dataset not in SUPPORTED_DATASETS:
         display_error_and_exit(f"Dataset '{dataset}' not supported. Use 'vectormerge list-datasets' to see available datasets.")
-    
+
     reference_file = reference_path / f"{dataset}_reference.npz"
     if reference_file.exists() and not force:
         rprint(f"[yellow]Reference already exists:[/yellow] {reference_file}")
         rprint("[yellow]Use --force to regenerate[/yellow]")
         return
-    
+
     reference_path.mkdir(parents=True, exist_ok=True)
-    
+
     rprint(f"[blue]📊 Creating reference for dataset: {dataset}[/blue]")
     rprint(f"[blue]Strategy:[/blue] {strategy}")
     rprint(f"[blue]Reference ratio:[/blue] {reference_ratio}")
     rprint(f"[blue]Output path:[/blue] {reference_file}")
-    
+
     with Progress(
         SpinnerColumn(),
         TextColumn("[progress.description]{task.description}"),
         console=console,
     ) as progress:
         task = progress.add_task("Loading dataset...", total=None)
-        
+
         try:
             from ..dataset import load_dataset
             dataset_obj = load_dataset(dataset, data_path=data_path)
-            
+
             progress.update(task, description="Creating reference split...")
-            
+
             if strategy == "random":
                 from ..reference import RandomSplit
                 splitter = RandomSplit(
@@ -91,7 +87,7 @@ def create_reference(
                     reference_path=str(reference_path)
                 )
                 d0_index, d1_index, d2_index = splitter.split()
-            
+
             elif strategy == "la2m":
                 from ..reference import LA2MSplit
                 splitter = LA2MSplit.from_qrels(
@@ -106,10 +102,10 @@ def create_reference(
                     select_top_1=select_top_1
                 )
                 d0_index, d1_index, d2_index = splitter.split()
-            
+
             else:
                 display_error_and_exit(f"Unknown strategy: {strategy}")
-            
+
             result = {
                 'd0_size': len(d0_index),
                 'd1_size': len(d1_index),
@@ -119,63 +115,63 @@ def create_reference(
                 'd1_indices': d1_index.tolist(),
                 'd2_indices': d2_index.tolist(),
             }
-            
+
             if strategy == "la2m":
                 result['la2m_constraints'] = {
                     'answers_excluded_from_d0': True,
                     'answers_evenly_distributed': True,
                     'duplicate_answers': 'removed' if remove_duplicates else 'kept'
                 }
-            
+
             progress.update(task, description="Reference split created!")
-            
+
         except Exception as e:
             rprint(f"[red]Error creating reference:[/red] {e}")
             import traceback
             if verbose:
                 rprint(f"[red]Traceback:[/red] {traceback.format_exc()}")
             raise typer.Exit(code=1)
-    
+
     _show_reference_results(dataset, strategy, reference_file, result)
 
 
 def _show_reference_results(dataset: str, strategy: str, reference_file: Path, result: dict) -> None:
     """Show reference creation results."""
-    
+
     results_table = Table(title=f"Reference Creation Results: {dataset}")
     results_table.add_column("Split", style="cyan", no_wrap=True)
     results_table.add_column("Size", style="green", justify="right")
     results_table.add_column("Ratio", style="yellow", justify="right")
-    
+
     total_size = result['d0_size'] + result['d1_size'] + result['d2_size']
-    
+
     results_table.add_row(
-        "D0 (Reference)", 
-        str(result['d0_size']), 
+        "D0 (Reference)",
+        str(result['d0_size']),
         f"{result['d0_size']/total_size*100:.1f}%"
     )
     results_table.add_row(
-        "D1 (Test 1)", 
-        str(result['d1_size']), 
+        "D1 (Test 1)",
+        str(result['d1_size']),
         f"{result['d1_size']/total_size*100:.1f}%"
     )
     results_table.add_row(
-        "D2 (Test 2)", 
-        str(result['d2_size']), 
+        "D2 (Test 2)",
+        str(result['d2_size']),
         f"{result['d2_size']/total_size*100:.1f}%"
     )
     results_table.add_row(
-        "Total", 
-        str(total_size), 
+        "Total",
+        str(total_size),
         "100.0%",
         style="bold"
     )
-    
+
     console.print(results_table)
-    
+
     if 'dataset_obj' in result:
         _show_top10_samples(result['dataset_obj'], result)
-    
+
     if strategy == "la2m" and 'la2m_constraints' in result:
         la2m_info = result['la2m_constraints']
         rprint(f"\n[blue]📋 LA2M Constraints:[/blue]")
@@ -183,7 +179,7 @@ def _show_reference_results(dataset: str, strategy: str, reference_file: Path, r
         rprint(f"[green]✓ Answer documents evenly distributed:[/green] {la2m_info['answers_evenly_distributed']}")
         if 'duplicate_answers' in la2m_info:
             rprint(f"[yellow]⚠️  Duplicate answers handled:[/yellow] {la2m_info['duplicate_answers']}")
-    
+
     success_text = Text()
     success_text.append("🎉 Reference dataset created successfully!\n\n", style="bold green")
     success_text.append(f"📁 File: {reference_file}\n", style="")
@@ -196,7 +192,7 @@ def _show_reference_results(dataset: str, strategy: str, reference_file: Path, r
     success_text.append("vectormerge map-embedding\n", style="cyan")
     success_text.append("  📈 Run evaluation: ", style="dim")
     success_text.append("vectormerge evaluate", style="cyan")
-    
+
     panel = Panel(
         success_text,
         title="[bold green]✅ Success![/bold green]",
@@ -205,34 +201,34 @@ def _show_reference_results(dataset: str, strategy: str, reference_file: Path, r
         padding=(1, 2),
         expand=False
     )
-    
+
     console.print(panel)
 
 
 def _show_top10_samples(dataset_obj, result: dict) -> None:
     """Show top 10 samples from each split."""
-    
+
     d0_indices = result.get('d0_indices', [])
     d1_indices = result.get('d1_indices', [])
     d2_indices = result.get('d2_indices', [])
-    
+
     def _create_sample_table(title: str, indices: list, color: str, max_samples: int = 10) -> None:
         """Create a sample table for a split."""
         if not indices:
             return
-            
+
         sample_indices = indices[:max_samples]
-        
-        table = Table(title=f"{title} - Top {len(sample_indices)} Samples", 
-                     title_style=f"bold {color}", 
-                     show_header=True, 
+
+        table = Table(title=f"{title} - Top {len(sample_indices)} Samples",
+                     title_style=f"bold {color}",
+                     show_header=True,
                      header_style="bold white")
         table.add_column("Index", style="dim", width=8)
         table.add_column("Internal ID", style="magenta", width=12)
         table.add_column("Doc ID", style="cyan", width=12)
         table.add_column("Title", style="green", width=30)
         table.add_column("Content Preview", style="white", width=50)
-        
+
         for i, idx in enumerate(sample_indices):
             if isinstance(idx, int):
                 internal_idx = idx
@@ -240,11 +236,11 @@ def _show_top10_samples(dataset_obj, result: dict) -> None:
             else:
                 internal_idx = "N/A"
                 doc_id = str(idx)
-            
+
             doc = dataset_obj.corpus.get(doc_id, {})
             title = doc.get('title', 'No title')[:28] + '...' if len(doc.get('title', '')) > 28 else doc.get('title', 'No title')
             content = doc.get('text', 'No content')[:47] + '...' if len(doc.get('text', '')) > 47 else doc.get('text', 'No content')
-            
+
             table.add_row(
                 str(i + 1),
                 str(internal_idx),
@@ -252,14 +248,14 @@ def _show_top10_samples(dataset_obj, result: dict) -> None:
                 title,
                 content
             )
-        
+
         console.print(table)
         console.print()
-    
+
     rprint(f"\n[bold blue]📋 Sample Documents from Each Split[/bold blue]")
-    
+
     _create_sample_table("🎯 D0 (Reference Set)", d0_indices, "blue")
-    _create_sample_table("🧪 D1 (Test Set 1)", d1_indices, "green") 
+    _create_sample_table("🧪 D1 (Test Set 1)", d1_indices, "green")
     _create_sample_table("🧪 D2 (Test Set 2)", d2_indices, "yellow")
 
 @reference_app.command("check", help="Check for existing references and list them.")

@@ -5,33 +5,9 @@ from vectormerge.clustering import ClusterManager
 from vectormerge.clustering.base import ClusteringConfig, LA2MClusteringConfig, KMeansConfig
 
 class LA2MMapper(LA2MStrategy):
-    def __init__(self, 
+    def __init__(self,
             cluster_method: str="la2m-cluster", d_prime: int=10, pca_mapping: bool=True, pca_dim: int=14, use_norm: bool=False, device: str="auto", batch_size: int=32, verbose: bool=False, save_param: bool=True, save_embedding: bool=False, dataset_name: str="", model: str="", reference_key: str="", reference_path: str="./data/processed/references", cluster_path:str ="./data/processed/clusters", embedding_path: str="./data/processed/embeddings", force: bool=True, auto_save_results: bool=False, n_clusters: int=10, max_iter: int=300, tol: float=1e-4, random_state: int=42):
-        """
-        Args:
-            cluster_method: str,
-            d_prime: int,
-            pca_mapping: bool,
-            pca_dim: int,
-            use_norm: bool,
-            device: str,
-            batch_size: int,
-            verbose: bool,
-            save_param: bool,
-            save_embedding: bool,
-            dataset_name: str,
-            model: str,
-            reference_key: str,
-            reference_path: str,
-            cluster_path: str,
-            embedding_path: str,
-            force: bool,
-            auto_save_results: bool,
-            n_clusters: int=10,
-            max_iter: int=300,
-            tol: float=1e-4,
-            random_state: int=42,
-        """
+        """Args."""
 
         config = MappingConfig(
             device=device,
@@ -70,7 +46,7 @@ class LA2MMapper(LA2MStrategy):
 
 
 class ProcrustesMapper(ProcrustesMappingStrategy):
-    def __init__(self, 
+    def __init__(self,
             approximate: bool = False,
             q: int = 1500,
             with_rotation: bool = True,
@@ -82,27 +58,10 @@ class ProcrustesMapper(ProcrustesMappingStrategy):
             device: str = "auto",
             batch_size: int = 32,
             verbose: bool = False,
-            save_param: bool = False, 
+            save_param: bool = False,
             save_embedding: bool = False):
-        """
-        Procrustes mapping with configurable parameters.
-        
-        Args:
-            approximate: bool, whether to use approximated SVD
-            q: int, number of components for approximation
-            with_rotation: bool, whether to include rotation in the transformation
-            with_scaling: bool, whether to include scaling/normalization
-            use_pca: bool, whether to use PCA for dimensionality reduction
-            reduced_dim: int, target dimensionality for PCA (if use_pca=True)
-            procrustes_pca_type: str, type of PCA to use ("none", "inner", "outer")
-            use_norm: bool, whether to use normalization
-            device: str, device to use ("auto", "cpu", "cuda")
-            batch_size: int, batch size for processing
-            verbose: bool, whether to print verbose logs
-            save_param: bool, whether to save parameters
-            save_embedding: bool, whether to save embeddings
-        """
-        
+        """Procrustes mapping with configurable parameters."""
+
         config = MappingConfig(
             device=device,
             batch_size=batch_size,
@@ -120,5 +79,5 @@ class ProcrustesMapper(ProcrustesMappingStrategy):
                 use_norm=use_norm,
             )
         )
-        
+
         super().__init__(config=config)

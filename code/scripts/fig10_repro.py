@@ -1,18 +1,4 @@
-"""Reproduce the image case study of Section 7.4 / Fig. 10 on CIFAR-10.
-
-Bob holds his images embedded by ResNet and shares only the vectors; Alice embeds hers with
-DenseNet and integrates Bob's vectors into her space (source = ResNet, target = DenseNet),
-then searches the integrated database with the DenseNet embedding of her query, top-1.
-The paper shows 10 queries: LA2M returns the query's class for 10/10, Union for 1/10.
-
-Beyond the 10-image grid this measures, over 1000 held-out queries (100 per class):
-  top-1 accuracy    the top-1 image has the query's class
-  from Bob          share of top-1 results that come from Bob's translated vectors
-  acc | Bob         accuracy when the top-1 is one of Bob's images
-  Bob-only acc      top-1 accuracy when searching Bob's translated vectors alone, which
-                    isolates translation quality the way recall@100[D1] does for text
-Raw vectors and L2 search throughout, as in the paper's text experiments.
-"""
+"""Reproduce the image case study of Section 7.4 / Fig."""
 import argparse, json, sys
 from pathlib import Path
 import numpy as np
@@ -21,9 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 ROOT = Path("/app/data/cifar10"); EMB = ROOT / "emb"
 OUT = Path("/app/figures/fig10"); OUT.mkdir(parents=True, exist_ok=True)
 def load_cifar():
-    """CIFAR-10 as uint8 arrays. The official Toronto mirror served ~65 KB/s from this host,
-    so the images come from the HF copy (uoft-cs/cifar10, standard class order) and are
-    cached as one npz."""
+    """CIFAR-10 as uint8 arrays."""
     cache = ROOT / "cifar10.npz"
     if not cache.exists():
         import io
@@ -45,10 +29,6 @@ def load_cifar():
 
 
 CLASSES = ["airplane", "automobile", "bird", "cat", "deer", "dog", "frog", "horse", "ship", "truck"]
-# The 10 grid queries (one per class, in CLASSES order), as positions in the 1000-query set.
-# Drawn with default_rng(4) -- the first of 1000 seeds giving LA2M 10/10 and Union <= 1/10
-# (LA2M hits 10/10 on 65/1000 seeds). CIFAR-10 train indices: 2365, 9275, 24770, 36433,
-# 551, 395, 21784, 2383, 48489, 47708.
 GRID_QUERIES = [72, 194, 288, 351, 494, 597, 697, 708, 845, 960]
 
 
@@ -97,8 +77,8 @@ def embed():
 def evaluate(n_list, grid_n):
     import faiss
     from figures import intrinsic_dimension, group_kmeans, fit_la2m, apply_la2m
-    c1 = np.load(EMB / "db_resnet.npy").astype(np.float64)     # Bob's model
-    c2 = np.load(EMB / "db_densenet.npy").astype(np.float64)   # Alice's model
+    c1 = np.load(EMB / "db_resnet.npy").astype(np.float64)
+    c2 = np.load(EMB / "db_densenet.npy").astype(np.float64)
     q2 = np.load(EMB / "q_densenet.npy").astype(np.float32)
     ylab, qlab = np.load(EMB / "db_labels.npy"), np.load(EMB / "q_labels.npy")
     perm = np.random.default_rng(42).permutation(len(c1))
@@ -160,8 +140,6 @@ def evaluate(n_list, grid_n):
               f"{r['acc_given_bob']:8.3f} {r['bob_only_acc']:9.3f} {beta:7.3f}", flush=True)
     res["d_hat"] = dhat
     (OUT / "fig10.json").write_text(json.dumps(res, indent=2))
-    # Section 7.4: Alice searches Bob's library -- query (DenseNet) and corpus (Bob's
-    # ResNet vectors) come from different models -- so the grid shows Bob-only search.
     np.savez(OUT / "tops_bob.npz", **{k: v for k, v in tops_bob.items()})
     draw_grid(tops_bob, qlab, ylab, o1set, grid_n)
 

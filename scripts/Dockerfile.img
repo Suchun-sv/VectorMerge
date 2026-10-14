@@ -1,5 +1,3 @@
-# Adds torchvision to the text image for the image case study (paper Section 7.4, Fig. 10).
-# 0.19.1 is the release paired with the pinned torch 2.4.1; --no-deps leaves torch as locked.
 ARG BASE=la2m-artifact
 FROM ${BASE}
 RUN uv pip install --python /opt/venv/bin/python --no-deps torchvision==0.19.1

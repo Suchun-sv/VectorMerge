@@ -1,8 +1,4 @@
-"""Fig. 9 from two runs of figures.py: alpha from the run that fits every cluster upright
-with no fallback (the alignment error itself), recall@100 from the Fig 9 version.
-
-    python scripts/plot_fig9.py <alpha run .json> <recall run .json> <out.png>
-"""
+"""Fig."""
 import json
 import sys
 from pathlib import Path

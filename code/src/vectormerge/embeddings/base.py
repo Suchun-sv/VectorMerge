@@ -13,7 +13,7 @@ class MistralConfig:
 
     def to_dict(self) -> Dict[str, Any]:
         return dataclasses.asdict(self)
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "MistralConfig":
         return from_dict(cls, data)
@@ -28,7 +28,7 @@ class OpenaiConfig:
 
     def to_dict(self) -> Dict[str, Any]:
         return dataclasses.asdict(self)
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "OpenaiConfig":
         return from_dict(cls, data)
@@ -43,7 +43,7 @@ class NvEmbedConfig:
 
     def to_dict(self) -> Dict[str, Any]:
         return dataclasses.asdict(self)
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "NvEmbedConfig":
         return from_dict(cls, data)
@@ -58,7 +58,7 @@ class GTEConfig:
 
     def to_dict(self) -> Dict[str, Any]:
         return dataclasses.asdict(self)
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "GTEConfig":
         return from_dict(cls, data)
@@ -72,7 +72,7 @@ class FastTextConfig:
 
     def to_dict(self) -> Dict[str, Any]:
         return dataclasses.asdict(self)
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "FastTextConfig":
         return from_dict(cls, data)
@@ -86,7 +86,7 @@ class Word2VecConfig:
 
     def to_dict(self) -> Dict[str, Any]:
         return dataclasses.asdict(self)
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Word2VecConfig":
         return from_dict(cls, data)
@@ -100,7 +100,7 @@ class GloveConfig:
 
     def to_dict(self) -> Dict[str, Any]:
         return dataclasses.asdict(self)
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "GloveConfig":
         return from_dict(cls, data)
@@ -120,7 +120,7 @@ class EmbeddingModelConfig:
 
     def to_dict(self) -> Dict[str, Any]:
         return dataclasses.asdict(self)
-    
+
     def load_model_settings(self, model_name: str) -> Dict[str, Any]:
         if model_name == "mistral":
             return self.mistral_config.to_dict()
@@ -138,7 +138,7 @@ class EmbeddingModelConfig:
             return self.glove_config.to_dict()
         else:
             raise ValueError(f"Unknown model name: {model_name}")
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "EmbeddingModelConfig":
         return from_dict(cls, data)

@@ -146,7 +146,7 @@ class ClusterManager:
             "auto_save_results": self.auto_save_results,
             "verbose": self.verbose
         }
-    
+
     def predict(self, clustering_result: ClusteringResult, embeddings: np.ndarray, target_indices: Optional[np.ndarray] = None) -> np.ndarray:
         if target_indices is not None:
             embeddings = embeddings[target_indices]

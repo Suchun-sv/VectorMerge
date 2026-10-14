@@ -10,11 +10,7 @@ REPO_ENTITY = "DB-Edinburgh"
 REPO_NAME = "LA2M_emb"
 
 def _get_token(required: bool = True) -> Optional[str]:
-    """Load Hugging Face token from environment or .env file.
-
-    Downloads from a public repo work without a token, so `required=False`
-    lets read paths fall back to anonymous access.
-    """
+    """Load Hugging Face token from environment or .env file."""
     dotenv.load_dotenv()
     token = os.getenv("HF_TOKEN") or os.getenv("HUGGINGFACE_TOKEN")
     if not token and required:
@@ -30,9 +26,7 @@ def upload_embedding(
     repo_name: str = REPO_NAME,
     commit_message: Optional[str] = None,
 ) -> None:
-    """
-    Upload a local .npy file to Hugging Face under `embeddings/<upload_file_name>`.
-    """
+    """Upload a local .npy file to Hugging Face under `embeddings/<upload_file_name>`."""
     token = _get_token()
     api = HfApi(token=token)
     path_in_repo = f"embeddings/{upload_file_name}"
@@ -52,11 +46,7 @@ def download_embedding(
     repo_name: str = REPO_NAME,
     revision: Optional[str] = None,
 ) -> Path:
-    """
-    Download a specific embedding file from HF under `embeddings/<filename>`,
-    caching locally in target_dir. Returns the local file path.
-    The default repo is public, so a token is optional.
-    """
+    """Download a specific embedding file from HF under `embeddings/<filename>`, caching locally in target_dir."""
     token = _get_token(required=False)
     target_dir.mkdir(parents=True, exist_ok=True)
     local_path = hf_hub_download(

@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# Build the two images: la2m-artifact (text experiments) and la2m-artifact-img
-# (adds torchvision for the image case study, Fig. 10). About 5 minutes on first build.
 set -euo pipefail
 source "$(dirname "$0")/env.sh"
 docker build -f "$CODE/Dockerfile" -t "$IMAGE" "$CODE"

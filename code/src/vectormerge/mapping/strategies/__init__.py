@@ -1,8 +1,4 @@
-"""
-Mapping strategies for VectorMerge.
-
-This package contains different strategies for mapping between embedding spaces.
-"""
+"""Mapping strategies for VectorMerge."""
 
 from .procrustes import ProcrustesMappingStrategy
 from .nonlinear import NonLinearMappingStrategy
@@ -16,4 +12,4 @@ __all__ = [
     "LA2MStrategy",
     "CCAMappingStrategy",
     "GromovWassersteinMappingStrategy",
-] 
+]

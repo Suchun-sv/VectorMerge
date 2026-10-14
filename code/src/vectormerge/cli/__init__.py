@@ -1,8 +1,4 @@
-"""
-VectorMerge CLI - Main entry point.
-
-This module assembles all CLI commands and provides the main application entry point.
-"""
+"""VectorMerge CLI - Main entry point."""
 
 import typer
 from rich import print as rprint
@@ -46,7 +42,7 @@ def main(
 ):
     """VectorMerge CLI - Advanced embedding generation and mapping tools."""
     set_seed()
-    
+
     if verbose:
         import logging
         logging.basicConfig(level=logging.INFO)
@@ -80,15 +76,15 @@ def list_models():
     from .base import SUPPORTED_MODELS
     from rich.table import Table
     from .base import console
-    
+
     rprint("[blue]📋 Available Models:[/blue]")
-    
+
     table = Table(show_header=True, header_style="bold magenta")
     table.add_column("Index", style="dim", width=6)
     table.add_column("Model", style="cyan")
     table.add_column("Type", style="green")
     table.add_column("Description", style="yellow")
-    
+
     for i, model in enumerate(SUPPORTED_MODELS, 1):
         if model.startswith("text-embedding"):
             model_type = "OpenAI API"
@@ -111,12 +107,12 @@ def list_models():
         else:
             model_type = "Unknown"
             desc = "Unknown model type"
-        
+
         table.add_row(str(i), model, model_type, desc)
-    
+
     console.print(table)
 
 main_app = app
 
 if __name__ == "__main__":
-    app() 
+    app()

@@ -1,37 +1,4 @@
-"""
-VectorMerge Mapping Package
-
-This package provides comprehensive vector space mapping functionality for VectorMerge.
-It includes various mapping strategies, clustering algorithms, loss functions, and utilities
-for transforming embeddings between different vector spaces.
-
-Main Classes:
-- VectorSpaceMapper: Main interface for all mapping strategies
-- MappingConfig: Configuration class for mapping parameters
-- MappingResult: Result container for mapping operations
-
-Mapping Strategies:
-- ProcrustesMappingStrategy: Procrustes analysis-based mapping
-- NonLinearMappingStrategy: Non-linear neural network mapping
-- LA2MStrategy: Clustering-based mapping from the LA2M paper
-
-Quick Usage:
-```python
-from vectormerge.mapping import VectorSpaceMapper, MappingConfig
-
-# Create mapper with default configuration
-mapper = VectorSpaceMapper(strategy="procrustes")
-
-# Or with custom configuration
-config = MappingConfig(num_clusters=100, learning_rate=0.001)
-mapper = VectorSpaceMapper(strategy="la2m", config=config)
-
-# Fit and transform
-transformed = mapper.fit_transform(
-    source_embeddings, target_embeddings, reference_indices
-)
-```
-"""
+"""VectorMerge Mapping Package."""
 
 from .base import MappingStrategy, MappingConfig, MappingResult
 from .manager import VectorSpaceMapper
@@ -74,12 +41,12 @@ __version__ = "1.0.0"
 
 __all__ = [
     "VectorSpaceMapper",
-    "MappingStrategy", 
+    "MappingStrategy",
     "MappingConfig",
     "MappingResult",
-    
+
     "ProcrustesMappingStrategy",
-    "NonLinearMappingStrategy", 
+    "NonLinearMappingStrategy",
     "LA2MStrategy",
     "CCAMappingStrategy",
     "GromovWassersteinMappingStrategy",
@@ -87,11 +54,11 @@ __all__ = [
     "ProcrustesMapper",
     "cosine_similarity_loss",
     "triplet_loss",
-    "ranking_loss", 
+    "ranking_loss",
     "contrastive_loss",
     "mse_loss",
     "compute_loss",
-    
+
     "load_embeddings",
     "save_embeddings",
     "create_reference_indices",
@@ -102,4 +69,4 @@ __all__ = [
 __author__ = "VectorMerge Team"
 __email__ = "contact@vectormerge.ai"
 __description__ = "Vector space mapping and alignment for embedding models"
-__url__ = "https://github.com/vectormerge/vectormerge" 
+__url__ = "https://github.com/vectormerge/vectormerge"

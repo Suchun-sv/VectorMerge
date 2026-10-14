@@ -1,8 +1,4 @@
-"""
-Embedding generation commands for VectorMerge CLI.
-
-This module contains commands for generating, checking, and managing embeddings.
-"""
+"""Embedding generation commands for VectorMerge CLI."""
 
 import shutil
 from pathlib import Path
@@ -48,22 +44,22 @@ def generate_embeddings(
     verbose: bool = typer.Option(cli_defaults.verbose, "--verbose", "-v", help="Verbose output"),
 ):
     """Generate embeddings for models and datasets."""
-    
+
     set_seed()
 
     set_log_level(verbose)
 
     config = handle_extra_args(ctx)
-            
+
     if interactive:
         if not model:
             model = select_model_interactively()
         if not dataset:
             dataset = select_dataset_interactively()
-    
+
     if not model or not dataset:
         display_error_and_exit("Please specify model and dataset (or use --interactive)")
-    
+
     models = SUPPORTED_MODELS if model == 'all' else [model]
     datasets = SUPPORTED_DATASETS if dataset == 'all' else [dataset]
 
@@ -75,12 +71,12 @@ def generate_embeddings(
             is_valid, error_msg = validate_model_and_dataset(m, d)
             if not is_valid:
                 display_error_and_exit(error_msg)
-    
+
     total_combinations = len(models) * len(datasets)
     rprint(f"[blue]📊 Generating embeddings for {total_combinations} combinations...[/blue]")
-    
+
     from ..embeddings.generate import generate_embeddings as generate_embeddings_fn
-    
+
     with Progress(
         SpinnerColumn(),
         TextColumn("[progress.description]{task.description}"),
@@ -92,7 +88,7 @@ def generate_embeddings(
             type_list = ['corpus', 'query']
         else:
             type_list = [type_]
-        
+
         for m in models:
             for d in datasets:
                 for type_ in type_list:
@@ -101,7 +97,7 @@ def generate_embeddings(
                     model_settings = config.embedding_models.load_model_settings(m)
                     _show_model_settings(model_settings)
                     progress.update(task, description=f"Processing {m} on {d}...")
-                    
+
                     try:
                         generate_embeddings_fn(
                             model_name=m,
@@ -117,9 +113,9 @@ def generate_embeddings(
                         rprint(f"[green]✓[/green] Generated: {m} on {d}")
                     except Exception as e:
                         rprint(f"[red]✗[/red] Failed: {m} on {d} - {e}")
-                    
+
                     progress.advance(task)
-    
+
     _show_generation_success(embedding_path, total_combinations)
 
 
@@ -127,12 +123,12 @@ def _check_embedding_completeness(embedding_path: Path) -> None:
     """Check completeness of embeddings."""
     if not embedding_path.exists():
         display_error_and_exit(f"Embedding path does not exist: {embedding_path}")
-    
+
     rprint(f"[blue]🔍 Checking embedding completeness in {embedding_path}...[/blue]")
-    
+
     existing_files = []
     other_files = []
-    
+
     for file_path in embedding_path.glob("*.npy"):
         parsed = parse_embedding_filename(file_path.name)
         if parsed:
@@ -140,51 +136,51 @@ def _check_embedding_completeness(embedding_path: Path) -> None:
             existing_files.append((model, dataset, type_, file_path))
         else:
             other_files.append(file_path)
-    
+
     expected_combinations = []
     for model in SUPPORTED_MODELS:
         for dataset in SUPPORTED_DATASETS:
             for type_ in ['corpus', 'query']:
                 expected_combinations.append((model, dataset, type_))
-    
+
     existing_combinations = {(m, d, t) for m, d, t, _ in existing_files}
     missing_combinations = []
-    
+
     for combo in expected_combinations:
         if combo not in existing_combinations:
             missing_combinations.append(combo)
-    
+
     total_expected = len(expected_combinations)
     total_existing = len(existing_combinations)
     total_missing = len(missing_combinations)
-    
+
     rprint(f"\n[blue]📊 Embedding Coverage Report[/blue]")
     rprint(f"[green]✓ Found:[/green] {total_existing} embeddings")
     rprint(f"[red]✗ Missing:[/red] {total_missing} embeddings")
     rprint(f"[blue]📈 Coverage:[/blue] {total_existing/total_expected*100:.1f}%")
-    
+
     if other_files:
         rprint(f"[yellow]⚠️  Other files:[/yellow] {len(other_files)} files")
-    
+
     if missing_combinations:
         rprint("\n[red]❌ Missing Embeddings:[/red]")
-        
+
         by_model = {}
         for model, dataset, type_ in missing_combinations:
             if model not in by_model:
                 by_model[model] = []
             by_model[model].append((dataset, type_))
-        
+
         for model, items in by_model.items():
             table = Table(title=f"Missing: {model}")
             table.add_column("Dataset", style="cyan")
             table.add_column("Type", style="green")
-            
+
             for dataset, type_ in items:
                 table.add_row(dataset, type_)
-            
+
             console.print(table)
-    
+
     if missing_combinations:
         rprint("\n[blue]💡 To generate missing embeddings:[/blue]")
         rprint("[cyan]vectormerge embedding generate --model all --dataset all[/cyan]")
@@ -196,22 +192,22 @@ def _clean_cache(cache_dir: Path) -> None:
     if not cache_dir.exists():
         rprint(f"[yellow]Cache directory does not exist: {cache_dir}[/yellow]")
         return
-    
+
     cache_size = get_directory_size(cache_dir)
     file_count = sum(1 for _ in cache_dir.rglob('*') if _.is_file())
-    
+
     if cache_size == 0:
         rprint(f"[yellow]Cache directory is empty: {cache_dir}[/yellow]")
         return
-    
+
     rprint(f"[blue]📁 Cache directory:[/blue] {cache_dir}")
     rprint(f"[blue]📊 Cache size:[/blue] {format_size(cache_size)}")
     rprint(f"[blue]📄 Files:[/blue] {file_count}")
-    
+
     if confirm_action(f"Delete cache directory ({format_size(cache_size)})?"):
         try:
             shutil.rmtree(cache_dir)
-            
+
             panel = Panel(
                 Text.assemble(
                     ("🗑️ Cache cleaned successfully!\n\n", "bold green"),
@@ -224,7 +220,7 @@ def _clean_cache(cache_dir: Path) -> None:
                 padding=(1, 2)
             )
             console.print(panel)
-            
+
         except Exception as e:
             display_error_and_exit(f"Failed to clean cache: {e}")
     else:
@@ -234,7 +230,7 @@ def _clean_cache(cache_dir: Path) -> None:
 def _show_generation_success(embedding_path: Path, total_combinations: int) -> None:
     """Show success message after embedding generation."""
     actual_files = len(list(embedding_path.glob("*.npy")))
-    
+
     success_text = Text()
     success_text.append("🎉 Embedding generation completed!\n\n", style="bold green")
     success_text.append(f"📊 Generated: {total_combinations} combinations\n", style="")
@@ -247,7 +243,7 @@ def _show_generation_success(embedding_path: Path, total_combinations: int) -> N
     success_text.append("vectormerge map-embedding --help\n", style="cyan")
     success_text.append("  🔍 Create references: ", style="dim")
     success_text.append("vectormerge create-reference --help\n", style="cyan")
-    
+
     panel = Panel(
         success_text,
         title="[bold green]✅ Success![/bold green]",
@@ -256,7 +252,7 @@ def _show_generation_success(embedding_path: Path, total_combinations: int) -> N
         padding=(1, 2),
         expand=False
     )
-    
+
     console.print(panel)
 @embedding_app.command("rm-cache", help="Remove cache directory")
 def rm_cache(embedding_cache_path: Path = typer.Option(cli_defaults.embedding_cache_path, "--embedding-cache-path", help="Path to cache directory")) -> None:

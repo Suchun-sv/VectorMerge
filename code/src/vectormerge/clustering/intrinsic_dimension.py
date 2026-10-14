@@ -1,13 +1,4 @@
-"""Intrinsic dimension estimation for LA2M reference clusters.
-
-doi:10.1145/3769803 Section 6.1 sizes each local reference cluster X by the intrinsic
-dimension of the reference vectors, estimated with the Levina-Bickel MLE:
-
-    d_hat = [ 1 / (N (K-1)) * sum_i sum_{j=1}^{K-1} log( T_K(x_i) / T_j(x_i) ) ]^-1
-
-where T_j(x_i) is the distance from x_i to its j-th nearest neighbour. The paper uses
-N = 10 sampled points and K = 20 neighbours.
-"""
+"""Intrinsic dimension estimation for LA2M reference clusters."""
 
 import numpy as np
 from loguru import logger
@@ -18,17 +9,7 @@ DEFAULT_K = 20
 
 def estimate_intrinsic_dimension(embeddings: np.ndarray, n: int = DEFAULT_N,
                                  k: int = DEFAULT_K, seed: int = 42) -> float:
-    """Estimate the intrinsic dimension of ``embeddings``.
-
-    Args:
-        embeddings: Vectors to analyse, shape (num_points, dim).
-        n: Number of points to sample (N in the paper).
-        k: Number of nearest neighbours per point (K in the paper).
-        seed: Seed for the point sample, so the estimate is reproducible.
-
-    Returns:
-        The MLE estimate, or ``nan`` when there are too few usable neighbours.
-    """
+    """Estimate the intrinsic dimension of ``embeddings``."""
     if len(embeddings) < 2:
         return float("nan")
 

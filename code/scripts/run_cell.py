@@ -1,17 +1,12 @@
-"""Run one cell of a paper table and write the metrics as JSON.
-
-Mirrors `vectormerge evaluate single-run` (src/vectormerge/cli/evaluate.py) but is
-importable, non-interactive, and persists structured results so a whole grid can be
-assembled and compared against the published tables.
-
-    python scripts/run_cell.py --dataset nfcorpus --source mistral --target openai \
-        --method la2m --out results/table4_nfcorpus_la2m.json
-"""
+"""Run one cell of a paper table and write the metrics as JSON."""
 import argparse
 import json
 import time
 import traceback
 from pathlib import Path
+
+import numpy as np
+from sklearn.cluster import KMeans
 
 from vectormerge.cli.base import set_seed
 from vectormerge.config import ConfigLoader
@@ -22,14 +17,39 @@ from vectormerge.evaluation import Evaluator
 from vectormerge.mapping import VectorSpaceMapper
 
 
+def stratified_split(X, ratio, n_clusters, seed=42):
+    """Reference sampling of Section 6.2."""
+    rng = np.random.default_rng(seed)
+    labels = KMeans(n_clusters=n_clusters, n_init=1, random_state=seed).fit_predict(X)
+    d0 = []
+    for c in range(n_clusters):
+        members = np.flatnonzero(labels == c)
+        d0.extend(rng.choice(members, size=int(round(ratio * len(members))), replace=False))
+    d0 = np.sort(np.asarray(d0, dtype=int))
+    rest = rng.permutation(np.setdiff1d(np.arange(len(X)), d0))
+    half = len(rest) // 2
+    return d0, np.sort(rest[:half]), np.sort(rest[half:])
+
+
 def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--dataset", required=True)
     p.add_argument("--source", required=True)
     p.add_argument("--target", required=True)
     p.add_argument("--method", required=True)
-    p.add_argument("--reference-method", default="la2m")
+    p.add_argument("--reference-method", choices=["random", "la2m", "stratified"], default="random",
+                   help="random: the paper's split, O1 / O_cap / O2 as plain random thirds with the "
+                        "answers left wherever they fall, and the integrated database holding "
+                        "translated source vectors for O1 and O_cap; la2m: the original package's "
+                        "split, answers kept out of O_cap and spread evenly over O1 / O2, only O1 "
+                        "translated; stratified: as random, but the references are drawn per "
+                        "k-means cluster of the source vectors (Section 6.2, Fig. 8)")
+    p.add_argument("--strata", type=int, default=100,
+                   help="stratified: number of k-means clusters L")
     p.add_argument("--out", required=True)
+    p.add_argument("--reference-ratio", type=float, default=1 / 3,
+                   help="share of the corpus drawn as references O_cap (Fig. 8 varies it; "
+                        "the rest is split evenly into O1 and O2)")
     p.add_argument("--dhat", type=int, default=None,
                    help="LA2M: fix |X| = pca_dim = DHAT instead of estimating the intrinsic dimension")
     p.add_argument("--cluster-size", type=int, default=None,
@@ -52,19 +72,17 @@ def main() -> int:
         "target_model": args.target,
         "mapping_method": args.method,
         "reference_method": args.reference_method,
+        "reference_ratio": args.reference_ratio,
     }
 
     started = time.time()
     try:
-        # the CLI seeds via its typer callback; the reference split is random, so a
-        # missing seed silently changes the numbers between runs
         set_seed(42)
         config = ConfigLoader().load_config().config
         if args.dhat is not None:
             la2m_cfg = config.mapping_config.la2m_config
             la2m_cfg.use_intrinsic_dimension = False
             la2m_cfg.d_prime = la2m_cfg.pca_dim = args.dhat
-            # the cluster size is read from the clustering config, not the mapping one
             config.clustering_config.la2m_config.d_prime = args.dhat
         la2m_cfg = config.mapping_config.la2m_config
         if args.cluster_size is not None or args.pca_dim is not None:
@@ -96,19 +114,23 @@ def main() -> int:
             type_="query", align=True,
         )
 
-        embedding_dataset = EmbeddingDataset(
-            text_dataset_name=args.dataset,
-            source_embedding_model_name=args.source,
-            target_embedding_model_name=args.target,
-            align_dimension=True,
-            dataset_path=config.data_path,
-            embedding_path=config.embedding_path,
-            reference_method=args.reference_method,
-            reference_config={},
-        )
-        d0_index = embedding_dataset.d0_index
-        d1_index = embedding_dataset.d1_index
-        d2_index = embedding_dataset.d2_index
+        if args.reference_method == "stratified":
+            d0_index, d1_index, d2_index = stratified_split(
+                np.asarray(corpus_emb_1), args.reference_ratio, args.strata)
+        else:
+            embedding_dataset = EmbeddingDataset(
+                text_dataset_name=args.dataset,
+                source_embedding_model_name=args.source,
+                target_embedding_model_name=args.target,
+                align_dimension=True,
+                dataset_path=config.data_path,
+                embedding_path=config.embedding_path,
+                reference_method=args.reference_method,
+                reference_config={"reference_ratio": args.reference_ratio},
+            )
+            d0_index = embedding_dataset.d0_index
+            d1_index = embedding_dataset.d1_index
+            d2_index = embedding_dataset.d2_index
 
         mapper = VectorSpaceMapper(
             strategy_name=args.method,
@@ -122,9 +144,6 @@ def main() -> int:
             embedding_path=config.embedding_path,
             mapping_param_path=config.mapping_param_path,
             mapping_embedding_path=config.mapping_embedding_path,
-            # each cell must compute from scratch: the cached path reloads a cluster
-            # result without marking the strategy fitted, and a cached mapping would
-            # otherwise be paired with a freshly drawn reference split
             force=True,
             save_param=False,
             save_embedding=False,
@@ -141,6 +160,8 @@ def main() -> int:
             d0=d0_index, d1=d1_index, d2=d2_index,
             corpus_emb_1_transformed=transformed,
             k_list=[10, 50, 100, 500, 1000],
+            source_side=(np.concatenate([d0_index, d1_index])
+                         if args.reference_method != "la2m" else d1_index),
         )
         record["results"] = {k: float(v) for k, v in evaluator.evaluate().items()}
         record["shapes"] = {
@@ -150,7 +171,7 @@ def main() -> int:
             "d0": len(d0_index), "d1": len(d1_index), "d2": len(d2_index),
         }
         record["status"] = "ok"
-    except Exception as exc:  # a failed cell must not take down the grid
+    except Exception as exc:
         record["status"] = "error"
         record["error"] = f"{type(exc).__name__}: {exc}"
         record["traceback"] = traceback.format_exc()

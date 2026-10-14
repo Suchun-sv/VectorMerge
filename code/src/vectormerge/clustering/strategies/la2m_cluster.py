@@ -1,10 +1,4 @@
-"""
-LA2M clustering strategy implementation.
-
-This module implements the clustering strategy used in LA2M (Local Anchor to Multiple)
-where each point has a neighborhood of closest reference points, and these neighborhoods
-are optimized and merged to form final clusters.
-"""
+"""LA2M clustering strategy implementation."""
 
 import numpy as np
 import torch
@@ -20,73 +14,70 @@ logger = logging.getLogger(__name__)
 
 
 class LA2MClusteringStrategy(ClusteringStrategy):
-    """LA2M clustering strategy.
-    
-    This strategy creates neighborhoods around each point based on nearest neighbors.
-    """
-    
+    """LA2M clustering strategy."""
+
     def __init__(self, config: ClusteringConfig):
         super().__init__(config)
         self.d_prime = config.la2m_config.d_prime
         self.is_fitted = False
-        
+
     def fit(self, embeddings: np.ndarray, reference_indices: np.ndarray) -> ClusteringResult:
         """Fit clustering strategy to reference embeddings."""
         return self._fit(embeddings, reference_indices)
-    
+
     def _fit(self, embeddings: np.ndarray, reference_indices: np.ndarray) -> ClusteringResult:
         """Fit the LA2M clustering strategy."""
         logger.info(f"Starting LA2M clustering with d_prime={self.d_prime}")
-        
+
         embeddings_tensor = torch.tensor(embeddings, dtype=torch.float32)
         reference_embeddings = embeddings_tensor[reference_indices]
-        
+
         neighborhoods = self._compute_neighborhoods(reference_embeddings, reference_indices)
-        
+
         result = self._create_clustering_result(neighborhoods, embeddings, reference_indices)
-        
+
         self.is_fitted = True
         logger.info(f"LA2M clustering completed with {len(neighborhoods)} neighborhoods")
-        
+
         return result
-    
+
     def _predict(self, result: ClusteringResult, embeddings: np.ndarray) -> np.ndarray:
         """Predict cluster assignments for new embeddings."""
         if not self.is_fitted:
             raise ValueError("Strategy must be fitted before prediction")
-    
+
         if not hasattr(self, 'cluster_centers_') or self.cluster_centers_ is None:
             self.cluster_centers_ = self._concat_clustering_centers(result.cluster_data_list)
-        
+
         if hasattr(self, 'cluster_centers_') and self.cluster_centers_ is not None:
             embeddings_tensor = torch.tensor(embeddings, dtype=torch.float32)
             centers_tensor = torch.tensor(self.cluster_centers_, dtype=torch.float32)
-            
+
             distances = torch.cdist(embeddings_tensor, centers_tensor)
-            
+
             cluster_assignments = torch.argmin(distances, dim=1)
-            
+
             return cluster_assignments.numpy()
         else:
             raise ValueError("Strategy must be fitted before prediction")
-    
+
     def predict(self, clustering_result: ClusteringResult, embeddings: np.ndarray) -> np.ndarray:
         """Predict cluster assignments for new embeddings."""
         return self._predict(clustering_result, embeddings)
 
-    def _compute_neighborhoods(self, embeddings: torch.Tensor, 
+    def _compute_neighborhoods(self, embeddings: torch.Tensor,
                              reference_indices: np.ndarray) -> List[ClusterData]:
         """Compute neighborhoods for individual points."""
         neighborhoods = []
-        
+
         distances = torch.cdist(embeddings, embeddings)
-        
+
         for i in range(len(embeddings)):
             point_distances = distances[i]
             top_indices = torch.argsort(point_distances)[:self.d_prime]
-            
+
             neighborhood_embeddings = embeddings[top_indices].cpu().numpy()
-            
+
             cluster_data = ClusterData(
                 reference_indices=[int(reference_indices[j]) for j in top_indices],
                 linked_target_indices=[],
@@ -94,18 +85,18 @@ class LA2MClusteringStrategy(ClusteringStrategy):
                 center_embedding=np.mean(neighborhood_embeddings, axis=0) if len(neighborhood_embeddings) > 0 else None,
                 linked_target_embeddings=None
             )
-            
+
             neighborhoods.append(cluster_data)
-        
+
         return neighborhoods
-    
-    
-    def _create_clustering_result(self, clusters: List[ClusterData], 
+
+
+    def _create_clustering_result(self, clusters: List[ClusterData],
                                  embeddings: np.ndarray,
                                  reference_indices: np.ndarray) -> ClusteringResult:
         """Create ClusteringResult from neighborhoods."""
         cluster_labels = np.arange(len(reference_indices), dtype=int)
-        
+
         cluster_centers = []
         for cluster_data in clusters:
             if cluster_data.center_embedding is not None:
@@ -115,10 +106,10 @@ class LA2MClusteringStrategy(ClusteringStrategy):
                     cluster_centers.append(embeddings[cluster_data.reference_indices[0]])
                 else:
                     cluster_centers.append(np.zeros(embeddings.shape[1]))
-        
+
         cluster_centers = np.array(cluster_centers) if cluster_centers else None
         self.cluster_centers_ = cluster_centers
-        
+
         return ClusteringResult(
             cluster_data_list=clusters,
             cluster_labels=cluster_labels,
@@ -128,4 +119,4 @@ class LA2MClusteringStrategy(ClusteringStrategy):
                 'd_prime': self.config.la2m_config.d_prime,
                 'num_reference_points': len(reference_indices)
             }
-        ) 
+        )

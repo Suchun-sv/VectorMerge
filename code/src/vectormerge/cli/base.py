@@ -1,9 +1,4 @@
-"""
-Base constants and utilities for VectorMerge CLI.
-
-This module contains shared constants, configuration, and utility functions
-used across all CLI commands.
-"""
+"""Base constants and utilities for VectorMerge CLI."""
 
 import json
 import os
@@ -31,8 +26,6 @@ from loguru import logger
 console = Console()
 
 
-
-
 def load_cli_defaults() -> VectorMergeConfig:
     """Load CLI default configuration."""
     config_loader = ConfigLoader().load_config()
@@ -57,10 +50,10 @@ def set_seed(seed: int = 42):
             torch.cuda.manual_seed_all(seed)
     except ImportError:
         pass
-    
+
     random.seed(seed)
     np.random.seed(seed)
-    
+
     if not globals().get('_seed_logged', False):
         rprint(f"[dim]🎲 Random seed set to {seed} for reproducibility[/dim]")
         globals()['_seed_logged'] = True

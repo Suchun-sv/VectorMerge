@@ -1,10 +1,4 @@
-"""Assemble Tables 1 and 4-9 from the per-cell JSON written by run_tables.sh.
-
-Writes summary.md and summary.csv next to the cell files and prints summary.md.
-Standard library only.
-
-    python scripts/collect_tables.py [results/tables]
-"""
+"""Assemble Tables 1 and 4-9 from the per-cell JSON written by run_tables.sh."""
 import csv
 import json
 import signal
@@ -27,8 +21,6 @@ METRICS = [("R", "recall_at_100", 100), ("R1", "recall_d1@100", 100),
 
 def cell(t, d, m):
     """Metrics for one cell, or a status string if it did not finish."""
-    if (t, d) == (4, "scifact"):   # 320 Mistral query vectors for 300 queries
-        return "n/a (data)"
     f = TABLES / f"table{t}_{d}_{'procrustes' if m == 'union' else m}.json"
     if not f.exists():
         return "not run"
@@ -36,8 +28,8 @@ def cell(t, d, m):
     if j.get("status") != "ok":
         return j.get("status", "error")
     r = j["results"]
-    if m == "union":   # every cell reports Union; R1 is 0 by construction, beta is not computed
-        return {"R": 100 * r["direct_concat@100"], "R1": 0.0}
+    if m == "union":
+        return {"R": 100 * r["direct_concat@100"]}
     return {k: s * r[key] for k, key, s in METRICS}
 
 
@@ -68,7 +60,6 @@ def main():
             md.append(f"| {label} | " + " | ".join(cells) + " |")
         md.append("")
 
-    # Table 1 is recall@100 for four of the pairs on four datasets
     md.append("## Table 1: Recall@100 (subset of Tables 4, 5, 7, 8)\n")
     md.append("| pair | method | " + " | ".join(NAMES[d] for d in DATASETS[:4]) + " |")
     md.append("|---|---|" + "---|" * 4)
@@ -85,5 +76,5 @@ def main():
 
 
 if __name__ == "__main__":
-    signal.signal(signal.SIGPIPE, signal.SIG_DFL)   # quiet when piped into head
+    signal.signal(signal.SIGPIPE, signal.SIG_DFL)
     main()

@@ -1,9 +1,4 @@
-"""
-Clustering commands for VectorMerge CLI.
-
-This module contains commands for clustering operations including
-reference point clustering and cluster analysis.
-"""
+"""Clustering commands for VectorMerge CLI."""
 
 from pathlib import Path
 from typing import Optional, List
@@ -33,19 +28,19 @@ create_cluster_app = typer.Typer(help="Create and manage clustering operations")
 
 def _handle_interactive_clustering_input(dataset: str, model: str, cluster_method: str):
     """Handle interactive input for clustering parameters."""
-    
+
     if not dataset:
         dataset = select_dataset_interactively()
-    
+
     if not model:
         model = select_model_interactively()
-    
+
     if not cluster_method:
         method_options = ["kmeans", "la2m-cluster"]
         rprint("[cyan]Available clustering methods:[/cyan]")
         for i, method in enumerate(method_options, 1):
             rprint(f"  {i}. {method}")
-        
+
         while True:
             try:
                 choice = typer.prompt("Select clustering method (index or name)", default="kmeans")
@@ -61,7 +56,7 @@ def _handle_interactive_clustering_input(dataset: str, model: str, cluster_metho
                     rprint(f"[red]Invalid choice: {choice}[/red]")
             except typer.Abort:
                 raise typer.Exit(code=1)
-    
+
     return dataset, model, cluster_method
 
 @create_cluster_app.callback(invoke_without_command=True, context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
@@ -79,13 +74,8 @@ def create_cluster(
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Interactive mode"),
     verbose: bool = typer.Option(cli_defaults.verbose, "--verbose", "-v", help="Verbose output"),
 ):
-    """Create clusters from reference embeddings.
-    
-    Use sub-commands for additional operations:
-    - analyze: Analyze existing clustering results
-    - distribution: Show cluster size distribution
-    """
-    
+    """Create clusters from reference embeddings."""
+
     set_seed()
 
     if interactive:
@@ -103,10 +93,10 @@ def create_cluster(
             compute_metrics=compute_metrics,
         )
     )
-    
+
     if not dataset:
         display_error_and_exit("Please specify dataset name (or use --interactive)")
-    
+
     if dataset not in SUPPORTED_DATASETS:
         display_error_and_exit(f"Dataset '{dataset}' not supported. Use 'vectormerge list-datasets' to see available datasets.")
 
@@ -123,7 +113,7 @@ def create_cluster(
         verbose=verbose,
         auto_save_results=True
     )
-    
+
     rprint(f"[blue]🧮 Creating clusters for dataset: {dataset}[/blue]")
     rprint(f"[blue]Method:[/blue] {cluster_method}")
 

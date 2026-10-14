@@ -1,15 +1,4 @@
-"""
-VectorMerge: A modern library for embedding evaluation and vector space mapping.
-
-This library provides tools for:
-- Embedding generation from various models (BERT, RoBERTa, BGE, OpenAI, etc.)
-- Vector space mapping techniques (Procrustes, non-linear mapping)
-- Embedding evaluation on BEIR datasets
-- Clustering-based reference generation
-- Comprehensive evaluation metrics
-
-License: MIT
-"""
+"""VectorMerge."""
 
 from typing import List, Dict, Any
 from .embeddings import SUPPORTED_MODELS
@@ -51,7 +40,7 @@ __all__ = [
     "load_dataset",
     "list_datasets",
     "validate_dataset",
-    
+
     "EmbeddingGenerator",
     "get_embedding_generator",
     "generate_embeddings",
@@ -66,13 +55,13 @@ __all__ = [
     "LA2MStrategy",
     "CCAMappingStrategy",
     "GromovWassersteinMappingStrategy",
-    
+
 
     "SUPPORTED_MODELS",
     "SUPPORTED_DATASETS",
-    
+
     "__version__",
     "__author__",
     "__email__",
     "__description__",
-] 
+]

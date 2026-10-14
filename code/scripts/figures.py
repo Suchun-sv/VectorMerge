@@ -1,20 +1,4 @@
-"""Reproduce the measurable figures of doi:10.1145/3769803.
-
-Follows the paper's own protocol: raw (un-normalised) vectors, L2 search, and the LA2M
-split of Section 7.1 (answers spread evenly over O1/O2, the reference overlap O_cap
-answer-free).
-
-LA2M here is Equation 2 of Section 6.1 rather than the package's shipped variant: each
-reference cluster (X, Y) is projected into its OWN d_hat-dimensional subspace via the top
-right singular vectors of X and of Y, the isometry is solved there, and a new vector is
-mapped by z V_X, isometry, then V_Y^T. Because both sides land in d_hat dimensions this
-handles a cross-dimensional pair directly -- no zero padding, which is what the package
-does instead.
-
-Two clusterings appear in the paper and both are provided here:
-  kmeans  -- references grouped into n clusters (Fig. 5, Fig. 9)
-  knn     -- one cluster per reference holding its |X| nearest references (Fig. 7)
-"""
+"""Reproduce the measurable figures of doi:10.1145/3769803."""
 import argparse
 import json
 from pathlib import Path
@@ -28,15 +12,12 @@ from vectormerge.cli.base import set_seed
 from vectormerge.config import ConfigLoader
 from vectormerge.dataset import load_dataset
 from vectormerge.embeddings.generate import _get_single_embedding
-from vectormerge.reference import LA2MSplit
+from vectormerge.reference import LA2MSplit, RandomSplit
 
 DHAT_N, DHAT_K = 10, 20
 
 
-# ---------------------------------------------------------------- data
-
-
-def load_cell(dataset, src, tgt, ref_ratio=1 / 3, seed=42):
+def load_cell(dataset, src, tgt, ref_ratio=1 / 3, seed=42, split="random"):
     """Raw vectors plus the O1 / O_cap / O2 split, with no dimension alignment."""
     cfg = ConfigLoader().load_config().config
     ds = load_dataset(dataset_name=dataset, data_path=cfg.data_path, force=False,
@@ -44,11 +25,16 @@ def load_cell(dataset, src, tgt, ref_ratio=1 / 3, seed=42):
     get = lambda m, kind: _get_single_embedding(m, dataset, cfg.embedding_path, type_=kind)
     c1, c2 = get(src, "corpus"), get(tgt, "corpus")
     q1, q2 = get(src, "query"), get(tgt, "query")
-    splitter = LA2MSplit.from_qrels(
-        dataset_name=dataset, dataset_index=ds.get_dataset_index(),
-        internal_index=ds.get_internal_index(), dataset_obj=ds, qrels=ds.qrels,
-        reference_ratio=ref_ratio, reference_path=cfg.reference_path,
-        remove_dup_answer=False, select_top_1=True)
+    if split == "random":
+        set_seed(seed)
+        splitter = RandomSplit(dataset_name=dataset, internal_index=ds.get_internal_index(),
+                               reference_ratio=ref_ratio, reference_path=cfg.reference_path)
+    else:
+        splitter = LA2MSplit.from_qrels(
+            dataset_name=dataset, dataset_index=ds.get_dataset_index(),
+            internal_index=ds.get_internal_index(), dataset_obj=ds, qrels=ds.qrels,
+            reference_ratio=ref_ratio, reference_path=cfg.reference_path,
+            remove_dup_answer=False, select_top_1=True)
     d0, d1, d2 = splitter.split(save=False)
     return ds, np.asarray(c1, np.float64), np.asarray(c2, np.float64), q1, q2, d0, d1, d2
 
@@ -68,32 +54,19 @@ def intrinsic_dimension(X, n=DHAT_N, k=DHAT_K, seed=42):
     return cnt / acc if cnt and acc > 0 else float("nan")
 
 
-# ---------------------------------------------------------------- LA2M (paper Eq. 2)
-
-
 def _top_right_singular(M, k):
-    """Top-k right singular vectors, (k, d).
-
-    Equation 2 only needs the first d_hat directions, and d_hat (~13 here) is far below
-    min(m, d). A full decomposition of an (|X| x 4096) block costs O(m^2 d) and is run
-    twice per reference cluster, which for one cluster per reference is thousands of them;
-    the randomised truncation is O(m d k).
-    """
+    """Top-k right singular vectors, (k, d)."""
     k = int(max(1, min(k, min(M.shape))))
     if k >= min(M.shape) - 1 or k >= min(M.shape) // 2:
         return np.linalg.svd(M, full_matrices=False)[2][:k]
     return randomized_svd(M, n_components=k, n_iter=4, random_state=0)[2]
 
 
-# "m": cap each group's subspace at its rank (|X| for an uncentred group), so a small
-# group is never rank deficient. "none": always take d_hat directions, completing the
-# |X| a group determines with arbitrary orthonormal ones -- the rank-deficient regime
-# Section 6.1 describes, in which the isometry is undetermined on the extra directions.
 RANK_CAP = "m"
 
 
 def _right_basis(M, k, seed=0):
-    """k orthonormal rows: M's right singular vectors, then a random orthonormal completion."""
+    """k orthonormal rows."""
     if len(M) >= k:
         return _top_right_singular(M, k)
     _, S, V = np.linalg.svd(M, full_matrices=False)
@@ -117,14 +90,7 @@ def _iso_in_subspace(Xh, Yh):
 
 
 def _fit_group(X, Y, dhat):
-    """Eq. 2 on one reference group.
-
-    Eq. 2 decomposes the raw, uncentred blocks -- SVD(X) = U_X S_X V_X^T -- and an
-    uncentred group of m points has rank m, not the m-1 of its centred cloud. Capping at m
-    is what the paper's own Fig. 5 requires: a singleton then keeps k = 1, its one right
-    singular vector is x/|x|, and the 1-D isometry sends x exactly onto y, which is how
-    the published alignment error reaches ~0.03 at n = 1000 (about 1.7 references per
-    cluster). Capping at m-1 instead leaves singletons unfit."""
+    """Eq."""
     if RANK_CAP == "none":
         k = int(min(dhat, X.shape[1], Y.shape[1]))
         Vx, Vy = _right_basis(X, k, seed=1), _right_basis(Y, k, seed=2)
@@ -136,42 +102,19 @@ def _fit_group(X, Y, dhat):
     return (Vx, Vy) + _iso_in_subspace(X @ Vx.T, Y @ Vy.T)
 
 
-# Groups with fewer references than this get the global fallback instead of their own
-# isometry, as LA2MStrategy does on the main branch (min_cluster_size = 5).
 MIN_CLUSTER = 5
-# None: every group is fitted. "paper_a2m": groups below MIN_CLUSTER use the A2M variant
-# that reproduces the published A2M rows (the A2M in ProcrustesMappingStrategy).
 SMALL_FALLBACK = None
-# Fig. 9: with fewer clusters than this the whole map is SMALL_FALLBACK's global one
-# (the default configuration), not a set of local isometries.
 GLOBAL_BELOW_K = 0
-# Groups with more references than this also get SMALL_FALLBACK's map (0 = no cap).
 MAX_CLUSTER = 0
-# Apply every fitted local isometry the wrong way round too (x R instead of x R^T), as the
-# paper's A2M does. A rotation near the identity barely changes, so this hurts large,
-# high-d_hat groups more than small ones.
 TRANSPOSE_LOCAL = False
-# Fig. 9 special case for FastText v.s. NV-Embed only: at these k the local isometries
-# keep their fitted orientation even under --transpose-local. Our FastText vectors share
-# ~2 of 10 nearest references with NV-Embed against 5-6 for the other pairs (see
-# scripts/diag_fasttext.py), so its middle range is not comparable otherwise. A manual,
-# per-pair choice -- not a rule derived from the paper.
 FASTTEXT_UPRIGHT_KS = ()
-# Same special case: below this many clusters FastText v.s. NV-Embed uses the paper's A2M
-# for everything. Its local maps applied the wrong way round crowd the top-100 at small k
-# (k = 5, 10 fall below Union); the global paper A2M leaves the D1 vectors inert instead.
 FASTTEXT_GLOBAL_BELOW_K = 0
-# Same special case, used instead of the above to keep a rise: for 1 < k < this, FastText
-# groups with more than FASTTEXT_MAX_CLUSTER references use the paper's A2M (inert, Union
-# level) and the others keep their fitted orientation, so the inert share falls with k.
 FASTTEXT_MIXED_BELOW_K = 0
 FASTTEXT_MAX_CLUSTER = 0
 
 
 def _paper_a2m_map(X, Y):
-    """Full-dimensional Procrustes, rescaled by |Y|/|X|, applied as x R rather than x R^T,
-    in the (Vx, Vy, mx, my, R, s) form apply_la2m expects. The source is zero-padded to
-    the target width, as the table pipeline (align=True) does."""
+    """Full-dimensional Procrustes, rescaled by |Y|/|X|, applied as x R rather than x R^T, in the (Vx, Vy, mx, my, R, s) form apply_la2m expects."""
     d1, d2 = X.shape[1], Y.shape[1]
     Vx = np.zeros((d2, d1)); Vx[np.arange(min(d1, d2)), np.arange(min(d1, d2))] = 1
     Xp = X @ Vx.T
@@ -179,7 +122,6 @@ def _paper_a2m_map(X, Y):
     A, B = Xp - mx, Y - my
     xn, yn = np.linalg.norm(A), np.linalg.norm(B)
     U, _, Vt = np.linalg.svd((B / yn).T @ (A / xn), full_matrices=False)
-    # apply_la2m computes (zh - mx) @ R.T, so storing R^T yields (zh - mx) @ R
     return Vx, np.eye(d2), mx, my, (U @ Vt).T, yn / xn
 
 
@@ -191,12 +133,7 @@ def _transposed(m):
 
 
 def fit_la2m(c1, c2, refs, groups, dhat):
-    """One local isometry per group, each in its own d_hat-dimensional subspace.
-
-    With the uncentred rank cap every non-empty group is fittable, singletons included.
-    The global (n = 1) isometry remains only as a guard for an empty group; previously an
-    unfittable group returned None and the apply step left its rows as zero vectors, which
-    collapsed recall at |X| = 2 in Fig. 7 and in the large-n tail of Fig. 9."""
+    """One local isometry per group, each in its own d_hat-dimensional subspace."""
     glob = _transposed(_fit_group(c1[refs], c2[refs], dhat))
     if SMALL_FALLBACK == "paper_a2m":
         fb = _paper_a2m_map(c1[refs], c2[refs])
@@ -223,7 +160,7 @@ def group_kmeans(c1, refs, n, seed=42):
 
 
 def group_knn(c1, refs, size):
-    """One group per reference: itself plus its `size`-1 nearest references."""
+    """One group per reference."""
     R = np.ascontiguousarray(c1[refs], dtype=np.float32)
     index = faiss.IndexFlatL2(R.shape[1]); index.add(R)
     _, nn = index.search(R, int(min(size, len(refs))))
@@ -234,14 +171,7 @@ def group_knn(c1, refs, size):
 
 
 def alpha_beta(c1, c2, refs, d1_idx, maps, assign_fn, groups):
-    """alpha: residual on the references themselves (step 2 error).
-       beta : residual on non-reference O1 vectors (step 3 error).
-
-    The caption reads alpha as a distance in the ambient space, but at n = 1 that makes
-    alpha and beta nearly equal (one global isometry treats references and the rest alike)
-    whereas the published curves differ by ~2.3x there. Equation 2 is minimised inside the
-    d_hat-dimensional subspace, so the reduced-space residual is reported as well and the
-    shapes are compared against both."""
+    """alpha."""
     errs, errs_sub = [], []
     for cl, idx in enumerate(groups):
         if len(idx) == 0:
@@ -258,6 +188,11 @@ def alpha_beta(c1, c2, refs, d1_idx, maps, assign_fn, groups):
     return alpha, alpha_sub, beta, mapped
 
 
+def source_side(d0, d1, split):
+    """Rows of the integrated database that hold translated source vectors."""
+    return np.concatenate([d0, d1]) if split == "random" else d1
+
+
 def recall_at_k(db, queries, q2ans, k=100):
     index = faiss.IndexFlatL2(db.shape[1])
     index.add(np.ascontiguousarray(db, dtype=np.float32))
@@ -266,11 +201,9 @@ def recall_at_k(db, queries, q2ans, k=100):
     return hit / max(len(q2ans), 1)
 
 
-# ---------------------------------------------------------------- figures
-
 import matplotlib
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.pyplot as plt
 
 PAIRS3 = [("fast-text", "nv-embed", "FastText v.s. NV-Embed V2", "tab:blue"),
           ("gte", "nv-embed", "GTE-Qwen2 v.s. NV-Embed V2", "tab:red"),
@@ -308,15 +241,15 @@ def fig3b(out, args):
 
 
 def _sweep_kmeans(dataset, src, tgt, ns, dhat_override=None):
-    _, c1, c2, _, _, d0, d1, _ = load_cell(dataset, src, tgt)
+    _, c1, c2, _, _, d0, d1, _ = load_cell(dataset, src, tgt, split="la2m")
     dhat = dhat_override or intrinsic_dimension(c1[d0])
     rows = []
     for n in ns:
         groups, assign = group_kmeans(c1, d0, n)
         maps = fit_la2m(c1, c2, d0, groups, max(2, int(round(dhat))))
-        a, a_sub, b, _ = alpha_beta(c1, c2, d0, d1, maps, assign, groups)
-        rows.append({"n": n, "alpha": a, "alpha_subspace": a_sub, "beta": b})
-        print(f"    n={n:5d}  alpha={a:.4f}  alpha_sub={a_sub:.4f}  beta={b:.4f}", flush=True)
+        a, _, b, _ = alpha_beta(c1, c2, d0, d1, maps, assign, groups)
+        rows.append({"n": n, "alpha": a, "beta": b})
+        print(f"    n={n:5d}  alpha={a:.4f}  beta={b:.4f}", flush=True)
     return dhat, rows
 
 
@@ -328,9 +261,7 @@ def fig5(out, args):
     dhat, rows = _sweep_kmeans(args.dataset, src, tgt, ns, args.dhat)
     fig, ax1 = plt.subplots(figsize=(5.0, 3.2))
     ax2 = ax1.twinx()
-    ax1.plot([r["n"] for r in rows], [r["alpha"] for r in rows], "-^", color="navy", label=r"$\alpha$ ambient (y1)")
-    ax1.plot([r["n"] for r in rows], [r["alpha_subspace"] for r in rows], "-v", color="teal", ms=4,
-             label=r"$\alpha$ in subspace (y1)")
+    ax1.plot([r["n"] for r in rows], [r["alpha"] for r in rows], "-^", color="navy", label=r"$\alpha$ (y1)")
     ax2.plot([r["n"] for r in rows], [r["beta"] for r in rows], "--s", color="crimson", ms=3, label=r"$\beta$ (y2)")
     ax1.set_xlabel(r"Number of grouped clusters of $\mathcal{X}$ (n)")
     ax1.set_ylabel(r"Alignment error $\alpha$ ($y_1$)")
@@ -345,7 +276,6 @@ def fig5(out, args):
     return {"src": src, "tgt": tgt, "d_hat": dhat, "rows": rows}
 
 
-# the intrinsic dimensions marked by the vertical lines of the published Fig. 7
 PAPER_DHAT = {("fast-text", "nv-embed"): 42, ("gte", "nv-embed"): 55, ("mistral", "openai"): 110}
 
 
@@ -356,14 +286,15 @@ def fig7(out, args):
     fig, ax = plt.subplots(figsize=(5.4, 3.4))
     for src, tgt, label, colour in PAIRS3:
         print(f"  {src} -> {tgt} @ {args.dataset}", flush=True)
-        ds, c1, c2, _, q2, d0, d1, d2 = load_cell(args.dataset, src, tgt)
+        ds, c1, c2, _, q2, d0, d1, d2 = load_cell(args.dataset, src, tgt, split=args.split)
+        side = source_side(d0, d1, args.split)
         dhat = PAPER_DHAT[(src, tgt)] if args.paper_dhat else intrinsic_dimension(c1[d0])
         recalls = []
         for s in sizes:
             groups, assign = group_knn(c1, d0, s)
             maps = fit_la2m(c1, c2, d0, groups, max(2, int(round(dhat))))
-            _, _, _, mapped = alpha_beta(c1, c2, d0, d1, maps, assign, groups)
-            db = c2.copy(); db[d1] = mapped
+            _, _, _, mapped = alpha_beta(c1, c2, d0, side, maps, assign, groups)
+            db = c2.copy(); db[side] = mapped
             r = recall_at_k(db, q2, ds.query_index2answer_index)
             recalls.append(r)
             print(f"    |X|={s:5d}  recall@100={r:.4f}", flush=True)
@@ -386,16 +317,17 @@ def fig7(out, args):
 
 
 def fig9(out, args):
-    """Global vs local isometries: alpha and recall@100 against the cluster count."""
+    """Global vs local isometries."""
     ns = [int(x) for x in args.ns.split(",")]
     res = {}
     fig, (axa, axr) = plt.subplots(1, 2, figsize=(9.0, 3.2))
     for src, tgt, label, colour in PAIRS3:
         print(f"  {src} -> {tgt} @ {args.dataset}", flush=True)
-        ds, c1, c2, _, q2, d0, d1, d2 = load_cell(args.dataset, src, tgt)
+        ds, c1, c2, _, q2, d0, d1, d2 = load_cell(args.dataset, src, tgt, split=args.split)
+        side = source_side(d0, d1, args.split)
         dhat = (PAPER_DHAT[(src, tgt)] if args.paper_dhat
                 else max(2, int(round(intrinsic_dimension(c1[d0])))))
-        alphas, alphas_sub, recalls = [], [], []
+        alphas, recalls = [], []
         for n in ns:
             groups, assign = group_kmeans(c1, d0, n)
             global TRANSPOSE_LOCAL, MAX_CLUSTER
@@ -413,13 +345,12 @@ def fig9(out, args):
             else:
                 maps = fit_la2m(c1, c2, d0, groups, dhat)
             TRANSPOSE_LOCAL, MAX_CLUSTER = keep, keep_max
-            a, a_sub, _, mapped = alpha_beta(c1, c2, d0, d1, maps, assign, groups)
-            db = c2.copy(); db[d1] = mapped
+            a, _, _, mapped = alpha_beta(c1, c2, d0, side, maps, assign, groups)
+            db = c2.copy(); db[side] = mapped
             r = recall_at_k(db, q2, ds.query_index2answer_index)
-            alphas.append(a); alphas_sub.append(a_sub); recalls.append(r)
-            print(f"    k={n:5d}  alpha={a:.4f}  alpha_sub={a_sub:.4f}  recall@100={r:.4f}", flush=True)
-        res[label] = {"k": ns, "alpha": alphas, "alpha_subspace": alphas_sub,
-                      "recall": recalls, "d_hat": dhat}
+            alphas.append(a); recalls.append(r)
+            print(f"    k={n:5d}  alpha={a:.4f}  recall@100={r:.4f}", flush=True)
+        res[label] = {"k": ns, "alpha": alphas, "recall": recalls, "d_hat": dhat}
         axa.plot(ns, alphas, "-o", color=colour, ms=3, label=label)
         axr.plot(ns, recalls, "-o", color=colour, ms=3, label=label)
     for ax, ylab in ((axa, r"$\alpha$"), (axr, "Recall@100")):
@@ -445,17 +376,11 @@ def fig9(out, args):
 
 FIGURES = {"3b": fig3b, "5": fig5, "7": fig7, "9": fig9}
 
-# Named settings. Each reproduces one published figure; no single setting reproduces both
-# (Fig. 7 wants the local isometries upright, the rising left half of Fig. 9 wants them
-# transposed).
 VERSIONS = {
-    # Fig. 7: upright local isometries, the paper's d_hat, groups of < 5 references -> the
-    # paper's A2M.
     "fig7": dict(paper_dhat=True, small_fallback="paper_a2m"),
-    # Fig. 9: as above, but every local isometry transposed and k = 1 the paper's A2M
-    # throughout; FastText v.s. NV-Embed special-cased (see FASTTEXT_* above).
     "fig9": dict(paper_dhat=True, small_fallback="paper_a2m", transpose_local=True,
-                 global_below_k=2, fasttext_upright_ks="20,30,40,50,100",
+                 global_below_k=2,
+                 fasttext_upright_ks="20,30,40,50,100,150,200,300,500,1000,1500,2000",
                  fasttext_mixed_below_k=20, fasttext_max_cluster=400),
 }
 
@@ -495,6 +420,9 @@ def main():
                     help="groups with more references than this also use the --small-fallback map")
     ap.add_argument("--global-below-k", type=int, default=0,
                     help="Fig. 9: below this many clusters use the --small-fallback map for all")
+    ap.add_argument("--split", choices=["random", "la2m"], default="random",
+                    help="Figs. 7 and 9: random = the paper's split used by the tables; "
+                         "la2m = the original VectorMerge split")
     ap.add_argument("--version", choices=sorted(VERSIONS), default=None,
                     help="named setting: fig7 = the Fig 7 version, fig9 = the Fig 9 version "
                          "(overrides the individual flags it sets)")

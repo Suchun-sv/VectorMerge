@@ -1,8 +1,4 @@
-"""
-Embedding mapping commands for VectorMerge CLI.
-
-This module contains commands for creating and managing embedding mappings.
-"""
+"""Embedding mapping commands for VectorMerge CLI."""
 
 import typer
 from click import Context
@@ -20,7 +16,6 @@ from .utils import (
 from vectormerge.config import VectorMergeConfig
 
 map_app = typer.Typer(help="Create and manage embedding mappings")
-
 
 
 @map_app.command("map", help="Map embeddings", context_settings={"allow_extra_args": True, "ignore_unknown_options": True})
